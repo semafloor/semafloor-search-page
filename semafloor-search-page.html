@@ -1,6 +1,21 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="semafloor-search-page-theme.html">
 
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icons/social-icons.html">
+<!-- <link rel="import" href="../iron-list/iron-list.html"> -->
+
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<!-- <link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html"> -->
+<link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
+
+<script src="../lodash/lodash.min.js" charset="utf-8"></script>
+
 <!--
 An element providing a solution to no problem in particular.
 
@@ -18,12 +33,66 @@ Example:
   <template>
     <style include="semafloor-search-page-theme"></style>
 
+    <div class="date-container search-item">
+      <div class="date-icon-column item-icon-column">
+        <iron-icon icon="icons:query-builder"></iron-icon>
+      </div>
+      <div class="date-column item-data-column">
+        <div class="all-day-row">
+          <span>All-day</span>
+          <div></div>
+          <paper-toggle-button></paper-toggle-button>
+        </div>
+        <div class="from-date-row">
+          <paper-button>[[_fromDate]]</paper-button>
+          <div></div>
+          <paper-button>[[_fromTime]]</paper-button>
+        </div>
+        <div class="to-date-row">
+          <paper-button>[[_fromDate]]</paper-button>
+          <div></div>
+          <paper-button>[[_fromTime]]</paper-button>
+        </div>
+      </div>
+    </div>
 
+    <div class="capacity-container search-item">
+      <div class="capacity-icon-column item-icon-column">
+        <iron-icon icon="social:person-add"></iron-icon>
+      </div>
+      <div class="capacity-column item-data-column">
+        <div class="capacity-row">
+          <paper-button on-tap="_addPerson">[[_capacity]]</paper-button>
+          <div></div>
+        </div>
+      </div>
+    </div>
+
+    <paper-dialog id="addPersonDialog" with-backdrop>
+      <h2>Add Person</h2>
+      <paper-dialog-scrollable>
+        <p>
+          numerum nec posse intrare
+          <paper-input label="capacity" type="number" min="1" max="99" value="{{_inputCap::input}}" placeholder="1"></paper-input>
+        </p>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm on-tap="_updateCapacity">ok</paper-button>
+      </div>
+    </paper-dialog>
   </template>
 
 </dom-module>
 
 <script>
+
+  var _notafulldate = new Date();
+  var _notayear = _notafulldate.getFullYear();
+  var _notamonth = _notafulldate.getMonth();
+  var _notadate = _notafulldate.getDate();
+  var _today = _notayear + '-' + (_notamonth + 1) + '-' + _notadate;
+  var _time = _notafulldate.toTimeString().slice(0, 5);
 
   Polymer({
 
@@ -31,7 +100,41 @@ Example:
 
     properties: {
 
-
+      _capacity: {
+        type: Number,
+        value: 1
+      },
+      _inputCap: Number,
+      _totalCap: {
+        type: Array,
+        value: function () {
+          return _.fill(Array(99), 1)
+        }
+      },
+      _toDate: {
+        type: String,
+        value: function () {
+          return  _today;
+        }
+      },
+      _toTime: {
+        type: String,
+        value: function () {
+          return _time;
+        }
+      },
+      _fromDate: {
+        type: String,
+        value: function () {
+          return _today;
+        }
+      },
+      _fromTime: {
+        type: String,
+        value: function () {
+          return _time;
+        }
+      },
 
     },
 
@@ -71,7 +174,19 @@ Example:
      * @detail {{sound: String}}
      */
 
+     _addPerson: function (ev) {
+       console.log(ev.target.tagName);
+       var _target = ev.target;
 
+       if (_target && _target.tagName === 'PAPER-BUTTON') {
+         this.$.addPersonDialog.open();
+       }
+     },
+
+     _updateCapacity: function (ev) {
+       console.log(this._capacity);
+       this.set('_capacity', this._inputCap);
+     },
 
   });
 
