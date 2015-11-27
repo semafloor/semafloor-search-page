@@ -29,7 +29,10 @@
     "paper-radio-button": "PolymerElements/paper-radio-button#~1.0.11",
     "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#~1.1.0",
     "iron-list": "PolymerElements/iron-list#~1.1.6",
-    "paper-input": "PolymerElements/paper-input#~1.1.1"
+    "paper-input": "PolymerElements/paper-input#~1.1.1",
+    "paper-listbox": "polymerelements/paper-listbox#~1.0.0",
+    "paper-item": "PolymerElements/paper-item#~1.1.2",
+    "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.15"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

@@ -45,7 +45,8 @@
       .all-day-row, .from-date-row, .to-date-row {
         @apply(--layout-horizontal);
       }
-      .all-day-row {
+      .all-day-row,
+      .types-row {
         margin: 16px;
       }
       .all-day-row > paper-toggle-button {
@@ -62,22 +63,46 @@
 
       /*.capacity-container {
       }*/
-      .capacity-icon-column {
+      .capacity-icon-column,
+      .site-icon-column,
+      .floor-icon-column {
         margin-top: 0;
         @apply(--layout-center-center);
       }
-      .capacity-row {
+      /*.capacity-row,
+      .site-row {
         @apply(--layout-horizontal);
-      }
-      .capacity-row > div {
-        @apply(--layout-flex-auto);
-      }
-      paper-button {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
-        --paper-button-ink-color: #1DDBD8;
+      }*/
+      /*.types-container {
+      }*/
+      paper-checkbox {
+        display: block;
+        margin-bottom: 24px;
+        --paper-checkbox-checked-color: #1DDBD8;
+        --paper-checkbox-checked-ink-color: #1DDBD8;
       }
 
-      p > paper-input {
+      .send-button-container,
+      .send-button {
+        margin: 24px;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      .send-button > span {
+        margin-left: 8px;
+      }
+
+      paper-button {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: transparent;
+      }
+      paper-button[pressed] {
+        background: #1DDBD8;
+        color: #fff !important;
+      }
+
+      p > paper-input,
+      paper-dropdown-menu {
         --paper-input-container-focus-color: #1DDBD8;
       }
       paper-dialog > h2,
