@@ -29,7 +29,9 @@
     "paper-input": "PolymerElements/paper-input#~1.1.1",
     "paper-listbox": "polymerelements/paper-listbox#~1.0.0",
     "paper-item": "PolymerElements/paper-item#~1.1.2",
-    "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.15"
+    "paper-checkbox": "PolymerElements/paper-checkbox#~1.0.15",
+    "jv-datepicker": "motss/jv-datepicker#~2.0.2",
+    "compound-timepicker": "motss/compound-timepicker#~0.3.4"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

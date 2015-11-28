@@ -1,6 +1,9 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="semafloor-search-page-theme.html">
 
+<link rel="import" href="../jv-datepicker/jv-datepicker-dialog.html">
+<link rel="import" href="../compound-timepicker/compound-timepicker-dialog.html">
+
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-icons/social-icons.html">
@@ -42,17 +45,17 @@ Example:
         <div class="all-day-row">
           <span>All-day</span>
           <div></div>
-          <paper-toggle-button></paper-toggle-button>
+          <paper-toggle-button checked="{{_allDayToggle}}"></paper-toggle-button>
         </div>
         <div class="from-date-row">
-          <paper-button>[[_fromDate]]</paper-button>
+          <paper-button on-tap="_addFromDate">[[_fromDate]]</paper-button>
           <div></div>
-          <paper-button>[[_fromTime]]</paper-button>
+          <paper-button id="FromTimeButton" on-tap="_addFromTime">[[_fromTime]]</paper-button>
         </div>
         <div class="to-date-row">
-          <paper-button>[[_fromDate]]</paper-button>
+          <paper-button on-tap="_addToDate">[[_toDate]]</paper-button>
           <div></div>
-          <paper-button>[[_fromTime]]</paper-button>
+          <paper-button id="toTimeButton" on-tap="_addToTime">[[_toTime]]</paper-button>
         </div>
       </div>
     </div>
@@ -167,6 +170,12 @@ Example:
         <paper-button dialog-confirm on-tap="_updateFloor">Accept</paper-button>
       </div>
     </paper-dialog>
+
+    <!-- pickers dialog -->
+    <jv-datepicker-dialog id="fromDate" with-backdrop disable-days='"[0,6]"' bind-date="{{_fromDate}}"></jv-datepicker-dialog>
+    <jv-datepicker-dialog id="toDate" with-backdrop disable-days='"[0,6]"' bind-date="{{_toDate}}"></jv-datepicker-dialog>
+    <compound-timepicker-dialog id="fromTime" with-backdrop time="{{_fromTime}}" time-format="24"></compound-timepicker-dialog>
+    <compound-timepicker-dialog id="toTime" with-backdrop time="{{_toTime}}" time-format="24"></compound-timepicker-dialog>
   </template>
 
 </dom-module>
@@ -188,6 +197,11 @@ Example:
 
     properties: {
 
+      _allDayToggle:  {
+        type: Boolean,
+        value: false,
+        observer: '_allDayToggleChanged'
+      },
       _capacity: {
         type: Number,
         value: 1
@@ -315,9 +329,9 @@ Example:
      },
      _updateSite: function (ev) {
       //  console.log(ev);
-       var _site = _.indexOf(_sitesArray, this._inputSite);
-       var _siteCode = ['', '05tower', '2atower', 'suite'][_site];
-       this.set('_site', this._inputSite);
+      var _site = _.indexOf(_sitesArray, this._inputSite);
+      var _siteCode = ['', '05tower', '2atower', 'suite'][_site];
+      this.set('_site', this._inputSite);
      },
 
      _addFloor: function (ev) {
@@ -330,7 +344,7 @@ Example:
      },
      _updateFloor: function (ev) {
        var _floor = _.indexOf(_floorsArray, this._inputFloor);
-       var _floorCode = ['01level','02level','03level','04level','05level','06level','07level','08level','09level','10level','11level','12level',][_floor];
+       var _floorCode = ['','01level','02level','03level','04level','05level','06level','07level','08level','09level','10level','11level','12level'][_floor];
        this.set('_floor', this._inputFloor);
        console.log(ev);
      },
@@ -363,6 +377,47 @@ Example:
        }
      },
 
+     _addFromDate: function (ev) {
+       console.log(ev.target.tagName);
+       var _target = ev.target;
+
+       if (_target && _target.tagName === 'PAPER-BUTTON') {
+         this.$.fromDate.open();
+       }
+       _target = null;
+     },
+     _addToDate: function (ev) {
+       console.log(ev.target.tagName);
+       var _target = ev.target;
+
+       if (_target && _target.tagName === 'PAPER-BUTTON') {
+         this.$.toDate.open();
+       }
+       _target = null;
+     },
+     _addFromTime: function (ev) {
+       var _target = ev.target;
+
+       if (_target && _target.tagName === 'PAPER-BUTTON') {
+         this.$.fromTime.open();
+       }
+       _target = null;
+     },
+     _addToTime: function (ev) {
+       var _target = ev.target;
+
+       if (_target && _target.tagName === 'PAPER-BUTTON') {
+         this.$.toTime.open();
+       }
+       _target = null;
+     },
+
+     _allDayToggleChanged: function (newVal, oldVal) {
+       console.log(oldVal, newVal);
+     },
+
+
+     // aggregate all inputs before sending it out as request.
      _sendParams: function (ev) {
        console.log(ev);
      },
