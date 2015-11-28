@@ -99,18 +99,18 @@ Example:
       </div>
       <div class="types-column item-data-column">
         <div class="types-row" on-iron-change="_getWhatBeingChecked">
-          <paper-checkbox>Adjoining Room (Operable Wall)</paper-checkbox>
-          <paper-checkbox>Panaboard</paper-checkbox>
-          <paper-checkbox>Polycom CX100 (Audio)</paper-checkbox>
-          <paper-checkbox>Polycom CX5000 (Video Conferencing)</paper-checkbox>
-          <paper-checkbox>Projector</paper-checkbox>
-          <paper-checkbox>Projector Cable Faulty</paper-checkbox>
-          <paper-checkbox>Projector Faulty</paper-checkbox>
-          <paper-checkbox>Screen Projector Faulty</paper-checkbox>
-          <paper-checkbox>SmartBoard 800</paper-checkbox>
-          <paper-checkbox>Telepresence</paper-checkbox>
-          <paper-checkbox>TV</paper-checkbox>
-          <paper-checkbox>Writing Glass</paper-checkbox>
+          <paper-checkbox data-checked="ar">Adjoining Room (Operable Wall)</paper-checkbox>
+          <paper-checkbox data-checked="pb">Panaboard</paper-checkbox>
+          <paper-checkbox data-checked="pca">Polycom CX100 (Audio)</paper-checkbox>
+          <paper-checkbox data-checked="pcv">Polycom CX5000 (Video Conferencing)</paper-checkbox>
+          <paper-checkbox data-checked="pj">Projector</paper-checkbox>
+          <paper-checkbox data-checked="pcf">Projector Cable Faulty</paper-checkbox>
+          <paper-checkbox data-checked="pf">Projector Faulty</paper-checkbox>
+          <paper-checkbox data-checked="spf">Screen Projector Faulty</paper-checkbox>
+          <paper-checkbox data-checked="sb">SmartBoard 800</paper-checkbox>
+          <paper-checkbox data-checked="tp">Telepresence</paper-checkbox>
+          <paper-checkbox data-checked="tv">TV</paper-checkbox>
+          <paper-checkbox data-checked="wg">Writing Glass</paper-checkbox>
         </div>
       </div>
     </div>
@@ -190,6 +190,8 @@ Example:
   var _time = _notafulldate.toTimeString().slice(0, 5);
   var _sitesArray = ['Any Site','KLB - Tower 5','KLB - Tower 2A','SUITE'];
   var _floorsArray = ['Any Floor','Level 1','Level 2','Level 3','Level 3A','Level 5','Level 6','Level 7','Level 8','Level 9','Level 10','Level 11','Level 12',];
+  var _typesArray = ['ar','pb','pca','pcv','pj','pcf','pf','spf','sb','tp','tv','wg'];
+  var _typesResult = [0,0,0,0,0,0,0,0,0,0,0,0];
 
   Polymer({
 
@@ -219,6 +221,10 @@ Example:
         type: String,
         value: 'Any Floor'
       },
+      _floors: {
+        type: String,
+        value: ''
+      },
       _allSites: {
         type: Array,
         value: function () {
@@ -232,6 +238,10 @@ Example:
       _site: {
         type: String,
         value: 'Any Site'
+      },
+      _sites: {
+        type: String,
+        value: ''
       },
       _inputCap: Number,
       _totalCap: {
@@ -264,6 +274,7 @@ Example:
           return _time;
         }
       },
+      _types: String,
 
     },
 
@@ -306,7 +317,6 @@ Example:
      */
 
      _addPerson: function (ev) {
-       console.log(ev.target.tagName);
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -319,8 +329,6 @@ Example:
      },
 
      _addSite: function (ev) {
-      //  any value, 05tower, 2atower, suite
-      //  console.log(ev);
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -329,14 +337,13 @@ Example:
        _target = null;
      },
      _updateSite: function (ev) {
-      //  console.log(ev);
       var _site = _.indexOf(_sitesArray, this._inputSite);
       var _siteCode = ['', '05tower', '2atower', 'suite'][_site];
+      this.set('_sites', _siteCode);
       this.set('_site', this._inputSite);
      },
 
      _addFloor: function (ev) {
-      //  console.log(ev);
        var _target = ev.target;
        if (_target && _target.tagName === 'PAPER-BUTTON') {
          this.$.addFloorDialog.open();
@@ -346,6 +353,7 @@ Example:
      _updateFloor: function (ev) {
        var _floor = _.indexOf(_floorsArray, this._inputFloor);
        var _floorCode = ['','01level','02level','03level','04level','05level','06level','07level','08level','09level','10level','11level','12level'][_floor];
+       this.set('_floors', _floorCode);
        this.set('_floor', this._inputFloor);
        console.log(ev);
      },
@@ -379,7 +387,6 @@ Example:
      },
 
      _addFromDate: function (ev) {
-       console.log(ev.target.tagName);
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -388,7 +395,6 @@ Example:
        _target = null;
      },
      _addToDate: function (ev) {
-       console.log(ev.target.tagName);
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -425,12 +431,56 @@ Example:
 
      // get which `paper-checkbox` being checked or unchecked.
      _getWhatBeingChecked: function (ev) {
-       console.log(ev);
+       var _target = ev.target;
+
+       if (_target && _target.tagName === 'PAPER-CHECKBOX') {
+         if (_target.hasAttribute('data-checked')) {
+           var _chk = _target.getAttribute('data-checked');
+           var _toggle = _target.checked;
+           var _typeIdx = _.indexOf(_typesArray, _chk);
+           var _typesBin, _typesHex;
+
+          // modify value on corresponding index.
+          _typesResult[_typeIdx] = +_toggle;
+
+          // convert array into binary String then into HEX.
+          _typesBin = _typesResult.join('');
+          _typesHex = parseInt(_typesBin, 2).toString(16);
+
+          // save final result.
+          this._types = _typesHex;
+         }
+       }
      },
 
      // aggregate all inputs before sending it out as request.
      _sendParams: function (ev) {
-       console.log(ev);
+       var _params = '';
+       var _fromTime = this._fromTime;
+       var _toTime = this._toTime;
+
+       if (this._allDayToggle) {
+         _fromTime = '08:00';
+         _toTime = '23:30';
+       }
+
+      //  console.log(this['_fromDate']);
+      //  console.log(this._toDate);
+      //  console.log(this._fromTime);
+      //  console.log(this._toTime);
+      //  console.log(this._allDayToggle);
+      //  console.log(this._capacity);
+      //  console.log(this._sites);
+      //  console.log(this._floors);
+      //  console.log(this._types);
+       _params = 'startDate=' + encodeURIComponent(this._fromDate) + '&' +
+                 'endDate=' + encodeURIComponent(this._toDate) + '&' +
+                 'tStart=' + encodeURIComponent(_fromTime) + '&' +
+                 'tEnd=' + encodeURIComponent(_toTime) + '&' +
+                 'capacity=' + encodeURIComponent(this._capacity) + '&' +
+                 'site=' + encodeURIComponent(this._sites) + '&' +
+                 'floor=' + encodeURIComponent(this._floors) + '&' +
+                 'types=' + encodeURIComponent(this._types)
      },
 
   });
