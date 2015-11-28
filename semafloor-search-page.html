@@ -50,7 +50,7 @@ Example:
         <div class="from-date-row">
           <paper-button on-tap="_addFromDate">[[_fromDate]]</paper-button>
           <div></div>
-          <paper-button id="FromTimeButton" on-tap="_addFromTime">[[_fromTime]]</paper-button>
+          <paper-button id="fromTimeButton" on-tap="_addFromTime">[[_fromTime]]</paper-button>
         </div>
         <div class="to-date-row">
           <paper-button on-tap="_addToDate">[[_toDate]]</paper-button>
@@ -98,7 +98,7 @@ Example:
         <iron-icon icon="icons:create"></iron-icon>
       </div>
       <div class="types-column item-data-column">
-        <div class="types-row">
+        <div class="types-row" on-iron-change="_getWhatBeingChecked">
           <paper-checkbox>Adjoining Room (Operable Wall)</paper-checkbox>
           <paper-checkbox>Panaboard</paper-checkbox>
           <paper-checkbox>Polycom CX100 (Audio)</paper-checkbox>
@@ -199,8 +199,7 @@ Example:
 
       _allDayToggle:  {
         type: Boolean,
-        value: false,
-        observer: '_allDayToggleChanged'
+        value: false
       },
       _capacity: {
         type: Number,
@@ -267,6 +266,8 @@ Example:
       },
 
     },
+
+    observers: ['_hideTime(_allDayToggle)'],
 
     // Element Lifecycle
 
@@ -412,10 +413,20 @@ Example:
        _target = null;
      },
 
-     _allDayToggleChanged: function (newVal, oldVal) {
-       console.log(oldVal, newVal);
+     _hideTime: function (_toggle) {
+       if (_toggle) {
+         this.$.fromTimeButton.classList.add('all-day-hide-time');
+         this.$.toTimeButton.classList.add('all-day-hide-time');
+       }else {
+         this.$.fromTimeButton.classList.remove('all-day-hide-time');
+         this.$.toTimeButton.classList.remove('all-day-hide-time');
+       }
      },
 
+     // get which `paper-checkbox` being checked or unchecked.
+     _getWhatBeingChecked: function (ev) {
+       console.log(ev);
+     },
 
      // aggregate all inputs before sending it out as request.
      _sendParams: function (ev) {
