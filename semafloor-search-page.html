@@ -176,6 +176,18 @@ Example:
     <jv-datepicker-dialog id="toDate" with-backdrop disable-days='"[0,6]"' bind-date="{{_toDate}}"></jv-datepicker-dialog>
     <compound-timepicker-dialog id="fromTime" with-backdrop time="{{_fromTime}}" time-format="24"></compound-timepicker-dialog>
     <compound-timepicker-dialog id="toTime" with-backdrop time="{{_toTime}}" time-format="24"></compound-timepicker-dialog>
+
+    <!-- show query result  -->
+    <paper-dialog id="responseDialog">
+      <h2>Header</h2>
+      <paper-dialog-scrollable>
+        Lorem ipsum
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm>Accept</paper-button>
+      </div>
+    </paper-dialog>
   </template>
 
 </dom-module>
@@ -355,7 +367,6 @@ Example:
        var _floorCode = ['','01level','02level','03level','04level','05level','06level','07level','08level','09level','10level','11level','12level'][_floor];
        this.set('_floors', _floorCode);
        this.set('_floor', this._inputFloor);
-       console.log(ev);
      },
 
      _isDisabled: function (_site, _item) {
@@ -481,6 +492,9 @@ Example:
                  'site=' + encodeURIComponent(this._sites) + '&' +
                  'floor=' + encodeURIComponent(this._floors) + '&' +
                  'types=' + encodeURIComponent(this._types)
+
+      console.log(_params);
+      this.$.responseDialog.open();
      },
 
   });
