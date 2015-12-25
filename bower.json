@@ -1,6 +1,6 @@
 {
   "name": "semafloor-search-page",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "authors": [
     "semafloor <wes_ngrongsen@hotmail.com>"
   ],
@@ -20,7 +20,6 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.1.0",
-    "app-layout": "PolymerLabs/app-layout#^0.0.5",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.1.0",
     "iron-icon": "PolymerElements/iron-icon#^1.0.7",
     "paper-button": "PolymerElements/paper-button#^1.0.8",
@@ -32,10 +31,13 @@
     "paper-item": "PolymerElements/paper-item#^1.1.2",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.15",
     "jv-datepicker": "motss/jv-datepicker#^2.0.2",
-    "compound-timepicker": "motss/compound-timepicker#^0.3.4"
+    "compound-timepicker": "motss/compound-timepicker#^0.3.4",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.1.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "web-component-tester": "*"
+    "web-component-tester": "*",
+    "app-layout": "PolymerLabs/app-layout#~0.0.6",
+    "paper-icon-button": "polymerelements/paper-icon-button#~1.0.6"
   }
 }

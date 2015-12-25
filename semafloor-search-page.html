@@ -5,6 +5,7 @@
 <link rel="import" href="../compound-timepicker/compound-timepicker-dialog.html">
 
 <link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-icons/social-icons.html">
 
@@ -36,6 +37,14 @@ Example:
 
   <template strip-whitespace>
     <style include="semafloor-search-page-theme"></style>
+
+    <iron-ajax id="searchEmptyRoom"
+      method="post"
+      url="https://semafore.motss.koding.io/search/results"
+      contentType="application/x-www-form-urlencoded"
+      handle-as="json"
+      last-response="{{_emptyRoomResult}}"
+      on-response="_onResponse"></iron-ajax>
 
     <div class="date-container search-item">
       <div class="date-icon-column item-icon-column">
@@ -287,7 +296,7 @@ Example:
         }
       },
       _types: String,
-
+      _emptyRoomResult: Object,
     },
 
     observers: ['_hideTime(_allDayToggle)'],
@@ -350,7 +359,13 @@ Example:
      },
      _updateSite: function (ev) {
       var _site = _.indexOf(_sitesArray, this._inputSite);
-      var _siteCode = ['', '05tower', '2atower', 'suite'][_site];
+      var _siteCode = ['', 'alpha', 'beta', 'gamma'][_site];
+      var _floor = (_siteCode === '' || _siteCode === 'alpha') ? 'Any Floor' : (_siteCode === 'suite' ? 'Level 1' : 'Level 3');
+      // automatically update `floors` when `sites` is updated;
+      this.set('_floor', _floor);
+      this.set('_floors', _floor === 'Any Floor' ? '' : _floor);
+      this.set('_inputFloor', _floor);
+      // update `sites`;
       this.set('_sites', _siteCode);
       this.set('_site', this._inputSite);
      },
@@ -370,27 +385,34 @@ Example:
      },
 
      _isDisabled: function (_site, _item) {
-       var _siteBeingSelected = _site;
-       // private method to make things tidier?
        function _updateMenu(_site) {
-         var _floor = _site === 'suite' ? 'Level 1' : 'Level 3';
-         // 'Any Floor' is used to escape from the dropdown menu.
-         if (_item === _floor || _item === 'Any Floor') {
-           this.set('_floor', _floor);
-           this.set('_inputFloor', _floor);
-           return false;
+         // set `floors` on first time use;
+         var _floor = _site === 'any' ? 'Any Floor' : (_site === 'suite' ? 'Level 1' : 'Level 3');
+         if (_site === 'any') {
+           this.set('_floor', 'Any Floor');
+           this.set('_floors', '');
+           this.set('_inputFloor', 'Any Floor');
+           return _item !== 'Any Floor';
          }else {
-           return true;
+           var _disabled = _item === _floor || _item === 'Any Floor';
+           if (_disabled) {
+             this.set('_floor', _floor);
+             this.set('_inputFloor', _floor);
+             this.set('_floors', _floor);
+           }
+           return !_disabled;
          }
        }
 
-       switch (_siteBeingSelected) {
+       switch (_site) {
          case 'KLB - Tower 2A':
            return _updateMenu.call(this, '2atower');
            break;
          case 'SUITE':
            return _updateMenu.call(this, 'suite');
            break;
+         case 'Any Site':
+           return _updateMenu.call(this, 'any');
          default:
           //  console.log('any floor for any site.');
            return false;
@@ -491,10 +513,17 @@ Example:
                  'capacity=' + encodeURIComponent(this._capacity) + '&' +
                  'site=' + encodeURIComponent(this._sites) + '&' +
                  'floor=' + encodeURIComponent(this._floors) + '&' +
-                 'types=' + encodeURIComponent(this._types)
+                 'types=' + encodeURIComponent(this._types);
 
       console.log(_params);
-      this.$.responseDialog.open();
+      // this.$.responseDialog.open();
+      this.$.searchEmptyRoom.body = _params;
+      this.$.searchEmptyRoom.generateRequest();
+     },
+
+     _onResponse: function (ev) {
+       console.log(this._emptyRoomResult);
+       console.log(typeof this._emptyRoomResult);
      },
 
   });
