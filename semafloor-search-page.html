@@ -8,6 +8,8 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-icons/social-icons.html">
+<link rel="import" href="../iron-list/iron-list.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
 
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-checkbox/paper-checkbox.html">
@@ -16,8 +18,17 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-item/paper-icon-item.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
+
+<link rel="import" href="../neon-animation/animations/transform-animation.html">
 
 <script src="../lodash/lodash.min.js" charset="utf-8"></script>
 
@@ -186,17 +197,107 @@ Example:
     <compound-timepicker-dialog id="fromTime" with-backdrop time="{{_fromTime}}" time-format="24"></compound-timepicker-dialog>
     <compound-timepicker-dialog id="toTime" with-backdrop time="{{_toTime}}" time-format="24"></compound-timepicker-dialog>
 
-    <!-- show query result  -->
-    <paper-dialog id="responseDialog">
-      <h2>Header</h2>
+    <!-- show search result  -->
+    <paper-dialog id="responseDialog" class="" auto-fit-on-attach>
+      <!-- <h2>Search Result</h2> -->
+      <div class="no-padding">
+        <div class="response-toolbar">
+          <paper-icon-button icon="icons:arrow-back" on-tap="_closeResponseDialog"></paper-icon-button>
+          <div class="response-title">Search Result</div>
+        </div>
+        <div class="response-toolbar">
+          <paper-tabs selected="{{_selectedSiteTab}}" bottom-item>
+            <template is="dom-repeat" items="[[_computeSites(_emptyRoomResult)]]" index-as="index">
+              <paper-tab>[[item]]</paper-tab>
+            </template>
+          </paper-tabs>
+        </div>
+
+        <div class="response-container">
+          <div class="response-content" on-scroll="_onScroll">
+            <iron-pages selected="[[_loadSearchResult]]">
+              <div class="">
+                <paper-spinner active></paper-spinner>
+              </div>
+
+              <div class="result-tab">
+                <div class="floors-tab">
+                  <paper-tabs id="floorTabs" selected="{{_selectedFloorTab}}" scrollable class="floor-tabs">
+                    <template is="dom-repeat" items="[[_floorsOfSites]]" index-as="index">
+                      <paper-tab class="floor-tab">[[item]]</paper-tab>
+                    </template>
+                  </paper-tabs>
+                </div>
+                <div class="rooms-tab">
+                  <iron-list items="[[_roomsOfFloors]]">
+                    <template>
+                      <div class="room-on-each-floor">
+                        <div class="room-name" room-idx$="[[index]]" on-down="_onDownFloor" on-up="_onUpFloor">
+                          <span>[[item.room]]</span>
+                          <paper-ripple id$="roomRipple[[index]]"></paper-ripple>
+                        </div>
+                        <paper-icon-button icon="icons:more-vert" room-idx$="[[index]]" on-tap="_onVertTap"></paper-icon-button>
+                      </div>
+                    </template>
+                  </iron-list>
+                </div>
+              </div>
+            </iron-pages>
+          </div>
+        </div>
+      </div>
+    </paper-dialog>
+    <!-- room info from search result -->
+    <paper-dialog id="roomDialog" with-backdrop>
+      <h2>[[_selectedRoomInfo.room]]</h2>
       <paper-dialog-scrollable>
-        Lorem ipsum
+        <div class="room-info-container">
+          <div class="room-info-label">
+            <div class="room-info">
+              <iron-icon icon="icons:room"></iron-icon><span>[[_decodeSite(_selectedRoomInfo.site)]]</span>
+            </div>
+            <div class="room-info">
+              <iron-icon icon="social:location-city"></iron-icon><span>[[_decodeFloor(_selectedRoomInfo.floor)]]</span>
+            </div>
+            <div class="room-info">
+              <iron-icon icon="social:person-add"></iron-icon><span>[[_selectedRoomInfo.capacity]]</span>
+            </div>
+            <div class="room-info">
+              <iron-icon icon="icons:create"></iron-icon>
+              <div class="room-info-types">
+                <template is="dom-repeat" items="[[_decodeTypes(_selectedRoomInfo.types)]]" index-as="index">
+                  <paper-checkbox checked>
+                    <span class="checkbox-content">[[item]]</span>
+                  </paper-checkbox>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
       </paper-dialog-scrollable>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm>Accept</paper-button>
+        <paper-button dialog-confirm on-tap="_reserveRoom">Reserve</paper-button>
       </div>
     </paper-dialog>
+
+    <!-- options dialog of room info -->
+    <paper-dialog id="optionsDialog" with-backdrop>
+      <paper-listbox selected="0">
+        <paper-icon-item dialog-confirm on-tap="_reserveRoom">
+          <iron-icon icon="icons:add-circle" item-icon></iron-icon>Reserve
+        </paper-icon-item>
+        <paper-icon-item dialog-confirm on-tap="_showRoomInfo">
+          <iron-icon icon="icons:info" item-icon></iron-icon>Info
+        </paper-icon-item>
+        <paper-icon-item dialog-dismiss>
+          <iron-icon icon="icons:close" item-icon></iron-icon>Close
+        </paper-icon-item>
+      </paper-listbox>
+    </paper-dialog>
+
+    <!-- toast for reserving a room -->
+    <paper-toast id="reserveRoomToast" class="fit-bottom" text="[[_reserveRoomMsg]]"></paper-toast>
   </template>
 
 </dom-module>
@@ -213,6 +314,7 @@ Example:
   var _floorsArray = ['Any Floor','Level 1','Level 2','Level 3','Level 3A','Level 5','Level 6','Level 7','Level 8','Level 9','Level 10','Level 11','Level 12',];
   var _typesArray = ['ar','pb','pca','pcv','pj','pcf','pf','spf','sb','tp','tv','wg'];
   var _typesResult = [0,0,0,0,0,0,0,0,0,0,0,0];
+  var _bodyTarget;
 
   Polymer({
 
@@ -297,9 +399,36 @@ Example:
       },
       _types: String,
       _emptyRoomResult: Object,
+      _resultSites: Array,
+      _resultFloors: Array,
+      _selectedSiteTab: {
+        type: Number,
+        value: 0
+      },
+      _selectedFloorTab: {
+        type: Number,
+        value: 0
+      },
+      _floorsOfSites: Array,
+      _roomsOfFloors: Array,
+      _loadSearchResult: {
+        type: Number,
+        value: 0
+      },
+      _selectedRoomInfo: Object,
+      _tapRipple: {
+        type: Boolean,
+        value: false
+      },
+      _roomIdx: Number,
+      _reserveRoomMsg: String,
     },
 
-    observers: ['_hideTime(_allDayToggle)'],
+    observers: [
+      '_hideTime(_allDayToggle)',
+      '_showFloorsInTab(_emptyRoomResult, _selectedSiteTab)',
+      '_showRoomsInTab(_emptyRoomResult, _selectedSiteTab, _selectedFloorTab)'
+    ],
 
     // Element Lifecycle
 
@@ -319,6 +448,21 @@ Example:
       // This is a good place to perform any work related to your element's
       // visual state or active behavior (measuring sizes, beginning animations,
       // loading resources, etc).
+      var _dialog = this.$.optionsDialog;
+      _dialog.animationConfig = {
+        'entry': {
+          name: 'transform-animation',
+          node: _dialog,
+          transformFrom: 'translateY(100%)',
+          transformTo: 'translateY(0)'
+        },
+        'exit': {
+          name: 'transform-animation',
+          node: _dialog,
+          transformFrom: 'translateY(0)',
+          transformTo: 'translateY(100%)'
+        }
+      };
     },
 
     detached: function() {
@@ -453,13 +597,8 @@ Example:
      },
 
      _hideTime: function (_toggle) {
-       if (_toggle) {
-         this.$.fromTimeButton.classList.add('all-day-hide-time');
-         this.$.toTimeButton.classList.add('all-day-hide-time');
-       }else {
-         this.$.fromTimeButton.classList.remove('all-day-hide-time');
-         this.$.toTimeButton.classList.remove('all-day-hide-time');
-       }
+       this.toggleClass('all-day-hide-time', _toggle, this.$.fromTimeButton);
+       this.toggleClass('all-day-hide-time', _toggle, this.$.toTimeButton);
      },
 
      // get which `paper-checkbox` being checked or unchecked.
@@ -490,7 +629,7 @@ Example:
      _sendParams: function (ev) {
        var _params = '';
        var _fromTime = this._fromTime;
-       var _toTime = this._toTime;
+       var _toTime = this._toTime;// body...
 
        if (this._allDayToggle) {
          _fromTime = '08:00';
@@ -516,14 +655,182 @@ Example:
                  'types=' + encodeURIComponent(this._types);
 
       console.log(_params);
-      // this.$.responseDialog.open();
       this.$.searchEmptyRoom.body = _params;
       this.$.searchEmptyRoom.generateRequest();
+      this.$.responseDialog.open();
      },
 
      _onResponse: function (ev) {
        console.log(this._emptyRoomResult);
-       console.log(typeof this._emptyRoomResult);
+       this._loadSearchResult = 1;
+       // workaround: stop document scrolling;
+       document.body.style.overflowY = 'hidden';
+     },
+
+     _closeResponseDialog: function (ev) {
+       // workaround: resume document scrolling;
+       document.body.style.overflowY = null;
+       this.$.responseDialog.close();
+     },
+
+     _computeSites: function (_emptyRoomResult) {
+       var _siteKeys = _.keys(_emptyRoomResult);
+       var _keysName = ['', 'alpha', 'beta', 'gamma'];
+       _siteKeys = _siteKeys.filter(function (_key) {
+         return _key === 'alpha' || _key === 'beta' || _key === 'gamma';
+       });
+       this._computeFloors(_siteKeys, _emptyRoomResult);
+       _siteKeys = _siteKeys.map(function (_key) {
+         return _sitesArray[_keysName.indexOf(_key)];
+       });
+       this.set('_resultSites', _siteKeys);
+       return _siteKeys;
+     },
+
+     _computeFloors: function (_siteKeys, _emptyRoomResult) {
+       var _floorKeys = [];
+       for (var i = 0; i < _siteKeys.length; i++) {
+         _floorKeys.push(_.keys(_emptyRoomResult[_siteKeys[i]]));
+       }
+       this.set('_resultFloors', _floorKeys);
+     },
+
+     _showFloorsInTab: function (_emptyRoomResult, _selectedSiteTab) {
+       var _floorsCode = ['01level', '02level', '03level', '04level', '05level', '06level', '07level', '08level', '09level', '10level', '11level', '12level'];
+       var _floorsNumber = ['1', '2', '3', '3A', '5', '6', '7', '8', '9', '10', '11', '12'];
+       var _siteKeys = _.keys(_emptyRoomResult);
+       var _newFloors = _.keys(_emptyRoomResult[_siteKeys[_selectedSiteTab]]);
+       var _newFloors = _newFloors.map(function (n) {
+         return _floorsNumber[_floorsCode.indexOf(n)];
+       });
+       // workaround: to fix #selectionBar of paper-tabs to show properly;
+       this.set('_selectedFloorTab', 0);
+       this.set('_floorsOfSites', _newFloors);
+     },
+
+     _showRoomsInTab: function (_emptyRoomResult, _selectedSiteTab, _selectedFloorTab) {
+       var _newSite = _.keys(_emptyRoomResult)[_selectedSiteTab];
+       var _newFloor = _.keys(_emptyRoomResult[_newSite]);
+       _newFloor = _emptyRoomResult[_newSite][_newFloor[_selectedFloorTab]];
+       // workaround: to fix #selectionBar of paper-tabs to show properly;
+       this.$.floorTabs.fire('iron-resize');
+       this.set('_roomsOfFloors', _newFloor);
+     },
+
+     _onTapRoom: function (ev) {
+       if (this._disableTap) {
+         this.set('_disableTap', false);
+         return;
+       }
+       console.log('tap', ev.target.getAttribute('room-idx'));
+       var _err = this._emptyRoomResult;
+       var _selectedSite = _.keys(_err)[this._selectedSiteTab];
+       var _selectedFloor = _.keys(_err[_selectedSite])[this._selectedFloorTab];
+       var _selectedRoom = _err[_selectedSite][_selectedFloor][parseInt(ev.target.getAttribute('room-idx'))];
+       // save room info;
+       this.set('_selectedRoomInfo', _selectedRoom);
+
+       this.$.roomDialog.open();
+       // workaround: to display backdrop in nested dialog;
+       document.body.querySelector('iron-overlay-backdrop').style.zIndex = 103;
+     },
+
+     _onDownFloor: function (ev) {
+       var _target = ev.target;
+       while (_target && _target.tagName !== 'DIV') {
+         _target = _target.parentElement;
+       }
+       if (_target) {
+         this.set('_tapRipple', true);
+         this.set('_tapFloor', _target.getAttribute('room-idx'));
+         // compute and save room info;
+         this._computeRoomBasedOnIdx(parseInt(_target.getAttribute('room-idx')));
+       }
+     },
+
+     _computeRoomBasedOnIdx: function (_idx) {
+       var _err = this._emptyRoomResult;
+       var _selectedSite = _.keys(_err)[this._selectedSiteTab];
+       var _selectedFloor = _.keys(_err[_selectedSite])[this._selectedFloorTab];
+       var _selectedRoom = _err[_selectedSite][_selectedFloor][_idx];
+
+       // save room info;
+       this.set('_selectedRoomInfo', _selectedRoom);
+     },
+
+     _onUpFloor: function (ev) {
+       if (this._disableTap) {
+         this.set('_disableTap', false);
+         this.set('_tapRipple', false);
+         return;
+       }
+
+       this.$.roomDialog.open();
+       // workaround: to display backdrop in nested dialog;
+       document.body.querySelector('iron-overlay-backdrop').style.zIndex = 103;
+     },
+
+     _onScroll: function (ev) {
+       if (!this._tapRipple) {
+         return;
+       }
+
+       console.log('scrolling...');
+       // End ripple animation loop during scrolling...
+       this.set('_disableTap', true);
+       this.$$('#roomRipple' + this._tapFloor).upAction();
+     },
+
+     _onVertTap: function (ev) {
+       console.log(ev.target.tagName);
+       var _target = ev.target;
+       while (_target && _target.tagName !== 'PAPER-ICON-BUTTON') {
+         _target = _target.parentElement;
+       }
+       this.set('_roomIdx', _target.getAttribute('room-idx'));
+       this.$.optionsDialog.open();
+     },
+
+     _decodeSite: function (_siteCode) {
+       var _testCodes = ['', 'alpha', 'beta', 'gamma'];
+       return _sitesArray[_testCodes.indexOf(_siteCode)];
+     },
+
+     _decodeFloor: function (_floorCode) {
+       var _testCodes = ['', '01level', '02level', '03level', '04level', '05level', '06level', '07level', '08level', '09level', '10level', '11level', '12level'];
+       return _floorsArray[_testCodes.indexOf(_floorCode)];
+     },
+
+     _reserveRoom: function (ev) {
+       // TODO: This can only be completed once roomify-create in Node is completed!
+       var _toast = this.$.reserveRoomToast;
+       this._computeRoomBasedOnIdx(this._roomIdx);
+       var _capitalizedRoomName = _.map(_.words(this._selectedRoomInfo.room), function (n) {
+         return _.capitalize(n);
+       }).join(' ');
+       var _msg = _capitalizedRoomName + ' has been reserved successfully!';
+       if (_toast.opened) {
+         _toast.close();
+       }
+       this.set('_reserveRoomMsg', _msg);
+       _toast.open();
+     },
+
+     _showRoomInfo: function (ev) {
+       this._computeRoomBasedOnIdx(this._roomIdx);
+       this.$.roomDialog.open();
+     },
+
+     _decodeTypes: function (_types) {
+       var _roomTypes = ['Adjoining Room (Operable Wall)','Panaboard','Polycom CX100 (Audio)','Polycom CX5000 (Video Conferencing)','Projector','Projector Cable Faulty','Projector Faulty','Screen Projector Faulty','SmartBoard 800','Telepresence','TV','Writing Glass Board'];
+       var _hexTypes = _.padLeft(parseInt(_types, 16).toString(2), 12, 0);
+       var _str2arr = _hexTypes.split('').map(Number);
+       var _filtered = [];
+       _.filter(_str2arr, function(el, idx) {
+         if (el === 1) _filtered.push(_roomTypes[idx]);
+       });
+       _hexTypes = null; _str2arr = null;
+       return _filtered;
      },
 
   });

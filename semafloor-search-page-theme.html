@@ -121,13 +121,162 @@
         display: none;
       }
 
+      /*response dialog mixins*/
       paper-dialog#responseDialog {
         margin: 0;
-        position: fixed;
-        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+      paper-dialog#responseDialog::content > *:first-child,
+      paper-dialog#responseDialog::content > *:last-child {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      paper-dialog#responseDialog paper-icon-button {
+        /*--paper-icon-button-ink-color: #1ddbd8;*/
+        font-size: 0;
+      }
+      paper-dialog#responseDialog .response-toolbar {
+        height: 64px;
+        padding: 0 16px;
+        position: relative;
+        font-size: 20px;
+        @apply(--layout-center);
+        @apply(--layout-horizontal);
+        pointer-events: none;
+      }
+      paper-dialog#responseDialog .response-toolbar > * {
+        pointer-events: auto;
+      }
+      paper-dialog#responseDialog .response-toolbar > [bottom-item] {
+        position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
+      }
+
+      /*response dialog extra mixins*/
+      paper-dialog#responseDialog .response-title {
+        margin-left: 8px;
+      }
+      paper-dialog#responseDialog .response-toolbar {
+        background-color: #607d8b;
+        color: #fff;
+      }
+      paper-dialog#responseDialog .response-container {
+        @apply(--layout-fit);
+        margin-top: 128px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      paper-dialog#responseDialog .response-content {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        @apply(--layout-fit);
+      }
+
+      .result-tab {
+        @apply(--layout-vertical);
+      }
+
+      .floors-tab {
+        @apply(--layout-horizontal);
+      }
+
+      .rooms-tab {
+        @apply(--layout-vertical);
+      }
+
+      .floor-tabs {
+        background-color: #607d8b;
+        color: #fff;
+        width: 100%;
+      }
+
+      .floor-tab {
+        width: 32px;
+      }
+
+      iron-list {
+        overflow-x: hidden;
+        @apply(--layout-flex-auto);
+      }
+      .room-on-each-floor {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+        padding: 16px 0 16px 16px;
+        min-height: 64px;
+        transition: all .2s cubic-bezier(0.22, 0.61, 0.36, 1);
+        margin: 0;
+        @apply(--layout-horizontal);
+        @apply(--layout-flex-auto);
+      }
+      paper-tabs {
+        --paper-tabs-selection-bar-color: #1ddbd8;
+        --paper-icon-button-ink-color: #1ddbd8;
+      }
+      paper-tab {
+        --paper-tab-ink: rgba(29, 219, 216, 0.5);
+      }
+      .room-on-each-floor > .room-name {
+        @apply(--layout-flex-auto);
+        padding: 8px;
+      }
+      .room-on-each-floor span {
+        vertical-align: middle;
+        font-size: 20px;
+        text-transform: capitalize;
+      }
+
+      paper-dialog#roomDialog {
+        /*margin: 0;*/
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      paper-dialog#roomDialog > h2 {
+        text-transform: capitalize;
+      }
+      paper-dialog#roomDialog > .room-info-container {
+        @apply(--layout-horizontal);
+      }
+      paper-dialog#roomDialog .room-info-label {
+        @apply(--layout-vertical);
+        @apply(--layout-flex-auto);
+      }
+      .room-info {
+        @apply(--layout-flex-auto);
+        @apply(--layout-horizontal);
+        height: 40px;
+      }
+      .room-info > iron-icon {
+        margin-right: 16px;
+      }
+      .room-info-types {
+        @apply(--layout-vertical);
+      }
+
+      /*optionsDialog*/
+      paper-dialog#optionsDialog {
+        overflow: initial !important;
+        margin: 0;
+        width: 100%;
+        @apply(--layout-fixed-bottom);
+      }
+      paper-listbox {
+        margin: 0;
+      }
+      paper-icon-item {
+        color: #6A7180;
+      }
+
+      paper-dialog#roomDialog  paper-checkbox::content #checkboxLabel {
+        max-width: 110px;
+      }
+      paper-dialog#roomDialog  paper-checkbox::content #checkbox {
+        border-radius: 50%;
+      }
+      .checkbox-content {
+        max-width: 110px;
       }
 
     </style>
