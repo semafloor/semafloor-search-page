@@ -248,7 +248,7 @@ Example:
       </div>
     </paper-dialog>
     <!-- room info from search result -->
-    <paper-dialog id="roomDialog" with-backdrop>
+    <paper-dialog id="roomDialog" with-backdrop auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened">
       <h2>[[_selectedRoomInfo.room]]</h2>
       <paper-dialog-scrollable>
         <div class="room-info-container">
@@ -264,7 +264,7 @@ Example:
             </div>
             <div class="room-info">
               <iron-icon icon="icons:create"></iron-icon>
-              <div class="room-info-types">
+              <div class="room-info-types" id="checkboxesInRoomDialog">
                 <template is="dom-repeat" items="[[_decodeTypes(_selectedRoomInfo.types)]]" index-as="index">
                   <paper-checkbox checked>
                     <span class="checkbox-content">[[item]]</span>
@@ -831,6 +831,11 @@ Example:
        });
        _hexTypes = null; _str2arr = null;
        return _filtered;
+     },
+
+     _onIronOverlayOpened: function (ev) {
+       // workaround to iron-resize and refit dialog with paper-checkbox inside it;
+       this.$.roomDialog.notifyResize();
      },
 
   });
