@@ -198,6 +198,7 @@
       }
 
       iron-list {
+        /* to hide odd overflow-x */
         overflow-x: hidden;
         @apply(--layout-flex-auto);
       }
@@ -216,6 +217,7 @@
         --paper-icon-button-ink-color: #1ddbd8;
       }
       paper-tab {
+        /* tune paper-tab ripple opacity */
         --paper-tab-ink: rgba(29, 219, 216, 0.5);
       }
       .room-on-each-floor > .room-name {
@@ -267,16 +269,6 @@
       }
       paper-icon-item {
         color: #6A7180;
-      }
-
-      paper-dialog#roomDialog  paper-checkbox::content #checkboxLabel {
-        max-width: 110px;
-      }
-      paper-dialog#roomDialog  paper-checkbox::content #checkbox {
-        border-radius: 50%;
-      }
-      .checkbox-content {
-        max-width: 110px;
       }
 
     </style>
