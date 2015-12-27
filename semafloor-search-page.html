@@ -143,7 +143,7 @@ Example:
     </div>
 
     <!-- dialogs: capacity, site, floor. -->
-    <paper-dialog id="addPersonDialog" with-backdrop>
+    <paper-dialog id="addPersonDialog" with-backdrop no-auto-focus>
       <h2>Add Person</h2>
       <paper-dialog-scrollable>
         <p>
@@ -156,7 +156,7 @@ Example:
         <paper-button dialog-confirm on-tap="_updateCapacity">ok</paper-button>
       </div>
     </paper-dialog>
-    <paper-dialog id="addSiteDialog" with-backdrop>
+    <paper-dialog id="addSiteDialog" with-backdrop no-auto-focus>
       <h2>Add Site</h2>
       <p>
         Nihil hic tantum, utrum voles volo te locum eligere lobortis mauris
@@ -173,7 +173,7 @@ Example:
         <paper-button dialog-confirm on-tap="_updateSite">Accept</paper-button>
       </div>
     </paper-dialog>
-    <paper-dialog id="addFloorDialog" with-backdrop>
+    <paper-dialog id="addFloorDialog" with-backdrop no-auto-focus>
       <h2>Add Floor</h2>
       <p>
         Nihil hic multum iustus volo ut lego iam post tabulatum dilexisti locum lobortis mauris utrum voles
@@ -198,7 +198,7 @@ Example:
     <compound-timepicker-dialog id="toTime" with-backdrop time="{{_toTime}}" time-format="24"></compound-timepicker-dialog>
 
     <!-- show search result  -->
-    <paper-dialog id="responseDialog" class="" auto-fit-on-attach>
+    <paper-dialog id="responseDialog" class="" auto-fit-on-attach no-auto-focus>
       <!-- <h2>Search Result</h2> -->
       <div class="no-padding">
         <div class="response-toolbar">
@@ -253,7 +253,7 @@ Example:
       </div>
     </paper-dialog>
     <!-- room info from search result -->
-    <paper-dialog id="roomDialog" with-backdrop auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened">
+    <paper-dialog id="roomDialog" with-backdrop auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened" no-auto-focuse>
       <h2>[[_selectedRoomInfo.room]]</h2>
       <paper-dialog-scrollable>
         <div class="room-info-container">
@@ -285,7 +285,7 @@ Example:
     </paper-dialog>
 
     <!-- options dialog of room info -->
-    <paper-dialog id="optionsDialog" with-backdrop>
+    <paper-dialog id="optionsDialog" with-backdrop no-auto-focus>
       <paper-listbox selected="0">
         <paper-icon-item dialog-confirm on-tap="_reserveRoom">
           <iron-icon icon="icons:add-circle" item-icon></iron-icon>Reserve
