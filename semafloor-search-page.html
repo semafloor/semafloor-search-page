@@ -686,9 +686,11 @@ Example:
        // workaround: resume document scrolling;
        document.body.style.overflowY = null;
        // reset _selectedSiteTab, _selectedFloorTab when closing responseDialog;
+       // reset _loadSearchResult, _emptyRoomResult when closing responseDialog;
        this.set('_selectedSiteTab', 0);
        this.set('_selectedFloorTab', 0);
        this.set('_loadSearchResult', 0);
+       this.set('_emptyRoomResult', null);
        this.$.responseDialog.close();
      },
 

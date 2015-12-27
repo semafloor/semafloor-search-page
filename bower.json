@@ -1,6 +1,6 @@
 {
   "name": "semafloor-search-page",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "authors": [
     "semafloor <wes_ngrongsen@hotmail.com>"
   ],
@@ -45,7 +45,6 @@
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "web-component-tester": "*",
-    "app-layout": "PolymerLabs/app-layout#~0.0.6",
-    "paper-icon-button": "polymerelements/paper-icon-button#~1.0.6"
+    "app-layout": "PolymerLabs/app-layout#~0.0.6"
   }
 }
