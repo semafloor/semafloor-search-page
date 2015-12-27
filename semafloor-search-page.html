@@ -23,7 +23,7 @@
 <link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../paper-tabs/paper-tabs.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../paper-spinner/paper-spinner.html">
+<link rel="import" href="../paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
 <link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
@@ -205,8 +205,8 @@ Example:
           <paper-icon-button icon="icons:arrow-back" on-tap="_closeResponseDialog"></paper-icon-button>
           <div class="response-title">Search Result</div>
         </div>
-        <div class="response-toolbar">
-          <paper-tabs selected="{{_selectedSiteTab}}" bottom-item>
+        <div class="response-toolbar" hidden$="[[_hideSiteToolbar]]">
+          <paper-tabs selected="{{_selectedSiteTab}}" bottom-item id="siteTabs">
             <template is="dom-repeat" items="[[_computeSites(_emptyRoomResult)]]" index-as="index">
               <paper-tab>[[item]]</paper-tab>
             </template>
@@ -216,8 +216,8 @@ Example:
         <div class="response-container">
           <div class="response-content" on-scroll="_onScroll">
             <iron-pages selected="[[_loadSearchResult]]">
-              <div class="">
-                <paper-spinner active></paper-spinner>
+              <div class="waiting-tab">
+                <paper-spinner-lite active></paper-spinner-lite>
               </div>
 
               <div class="result-tab">
@@ -241,6 +241,11 @@ Example:
                     </template>
                   </iron-list>
                 </div>
+              </div>
+
+              <div class="empty-tab">
+                <iron-icon icon="icons:error-outline"></iron-icon>
+                <div>Sorry, No matched result!</div>
               </div>
             </iron-pages>
           </div>
@@ -420,6 +425,11 @@ Example:
       },
       _roomIdx: Number,
       _reserveRoomMsg: String,
+      _hideSiteToolbar: {
+        type: Boolean,
+        value: false
+      },
+      _skipComputeSelected: Boolean,
     },
 
     observers: [
@@ -659,15 +669,26 @@ Example:
      },
 
      _onResponse: function (ev) {
-       console.log(this._emptyRoomResult);
-       this._loadSearchResult = 1;
+       // check if return result is empty OR contains no room (totoalEmptyRooms : 0);
+       var _isEmpty = this._isEmptyResultEmpty(this._emptyRoomResult);
+       this.set('_skipComputeSelected', _isEmpty);
+       this._hideSiteToolbar = _isEmpty;
+       this._loadSearchResult = _isEmpty ? 2 : 1;
        // workaround: stop document scrolling;
        document.body.style.overflowY = 'hidden';
+     },
+
+     _isEmptyResultEmpty: function (_emptyRoomResult) {
+       return _.isEmpty(_emptyRoomResult) || _emptyRoomResult.totalEmptyRooms === 0;
      },
 
      _closeResponseDialog: function (ev) {
        // workaround: resume document scrolling;
        document.body.style.overflowY = null;
+       // reset _selectedSiteTab, _selectedFloorTab when closing responseDialog;
+       this.set('_selectedSiteTab', 0);
+       this.set('_selectedFloorTab', 0);
+       this.set('_loadSearchResult', 0);
        this.$.responseDialog.close();
      },
 
@@ -694,6 +715,11 @@ Example:
      },
 
      _showFloorsInTab: function (_emptyRoomResult, _selectedSiteTab) {
+       // skip this function if return result is empty;
+       if (this._isEmptyResultEmpty(_emptyRoomResult)) {
+         return;
+       }
+
        var _floorsCode = ['01level', '02level', '03level', '04level', '05level', '06level', '07level', '08level', '09level', '10level', '11level', '12level'];
        var _floorsNumber = ['1', '2', '3', '3A', '5', '6', '7', '8', '9', '10', '11', '12'];
        var _siteKeys = _.keys(_emptyRoomResult);
@@ -702,16 +728,28 @@ Example:
          return _floorsNumber[_floorsCode.indexOf(n)];
        });
        // workaround: to fix #selectionBar of paper-tabs to show properly;
-       this.set('_selectedFloorTab', 0);
+       // notifyResize() on site tabs and floor tabs;
+       this.set('_selectedFloorTab', 0); // for beta and gamma, only 1 floor.
+       this.$.siteTabs.notifyResize();
+       this.$.floorTabs.notifyResize();
+
        this.set('_floorsOfSites', _newFloors);
      },
 
      _showRoomsInTab: function (_emptyRoomResult, _selectedSiteTab, _selectedFloorTab) {
+       // skip this function if return result is empty;
+       if (this._isEmptyResultEmpty(_emptyRoomResult)) {
+         return;
+       }
+
        var _newSite = _.keys(_emptyRoomResult)[_selectedSiteTab];
        var _newFloor = _.keys(_emptyRoomResult[_newSite]);
        _newFloor = _emptyRoomResult[_newSite][_newFloor[_selectedFloorTab]];
        // workaround: to fix #selectionBar of paper-tabs to show properly;
-       this.$.floorTabs.fire('iron-resize');
+       // notifyResize() on site tabs and floor tabs;
+       this.$.siteTabs.notifyResize();
+       this.$.floorTabs.notifyResize();
+
        this.set('_roomsOfFloors', _newFloor);
      },
 

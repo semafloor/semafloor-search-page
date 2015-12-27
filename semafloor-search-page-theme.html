@@ -175,24 +175,43 @@
         @apply(--layout-fit);
       }
 
+      /*tabs related sytling*/
+      .waiting-tab {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        padding: 32px;
+      }
+      .empty-tab {
+        font-weight: bold;
+        color: #bdbdbd;
+        font-size: 20px;
+        text-transform: capitalize;
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+      }
+      .empty-tab > iron-icon {
+        --iron-icon-width: 84px;
+        --iron-icon-height: 84px;
+        --iron-icon-fill-color: #bdbdbd;
+        margin-bottom: 24px;
+      }
+      paper-spinner-lite {
+        --paper-spinner-color: #1ddbd8;
+      }
       .result-tab {
         @apply(--layout-vertical);
       }
-
       .floors-tab {
         @apply(--layout-horizontal);
       }
-
       .rooms-tab {
         @apply(--layout-vertical);
       }
-
       .floor-tabs {
         background-color: #607d8b;
         color: #fff;
         width: 100%;
       }
-
       .floor-tab {
         width: 32px;
       }
