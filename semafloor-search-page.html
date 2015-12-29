@@ -232,7 +232,7 @@ Example:
                   <iron-list items="[[_roomsOfFloors]]">
                     <template>
                       <div class="room-on-each-floor">
-                        <div class="room-name" room-idx$="[[index]]" on-down="_onDownFloor" on-up="_onUpFloor">
+                        <div class="room-name" room-idx$="[[index]]" on-down="_onDownRoom" on-up="_onUpRoom">
                           <span>[[item.room]]</span>
                           <paper-ripple id$="roomRipple[[index]]"></paper-ripple>
                         </div>
@@ -430,11 +430,13 @@ Example:
         value: false
       },
       _skipComputeSelected: Boolean,
+      _prevFloor: String,
     },
 
     observers: [
       '_hideTime(_allDayToggle)',
       '_showFloorsInTab(_emptyRoomResult, _selectedSiteTab)',
+      '_setPrevFloor(_selectedFloorTab)',
       '_showRoomsInTab(_emptyRoomResult, _selectedSiteTab, _selectedFloorTab)'
     ],
 
@@ -716,6 +718,12 @@ Example:
        this.set('_resultFloors', _floorKeys);
      },
 
+     _setPrevFloor: function(_selectedFloorTab) {
+       if (this._selectedSiteTab === 0) {
+         this.set('_prevFloor', _selectedFloorTab);
+       }
+     },
+
      _showFloorsInTab: function (_emptyRoomResult, _selectedSiteTab) {
        // skip this function if return result is empty;
        if (this._isEmptyResultEmpty(_emptyRoomResult)) {
@@ -731,7 +739,11 @@ Example:
        });
        // workaround: to fix #selectionBar of paper-tabs to show properly;
        // notifyResize() on site tabs and floor tabs;
-       this.set('_selectedFloorTab', 0); // for beta and gamma, only 1 floor.
+       if (_selectedSiteTab === 0) {
+         this.set('_selectedFloorTab', this._prevFloor);
+       }else {
+         this.set('_selectedFloorTab', 0); // for beta and gamma, only 1 floor.
+       }
        this.$.siteTabs.notifyResize();
        this.$.floorTabs.notifyResize();
 
@@ -755,25 +767,7 @@ Example:
        this.set('_roomsOfFloors', _newFloor);
      },
 
-     _onTapRoom: function (ev) {
-       if (this._disableTap) {
-         this.set('_disableTap', false);
-         return;
-       }
-       console.log('tap', ev.target.getAttribute('room-idx'));
-       var _err = this._emptyRoomResult;
-       var _selectedSite = _.keys(_err)[this._selectedSiteTab];
-       var _selectedFloor = _.keys(_err[_selectedSite])[this._selectedFloorTab];
-       var _selectedRoom = _err[_selectedSite][_selectedFloor][parseInt(ev.target.getAttribute('room-idx'))];
-       // save room info;
-       this.set('_selectedRoomInfo', _selectedRoom);
-
-       this.$.roomDialog.open();
-       // workaround: to display backdrop in nested dialog;
-       document.body.querySelector('iron-overlay-backdrop').style.zIndex = 103;
-     },
-
-     _onDownFloor: function (ev) {
+     _onDownRoom: function (ev) {
        var _target = ev.target;
        while (_target && _target.tagName !== 'DIV') {
          _target = _target.parentElement;
@@ -796,7 +790,7 @@ Example:
        this.set('_selectedRoomInfo', _selectedRoom);
      },
 
-     _onUpFloor: function (ev) {
+     _onUpRoom: function (ev) {
        if (this._disableTap) {
          this.set('_disableTap', false);
          this.set('_tapRipple', false);
@@ -840,6 +834,7 @@ Example:
      },
 
      _reserveRoom: function (ev) {
+       console.log(ev.target.tagName);
        // TODO: This can only be completed once roomify-create in Node is completed!
        var _toast = this.$.reserveRoomToast;
        this._computeRoomBasedOnIdx(this._roomIdx);
@@ -855,6 +850,7 @@ Example:
      },
 
      _showRoomInfo: function (ev) {
+       console.log(ev.target.tagName);
        this._computeRoomBasedOnIdx(this._roomIdx);
        this.$.roomDialog.open();
      },
