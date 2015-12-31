@@ -1,13 +1,12 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="semafloor-search-page-theme.html">
+<link rel="import" href="semafloor-search-page-icons.html">
 
 <link rel="import" href="../jv-datepicker/jv-datepicker-dialog.html">
 <link rel="import" href="../compound-timepicker/compound-timepicker-dialog.html">
 
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../iron-icons/social-icons.html">
 <link rel="import" href="../iron-list/iron-list.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 
@@ -26,7 +25,6 @@
 <link rel="import" href="../paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
-<link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
 
 <link rel="import" href="../neon-animation/animations/transform-animation.html">
 
@@ -58,89 +56,57 @@ Example:
       on-response="_onResponse"></iron-ajax>
 
     <div class="date-container search-item">
-      <div class="date-icon-column item-icon-column">
-        <iron-icon icon="icons:query-builder"></iron-icon>
-      </div>
+      <iron-icon class="date-icon" icon="icons:query-builder"></iron-icon>
       <div class="date-column item-data-column">
         <div class="all-day-row">
           <span>All-day</span>
-          <div></div>
-          <paper-toggle-button checked="{{_allDayToggle}}"></paper-toggle-button>
+          <paper-toggle-button class="all-day-toggle" checked="{{_allDayToggle}}"></paper-toggle-button>
         </div>
         <div class="from-date-row">
           <paper-button on-tap="_addFromDate">[[_fromDate]]</paper-button>
-          <div></div>
-          <paper-button id="fromTimeButton" on-tap="_addFromTime">[[_fromTime]]</paper-button>
+          <paper-button id="fromTimeButton" class="from-time-button" on-tap="_addFromTime">[[_fromTime]]</paper-button>
         </div>
         <div class="to-date-row">
           <paper-button on-tap="_addToDate">[[_toDate]]</paper-button>
-          <div></div>
-          <paper-button id="toTimeButton" on-tap="_addToTime">[[_toTime]]</paper-button>
+          <paper-button id="toTimeButton" class="to-time-button" on-tap="_addToTime">[[_toTime]]</paper-button>
         </div>
       </div>
     </div>
 
     <div class="capacity-container search-item">
-      <div class="capacity-icon-column item-icon-column">
-        <iron-icon icon="social:person-add"></iron-icon>
-      </div>
-      <div class="capacity-column item-data-column">
-        <div class="capacity-row">
-          <paper-button on-tap="_addPerson">[[_capacity]]</paper-button>
-        </div>
-      </div>
+      <iron-icon icon="social:person-add"></iron-icon>
+      <paper-button class="capacity-button" on-tap="_addPerson">[[_capacity]]</paper-button>
     </div>
 
     <div class="site-container search-item">
-      <div class="site-icon-column item-icon-column">
-        <iron-icon icon="icons:room"></iron-icon>
-      </div>
-      <div class="site-column item-data-column">
-        <div class="site-row">
-          <paper-button on-tap="_addSite">[[_site]]</paper-button>
-        </div>
-      </div>
+      <iron-icon icon="icons:room"></iron-icon>
+      <paper-button class="site-button" on-tap="_addSite">[[_site]]</paper-button>
     </div>
 
     <div class="floor-container search-item">
-      <div class="floor-icon-column item-icon-column">
-        <iron-icon icon="social:location-city"></iron-icon>
-      </div>
-      <div class="floor-column item-data-column">
-        <div class="floor-row">
-          <paper-button on-tap="_addFloor">[[_floor]]</paper-button>
-        </div>
-      </div>
+      <iron-icon icon="social:location-city"></iron-icon>
+      <paper-button class="floor-button" on-tap="_addFloor">[[_floor]]</paper-button>
     </div>
 
     <div class="types-container search-item">
-      <div class="types-icon-column item-icon-column">
-        <iron-icon icon="icons:create"></iron-icon>
-      </div>
-      <div class="types-column item-data-column">
-        <div class="types-row" on-iron-change="_getWhatBeingChecked">
-          <paper-checkbox data-checked="ar">Adjoining Room (Operable Wall)</paper-checkbox>
-          <paper-checkbox data-checked="pb">Panaboard</paper-checkbox>
-          <paper-checkbox data-checked="pca">Polycom CX100 (Audio)</paper-checkbox>
-          <paper-checkbox data-checked="pcv">Polycom CX5000 (Video Conferencing)</paper-checkbox>
-          <paper-checkbox data-checked="pj">Projector</paper-checkbox>
-          <paper-checkbox data-checked="pcf">Projector Cable Faulty</paper-checkbox>
-          <paper-checkbox data-checked="pf">Projector Faulty</paper-checkbox>
-          <paper-checkbox data-checked="spf">Screen Projector Faulty</paper-checkbox>
-          <paper-checkbox data-checked="sb">SmartBoard 800</paper-checkbox>
-          <paper-checkbox data-checked="tp">Telepresence</paper-checkbox>
-          <paper-checkbox data-checked="tv">TV</paper-checkbox>
-          <paper-checkbox data-checked="wg">Writing Glass</paper-checkbox>
-        </div>
+      <iron-icon class="types-icon" icon="icons:create"></iron-icon>
+      <div class="types-column item-data-column" on-iron-change="_getWhatBeingChecked">
+        <paper-checkbox data-checked="ar">Adjoining Room (Operable Wall)</paper-checkbox>
+        <paper-checkbox data-checked="pb">Panaboard</paper-checkbox>
+        <paper-checkbox data-checked="pca">Polycom CX100 (Audio)</paper-checkbox>
+        <paper-checkbox data-checked="pcv">Polycom CX5000 (Video Conferencing)</paper-checkbox>
+        <paper-checkbox data-checked="pj">Projector</paper-checkbox>
+        <paper-checkbox data-checked="pcf">Projector Cable Faulty</paper-checkbox>
+        <paper-checkbox data-checked="pf">Projector Faulty</paper-checkbox>
+        <paper-checkbox data-checked="spf">Screen Projector Faulty</paper-checkbox>
+        <paper-checkbox data-checked="sb">SmartBoard 800</paper-checkbox>
+        <paper-checkbox data-checked="tp">Telepresence</paper-checkbox>
+        <paper-checkbox data-checked="tv">TV</paper-checkbox>
+        <paper-checkbox data-checked="wg">Writing Glass</paper-checkbox>
       </div>
     </div>
 
-    <div class="send-button-container">
-      <paper-button class="send-button" on-tap="_sendParams">
-        <iron-icon icon="icons:send"></iron-icon>
-        <span>Send</span>
-      </paper-button>
-    </div>
+    <paper-button class="send-button" on-tap="_sendParams"><iron-icon icon="icons:send"></iron-icon>Send</paper-button>
 
     <!-- dialogs: capacity, site, floor. -->
     <paper-dialog id="addPersonDialog" with-backdrop no-auto-focus>
@@ -255,29 +221,27 @@ Example:
     <!-- room info from search result -->
     <paper-dialog id="roomDialog" with-backdrop auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened" no-auto-focuse>
       <h2>[[_selectedRoomInfo.room]]</h2>
-      <paper-dialog-scrollable>
+      <!-- <paper-dialog-scrollable> -->
         <div class="room-info-container">
             <div class="room-info">
-              <iron-icon icon="icons:room"></iron-icon><span>[[_decodeSite(_selectedRoomInfo.site)]]</span>
+              <iron-icon icon="icons:room"></iron-icon>[[_decodeSite(_selectedRoomInfo.site)]]
             </div>
             <div class="room-info">
-              <iron-icon icon="social:location-city"></iron-icon><span>[[_decodeFloor(_selectedRoomInfo.floor)]]</span>
+              <iron-icon icon="social:location-city"></iron-icon>[[_decodeFloor(_selectedRoomInfo.floor)]]
             </div>
             <div class="room-info">
-              <iron-icon icon="social:person-add"></iron-icon><span>[[_selectedRoomInfo.capacity]]</span>
+              <iron-icon icon="social:person-add"></iron-icon>[[_selectedRoomInfo.capacity]]
             </div>
-            <div class="room-info">
+            <div class="room-info room-info-types-col">
               <iron-icon icon="icons:create"></iron-icon>
               <div class="room-info-types" id="checkboxesInRoomDialog">
                 <template is="dom-repeat" items="[[_decodeTypes(_selectedRoomInfo.types)]]" index-as="index">
-                  <paper-checkbox checked>
-                    <span class="checkbox-content">[[item]]</span>
-                  </paper-checkbox>
+                  <paper-checkbox checked>[[item]]</paper-checkbox>
                 </template>
               </div>
             </div>
         </div>
-      </paper-dialog-scrollable>
+      <!-- </paper-dialog-scrollable> -->
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
         <paper-button dialog-confirm on-tap="_reserveRoom">Reserve</paper-button>
