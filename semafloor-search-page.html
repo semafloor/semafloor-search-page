@@ -257,7 +257,7 @@ Example:
         <paper-icon-item dialog-confirm on-tap="_showRoomInfo">
           <iron-icon icon="icons:info" item-icon></iron-icon>Info
         </paper-icon-item>
-        <paper-icon-item dialog-dismiss>
+        <paper-icon-item dialog-dismiss on-tap="_forceCloseOptions">
           <iron-icon icon="icons:close" item-icon></iron-icon>Close
         </paper-icon-item>
       </paper-listbox>
@@ -778,7 +778,7 @@ Example:
      },
 
      _onVertTap: function (ev) {
-       console.log(ev.target.tagName);
+      //  console.log(ev.target.tagName);
        var _target = ev.target;
        while (_target && _target.tagName !== 'PAPER-ICON-BUTTON') {
          _target = _target.parentElement;
@@ -798,7 +798,8 @@ Example:
      },
 
      _reserveRoom: function (ev) {
-       console.log(ev.target.tagName);
+       this._forceCloseOptions();
+      //  console.log(ev.target.tagName);
        // TODO: This can only be completed once roomify-create in Node is completed!
        var _toast = this.$.reserveRoomToast;
        this._computeRoomBasedOnIdx(this._roomIdx);
@@ -814,7 +815,8 @@ Example:
      },
 
      _showRoomInfo: function (ev) {
-       console.log(ev.target.tagName);
+      //  console.log(ev.target.tagName);
+       this._forceCloseOptions();
        this._computeRoomBasedOnIdx(this._roomIdx);
        this.$.roomDialog.open();
      },
@@ -834,6 +836,10 @@ Example:
      _onIronOverlayOpened: function (ev) {
        // workaround to iron-resize and refit dialog with paper-checkbox inside it;
        this.$.roomDialog.notifyResize();
+     },
+
+     _forceCloseOptions: function() {
+       this.$.optionsDialog.close();
      },
 
   });
