@@ -738,9 +738,9 @@ Example:
        }
        if (_target) {
          this.set('_tapRipple', true);
-         this.set('_tapFloor', _target.getAttribute('room-idx'));
          // compute and save room info;
-         this._computeRoomBasedOnIdx(parseInt(_target.getAttribute('room-idx')));
+         this.set('_roomIdx', _target.getAttribute('room-idx'));
+         this._computeRoomBasedOnIdx(_target.getAttribute('room-idx'));
        }
      },
 
@@ -774,7 +774,7 @@ Example:
        console.log('scrolling...');
        // End ripple animation loop during scrolling...
        this.set('_disableTap', true);
-       this.$$('#roomRipple' + this._tapFloor).upAction();
+       this.$$('#roomRipple' + this._roomIdx).upAction();
      },
 
      _onVertTap: function (ev) {
@@ -799,7 +799,6 @@ Example:
 
      _reserveRoom: function (ev) {
        this._forceCloseOptions();
-      //  console.log(ev.target.tagName);
        // TODO: This can only be completed once roomify-create in Node is completed!
        var _toast = this.$.reserveRoomToast;
        this._computeRoomBasedOnIdx(this._roomIdx);
@@ -811,7 +810,9 @@ Example:
          _toast.close();
        }
        this.set('_reserveRoomMsg', _msg);
-       _toast.open();
+       this.async(function () {
+         _toast.open();
+       });
      },
 
      _showRoomInfo: function (ev) {
@@ -839,7 +840,9 @@ Example:
      },
 
      _forceCloseOptions: function() {
-       this.$.optionsDialog.close();
+       if (this.$.optionsDialog.opened) {
+         this.$.optionsDialog.close();
+       }
      },
 
   });
