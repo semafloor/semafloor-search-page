@@ -112,8 +112,10 @@
       paper-dialog#addFloorDialog paper-radio-button:last-of-type {
         margin-bottom: 16px;
       }
-      paper-dialog-scrollable::content >  #scrollable {
-        max-width: 100% !important;
+      paper-dialog-scrollable {
+        --paper-dialog-scrollable: {
+          padding: 0;
+        };
       }
 
       paper-button,
@@ -193,11 +195,9 @@
         @apply(--layout-fit);
         margin-top: 96px;
         overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
       }
       paper-dialog#responseDialog .response-content {
         overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
         @apply(--layout-fit);
       }
 
