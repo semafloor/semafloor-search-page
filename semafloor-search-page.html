@@ -14,7 +14,6 @@
 <link rel="import" href="../paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
 <link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
-<!-- <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html"> -->
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-item/paper-icon-item.html">
@@ -82,7 +81,6 @@ Example:
 
     <div class="site-container search-item">
       <iron-icon icon="icons:room"></iron-icon>
-      <!-- <paper-button class="site-button" on-tap="_addSite">[[_site]]</paper-button> -->
       <paper-button class="site-button" on-tap="_addSite">[[_site]]</paper-button>
     </div>
 
@@ -114,12 +112,10 @@ Example:
     <!-- dialogs: capacity, site, floor. -->
     <paper-dialog id="addPersonDialog" with-backdrop auto-fit-on-attach no-auto-focus>
       <h2>Add Person</h2>
-      <!-- <paper-dialog-scrollable>
-      </paper-dialog-scrollable> -->
-        <p>
-          numerum nec posse intrare
-          <paper-input label="capacity" type="number" min="0" max="99" value="{{_inputCap::input}}" placeholder="1"></paper-input>
-        </p>
+      <p>
+        numerum nec posse intrare
+        <paper-input label="capacity" type="number" min="0" max="99" value="{{_inputCap::input}}" placeholder="1"></paper-input>
+      </p>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
         <paper-button dialog-confirm on-tap="_updateCapacity">ok</paper-button>
@@ -153,7 +149,6 @@ Example:
 
     <!-- show search result  -->
     <paper-dialog id="responseDialog" class="" auto-fit-on-attach no-auto-focus>
-      <!-- <h2>Search Result</h2> -->
       <div class="no-padding">
         <div class="response-toolbar">
           <paper-icon-button icon="icons:arrow-back" on-tap="_closeResponseDialog"></paper-icon-button>
@@ -167,42 +162,34 @@ Example:
           </paper-tabs>
         </div>
 
-        <div class="response-container">
-          <div class="response-content" on-scroll="_onScroll">
-            <iron-pages selected="[[_loadSearchResult]]">
-              <div class="waiting-tab">
-                <paper-spinner-lite active></paper-spinner-lite>
-              </div>
+        <div class="response-container" on-scroll="_onScroll">
+          <iron-pages selected="[[_loadSearchResult]]">
+            <paper-spinner-lite active></paper-spinner-lite>
 
-              <div class="result-tab">
-                <div class="floors-tab">
-                  <paper-tabs id="floorTabs" selected="{{_selectedFloorTab}}" scrollable class="floor-tabs">
-                    <template is="dom-repeat" items="[[_floorsOfSites]]" index-as="index" strip-whitespace>
-                      <paper-tab class="floor-tab">[[item]]</paper-tab>
-                    </template>
-                  </paper-tabs>
-                </div>
-                <div class="rooms-tab">
-                  <iron-list items="[[_roomsOfFloors]]">
-                    <template strip-whitespace>
-                      <div class="room-on-each-floor">
-                        <div class="room-name" room-idx$="[[index]]" on-down="_onDownRoom" on-up="_onUpRoom">
-                          <span>[[item.room]]</span>
-                          <paper-ripple id$="roomRipple[[index]]"></paper-ripple>
-                        </div>
-                        <paper-icon-button icon="icons:more-vert" room-idx$="[[index]]" on-tap="_onVertTap"></paper-icon-button>
-                      </div>
-                    </template>
-                  </iron-list>
-                </div>
-              </div>
+            <div class="result-tab">
+              <paper-tabs id="floorTabs" selected="{{_selectedFloorTab}}" scrollable class="floor-tabs">
+                <template is="dom-repeat" items="[[_floorsOfSites]]" index-as="index" strip-whitespace>
+                  <paper-tab class="floor-tab">[[item]]</paper-tab>
+                </template>
+              </paper-tabs>
+              <iron-list items="[[_roomsOfFloors]]">
+                <template strip-whitespace>
+                  <div class="room-on-each-floor">
+                    <div class="room-name" room-idx$="[[index]]" on-down="_onDownRoom" on-up="_onUpRoom">
+                      [[item.room]]
+                      <paper-ripple id$="roomRipple[[index]]"></paper-ripple>
+                    </div>
+                    <paper-icon-button icon="icons:more-vert" room-idx$="[[index]]" on-tap="_onVertTap"></paper-icon-button>
+                  </div>
+                </template>
+              </iron-list>
+            </div>
 
-              <div class="empty-tab">
-                <iron-icon icon="icons:error-outline"></iron-icon>
-                <div>Sorry, No matched result!</div>
-              </div>
-            </iron-pages>
-          </div>
+            <div class="empty-tab">
+              <iron-icon icon="icons:error-outline"></iron-icon>
+              Sorry, No matched result!
+            </div>
+          </iron-pages>
         </div>
       </div>
     </paper-dialog>
@@ -275,15 +262,6 @@ Example:
     is: 'semafloor-search-page',
 
     properties: {
-      _capacityNumber: {
-        type: Array,
-        value: function() {
-          for (var i = 0, j = []; i < 100; i++) {
-            j.push(i);
-          }
-          return j;
-        }
-      },
       _allDayToggle:  {
         type: Boolean,
         value: false
@@ -789,7 +767,6 @@ Example:
      },
 
      _onVertTap: function(ev) {
-      //  console.log(ev.target.tagName);
        var _target = ev.target;
        while (_target && _target.tagName !== 'PAPER-ICON-BUTTON') {
          _target = _target.parentElement;
@@ -827,7 +804,6 @@ Example:
      },
 
      _showRoomInfo: function(ev) {
-      //  console.log(ev.target.tagName);
        this._forceCloseOptions();
        this._computeRoomBasedOnIdx(this._roomIdx);
        this.$.roomDialog.open();
@@ -865,7 +841,6 @@ Example:
        if (_target && _target.hasAttribute('site')) {
          this._updateSite();
        }else {
-         console.log('floor');
          this._updateFloor();
        }
        _target.close();

@@ -151,6 +151,7 @@
         left: 0;
         width: 100%;
         height: 100%;
+        overflow-y: auto;
       }
       paper-dialog#responseDialog::content > *:first-child,
       paper-dialog#responseDialog::content > *:last-child {
@@ -162,7 +163,7 @@
         font-size: 0;
       }
       paper-dialog#responseDialog .response-toolbar {
-        height: 64px;
+        height: 48px;
         padding: 0 16px;
         position: relative;
         font-size: 20px;
@@ -190,7 +191,7 @@
       }
       paper-dialog#responseDialog .response-container {
         @apply(--layout-fit);
-        margin-top: 128px;
+        margin-top: 96px;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
       }
@@ -201,10 +202,9 @@
       }
 
       /*tabs related sytling*/
-      .waiting-tab {
-        @apply(--layout-horizontal);
-        @apply(--layout-center-justified);
-        padding: 32px;
+      paper-spinner-lite {
+        display: block;
+        margin: 40px auto;
       }
       .empty-tab {
         font-weight: bold;
@@ -226,12 +226,6 @@
       .result-tab {
         @apply(--layout-vertical);
       }
-      .floors-tab {
-        @apply(--layout-horizontal);
-      }
-      .rooms-tab {
-        @apply(--layout-vertical);
-      }
       .floor-tabs {
         background-color: #009688;
         color: #fff;
@@ -243,16 +237,16 @@
 
       iron-list {
         /* to hide odd overflow-x */
+        padding-bottom: 64px;
         overflow-x: hidden;
         @apply(--layout-flex-auto);
       }
       .room-on-each-floor {
         position: relative;
         border-bottom: 1px solid #ddd;
-        padding: 16px 0 16px 16px;
-        min-height: 64px;
+        height: 64px;
         transition: all .2s cubic-bezier(0.22, 0.61, 0.36, 1);
-        margin: 0;
+        padding-left: 24px;
         @apply(--layout-horizontal);
         @apply(--layout-flex-auto);
       }
@@ -265,19 +259,17 @@
         --paper-tab-ink: rgba(255, 255, 141, 0.5);
       }
       .room-on-each-floor > .room-name {
-        @apply(--layout-flex-auto);
-        padding: 8px;
-      }
-      .room-on-each-floor span {
-        vertical-align: middle;
         font-size: 20px;
         text-transform: capitalize;
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-flex-auto);
+      }
+      .room-on-each-floor > paper-icon-button {
+        margin-left: 8px;
+        @apply(--layout-self-center);
       }
 
-      paper-dialog#roomDialog {
-        /*overflow-y: auto;
-        -webkit-overflow-scrolling: touch;*/
-      }
       paper-dialog#roomDialog > h2 {
         text-transform: capitalize;
       }
