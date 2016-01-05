@@ -13,11 +13,12 @@
     <style is="custom-style">
       body {
         margin: 0;
+        @apply(--paper-font-common-base);
       }
 
       app-header {
         --app-header-front-background: {
-          background-color: #607d8b;
+          background-color: #009688;
         };
         --app-header-back-background: {
           background-color: #fff;
@@ -25,18 +26,20 @@
       }
 
       [condensed-title] {
-        margin-left: 16px;
+        color: #009688;
+        font-size: 20px;
+        margin-left: 8px;
       }
       [title] {
-        margin-left: 8px;
         font-size: 32px;
+        color: #fff;
+        margin-left: 8px;
       }
-
-      app-toolbar {
+      paper-icon-button {
         color: #fff;
       }
-      app-toolbar.shrink-change-color {
-        color: #607d8b;
+      paper-icon-button.condenses-to-blend {
+        color: #009688;
       }
     </style>
   </head>
@@ -49,12 +52,12 @@
 
       <!-- main panel -->
       <app-header-layout main>
-        <app-header style="height: 192px;" condenses fixed effects="material">
+        <app-header condenses fixed effects="material">
           <app-toolbar>
-            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+            <paper-icon-button id="button" icon="menu" drawer-toggle></paper-icon-button>
             <div condensed-title>Search &amp; Reserve</div>
           </app-toolbar>
-          <app-toolbar style="height: 128px;">
+          <app-toolbar>
             <div title>Search &amp; Reserve</div>
           </app-toolbar>
         </app-header>
@@ -64,20 +67,22 @@
         <!-- 13xx nodes before optimization w/ pickers on OP/ CH -->
         <!-- 13xx nodes before optimization w/ pickers on FF -->
 
-        <!-- 471 nodes after optimization w/o pickers on OP/ CH -->
-        <!-- 460 nodes after optimization w/o pickers on FF -->
-        <!-- 1001 nodes after optimization w/ pickers on OP/ CH -->
-        <!-- 1011 nodes after optimization w/ pickers on FF -->
+        <!-- 54 nodes clean on CH/ OP -->
+        <!-- 64 nodes clean on FF -->
+        <!-- 31 app shell on CH/ OP -->
+        <!-- 31 app shell on FF -->
+        <!-- 365 nodes after optimization w/o pickers on OP/ CH -->
+        <!-- 365 nodes after optimization w/o pickers on FF -->
+        <!-- 969 nodes after optimization w/ pickers on OP/ CH -->
+        <!-- 969 nodes after optimization w/ pickers on FF -->
         <semafloor-search-page></semafloor-search-page>
       </app-header-layout>
     </app-drawer-layout>
 
     <script>
       var header = document.querySelector('app-header[condenses]');
-      var toolbars = document.querySelectorAll('app-toolbar');
       header.addEventListener('app-header-transform', function (ev) {
-        this.toggleClass('shrink-change-color', ev.detail.progress > 0.5, toolbars[0]);
-        this.toggleClass('shrink-change-color', ev.detail.progress > 0.5, toolbars[1]);
+        this.toggleClass('condenses-to-blend', ev.detail.progress > 0.5, button);
       });
 
     </script>

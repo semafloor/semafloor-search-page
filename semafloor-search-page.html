@@ -14,7 +14,7 @@
 <link rel="import" href="../paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
 <link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<!-- <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html"> -->
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-item/paper-icon-item.html">
@@ -25,6 +25,8 @@
 <link rel="import" href="../paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
 
 <link rel="import" href="../neon-animation/animations/transform-animation.html">
 
@@ -59,7 +61,7 @@ Example:
       <iron-icon class="date-icon" icon="icons:query-builder"></iron-icon>
       <div class="date-column item-data-column">
         <div class="all-day-row">
-          <span>All-day</span>
+          All-day
           <paper-toggle-button class="all-day-toggle" checked="{{_allDayToggle}}"></paper-toggle-button>
         </div>
         <div class="from-date-row">
@@ -80,6 +82,7 @@ Example:
 
     <div class="site-container search-item">
       <iron-icon icon="icons:room"></iron-icon>
+      <!-- <paper-button class="site-button" on-tap="_addSite">[[_site]]</paper-button> -->
       <paper-button class="site-button" on-tap="_addSite">[[_site]]</paper-button>
     </div>
 
@@ -109,52 +112,37 @@ Example:
     <paper-button class="send-button" on-tap="_sendParams"><iron-icon icon="icons:send"></iron-icon>Send</paper-button>
 
     <!-- dialogs: capacity, site, floor. -->
-    <paper-dialog id="addPersonDialog" with-backdrop no-auto-focus>
+    <paper-dialog id="addPersonDialog" with-backdrop auto-fit-on-attach no-auto-focus>
       <h2>Add Person</h2>
-      <paper-dialog-scrollable>
+      <!-- <paper-dialog-scrollable>
+      </paper-dialog-scrollable> -->
         <p>
           numerum nec posse intrare
-          <paper-input label="capacity" type="number" min="1" max="99" value="{{_inputCap::input}}" placeholder="1"></paper-input>
+          <paper-input label="capacity" type="number" min="0" max="99" value="{{_inputCap::input}}" placeholder="1"></paper-input>
         </p>
-      </paper-dialog-scrollable>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
         <paper-button dialog-confirm on-tap="_updateCapacity">ok</paper-button>
       </div>
     </paper-dialog>
-    <paper-dialog id="addSiteDialog" with-backdrop no-auto-focus>
+    <paper-dialog id="addSiteDialog" with-backdrop auto-fit-on-attach no-auto-focus site>
       <h2>Add Site</h2>
-      <p>
-        Nihil hic tantum, utrum voles volo te locum eligere lobortis mauris
-        <paper-dropdown-menu label="Site">
-          <paper-listbox class="dropdown-content" selected="{{_inputSite}}" attr-for-selected="data-site">
-            <template is="dom-repeat" items="[[_allSites]]" index-as="index">
-              <paper-item data-site$="[[item]]">[[item]]</paper-item>
-            </template>
-          </paper-listbox>
-        </paper-dropdown-menu>
-      </p>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm on-tap="_updateSite">Accept</paper-button>
-      </div>
+      <paper-radio-group class="no-padding" selected="{{_inputSite}}" on-paper-radio-group-changed="_onPaperRadioGroupChanged" attr-for-selected="name" allow-empty-selection>
+        <paper-radio-button name="Any Site">Any Site</paper-radio-button>
+        <paper-radio-button name="KLB - Tower 5">KLB - Tower 5</paper-radio-button>
+        <paper-radio-button name="KLB - Tower 2A">KLB - Tower 2A</paper-radio-button>
+        <paper-radio-button name="SUITE">SUITE</paper-radio-button>
+      </paper-radio-group>
     </paper-dialog>
-    <paper-dialog id="addFloorDialog" with-backdrop no-auto-focus>
-      <h2>Add Floor</h2>
-      <p>
-        Nihil hic multum iustus volo ut lego iam post tabulatum dilexisti locum lobortis mauris utrum voles
-        <paper-dropdown-menu label="Floor">
-          <paper-listbox class="dropdown-content" selected="{{_inputFloor}}" attr-for-selected="data-floor">
-            <template is="dom-repeat" items="[[_allFloors]]" index-as="index">
-              <paper-item data-floor$="[[item]]" disabled="[[_isDisabled(_site, item)]]">[[item]]</paper-item>
-            </template>
-          </paper-listbox>
-        </paper-dropdown-menu>
-      </p>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm on-tap="_updateFloor">Accept</paper-button>
-      </div>
+    <paper-dialog id="addFloorDialog" with-backdrop auto-fit-on-attach no-auto-focus floor>
+      <h2>Add Site</h2>
+      <paper-dialog-scrollable class="no-padding">
+        <paper-radio-group selected="{{_inputFloor}}" on-paper-radio-group-changed="_onPaperRadioGroupChanged" attr-for-selected="name" allow-empty-selection>
+          <template is="dom-repeat" items="[[_allFloors]]" index-as="index" strip-whitespace>
+            <paper-radio-button name="[[item]]" disabled="[[_isDisabled(_site, item)]]">[[item]]</paper-radio-button>
+          </template>
+        </paper-radio-group>
+      </paper-dialog-scrollable>
     </paper-dialog>
 
     <!-- pickers dialog -->
@@ -173,7 +161,7 @@ Example:
         </div>
         <div class="response-toolbar" hidden$="[[_hideSiteToolbar]]">
           <paper-tabs selected="{{_selectedSiteTab}}" bottom-item id="siteTabs">
-            <template is="dom-repeat" items="[[_computeSites(_emptyRoomResult)]]" index-as="index">
+            <template is="dom-repeat" items="[[_computeSites(_emptyRoomResult)]]" index-as="index" strip-whitespace>
               <paper-tab>[[item]]</paper-tab>
             </template>
           </paper-tabs>
@@ -189,14 +177,14 @@ Example:
               <div class="result-tab">
                 <div class="floors-tab">
                   <paper-tabs id="floorTabs" selected="{{_selectedFloorTab}}" scrollable class="floor-tabs">
-                    <template is="dom-repeat" items="[[_floorsOfSites]]" index-as="index">
+                    <template is="dom-repeat" items="[[_floorsOfSites]]" index-as="index" strip-whitespace>
                       <paper-tab class="floor-tab">[[item]]</paper-tab>
                     </template>
                   </paper-tabs>
                 </div>
                 <div class="rooms-tab">
                   <iron-list items="[[_roomsOfFloors]]">
-                    <template>
+                    <template strip-whitespace>
                       <div class="room-on-each-floor">
                         <div class="room-name" room-idx$="[[index]]" on-down="_onDownRoom" on-up="_onUpRoom">
                           <span>[[item.room]]</span>
@@ -218,10 +206,10 @@ Example:
         </div>
       </div>
     </paper-dialog>
+
     <!-- room info from search result -->
     <paper-dialog id="roomDialog" with-backdrop auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened" no-auto-focuse>
       <h2>[[_selectedRoomInfo.room]]</h2>
-      <!-- <paper-dialog-scrollable> -->
         <div class="room-info-container">
             <div class="room-info">
               <iron-icon icon="icons:room"></iron-icon>[[_decodeSite(_selectedRoomInfo.site)]]
@@ -235,13 +223,12 @@ Example:
             <div class="room-info room-info-types-col">
               <iron-icon icon="icons:create"></iron-icon>
               <div class="room-info-types" id="checkboxesInRoomDialog">
-                <template is="dom-repeat" items="[[_decodeTypes(_selectedRoomInfo.types)]]" index-as="index">
+                <template is="dom-repeat" items="[[_decodeTypes(_selectedRoomInfo.types)]]" index-as="index" strip-whitespace>
                   <paper-checkbox checked>[[item]]</paper-checkbox>
                 </template>
               </div>
             </div>
         </div>
-      <!-- </paper-dialog-scrollable> -->
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
         <paper-button dialog-confirm on-tap="_reserveRoom">Reserve</paper-button>
@@ -288,7 +275,15 @@ Example:
     is: 'semafloor-search-page',
 
     properties: {
-
+      _capacityNumber: {
+        type: Array,
+        value: function() {
+          for (var i = 0, j = []; i < 100; i++) {
+            j.push(i);
+          }
+          return j;
+        }
+      },
       _allDayToggle:  {
         type: Boolean,
         value: false
@@ -299,7 +294,7 @@ Example:
       },
       _allFloors: {
         type: Array,
-        value: function () {
+        value: function() {
           return _floorsArray;
         }
       },
@@ -317,7 +312,7 @@ Example:
       },
       _allSites: {
         type: Array,
-        value: function () {
+        value: function() {
           return _sitesArray;
         }
       },
@@ -336,31 +331,31 @@ Example:
       _inputCap: Number,
       _totalCap: {
         type: Array,
-        value: function () {
+        value: function() {
           return _.fill(Array(99), 1);
         }
       },
       _toDate: {
         type: String,
-        value: function () {
+        value: function() {
           return  _today;
         }
       },
       _toTime: {
         type: String,
-        value: function () {
+        value: function() {
           return _time;
         }
       },
       _fromDate: {
         type: String,
-        value: function () {
+        value: function() {
           return _today;
         }
       },
       _fromTime: {
         type: String,
-        value: function () {
+        value: function() {
           return _time;
         }
       },
@@ -455,7 +450,7 @@ Example:
      * @detail {{sound: String}}
      */
 
-     _addPerson: function (ev) {
+     _addPerson: function(ev) {
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -463,11 +458,11 @@ Example:
        }
        _target = null;
      },
-     _updateCapacity: function (ev) {
+     _updateCapacity: function(ev) {
        this.set('_capacity', this._inputCap);
      },
 
-     _addSite: function (ev) {
+     _addSite: function(ev) {
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -475,34 +470,50 @@ Example:
        }
        _target = null;
      },
-     _updateSite: function (ev) {
-      var _site = _.indexOf(_sitesArray, this._inputSite);
-      var _siteCode = ['', 'alpha', 'beta', 'gamma'][_site];
-      var _floor = (_siteCode === '' || _siteCode === 'alpha') ? 'Any Floor' : (_siteCode === 'suite' ? 'Level 1' : 'Level 3');
-      // automatically update `floors` when `sites` is updated;
-      this.set('_floor', _floor);
-      this.set('_floors', _floor === 'Any Floor' ? '' : _floor);
-      this.set('_inputFloor', _floor);
-      // update `sites`;
-      this.set('_sites', _siteCode);
-      this.set('_site', this._inputSite);
+     _updateSite: function() {
+       var _site = _.indexOf(_sitesArray, this._inputSite);
+       if (_site < 0) {
+         this.set('_floor', 'Any Floor');
+         this.set('_floors', '');
+         this.set('_inputFloor', 'Any Floor');
+         this.set('_sites', '');
+         this.set('_site', 'Any Site');
+         return;
+       }
+
+       var _siteCode = ['', 'alpha', 'beta', 'gamma'][_site];
+       var _floor = (_siteCode === '' || _siteCode === 'alpha') ? 'Any Floor' :
+        _siteCode === 'suite' ? 'Level 1' : 'Level 3';
+       // automatically update `floors` when `sites` is updated.
+       this.set('_floor', _floor);
+       this.set('_floors', _floor === 'Any Floor' ? '' : _floor);
+       this.set('_inputFloor', _floor);
+       // update `site`.
+       this.set('_sites', _siteCode);
+       this.set('_site', this._inputSite);
      },
 
-     _addFloor: function (ev) {
+     _addFloor: function(ev) {
        var _target = ev.target;
        if (_target && _target.tagName === 'PAPER-BUTTON') {
          this.$.addFloorDialog.open();
        }
        _target = null;
      },
-     _updateFloor: function (ev) {
+     _updateFloor: function() {
        var _floor = _.indexOf(_floorsArray, this._inputFloor);
+       if (_floor < 0) {
+         this.set('_floors', '');
+         this.set('_floor', 'Any Floor');
+         return;
+       }
+
        var _floorCode = ['','01level','02level','03level','04level','05level','06level','07level','08level','09level','10level','11level','12level'][_floor];
        this.set('_floors', _floorCode);
        this.set('_floor', this._inputFloor);
      },
 
-     _isDisabled: function (_site, _item) {
+     _isDisabled: function(_site, _item) {
        function _updateMenu(_site) {
          // set `floors` on first time use;
          var _floor = _site === 'any' ? 'Any Floor' : (_site === 'suite' ? 'Level 1' : 'Level 3');
@@ -537,7 +548,7 @@ Example:
        }
      },
 
-     _addFromDate: function (ev) {
+     _addFromDate: function(ev) {
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -545,7 +556,7 @@ Example:
        }
        _target = null;
      },
-     _addToDate: function (ev) {
+     _addToDate: function(ev) {
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -553,7 +564,7 @@ Example:
        }
        _target = null;
      },
-     _addFromTime: function (ev) {
+     _addFromTime: function(ev) {
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -561,7 +572,7 @@ Example:
        }
        _target = null;
      },
-     _addToTime: function (ev) {
+     _addToTime: function(ev) {
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-BUTTON') {
@@ -570,13 +581,13 @@ Example:
        _target = null;
      },
 
-     _hideTime: function (_toggle) {
+     _hideTime: function(_toggle) {
        this.toggleClass('all-day-hide-time', _toggle, this.$.fromTimeButton);
        this.toggleClass('all-day-hide-time', _toggle, this.$.toTimeButton);
      },
 
      // get which `paper-checkbox` being checked or unchecked.
-     _getWhatBeingChecked: function (ev) {
+     _getWhatBeingChecked: function(ev) {
        var _target = ev.target;
 
        if (_target && _target.tagName === 'PAPER-CHECKBOX') {
@@ -600,7 +611,7 @@ Example:
      },
 
      // aggregate all inputs before sending it out as request.
-     _sendParams: function (ev) {
+     _sendParams: function(ev) {
        var _params = '';
        var _fromTime = this._fromTime;
        var _toTime = this._toTime;// body...
@@ -634,7 +645,7 @@ Example:
       this.$.responseDialog.open();
      },
 
-     _onResponse: function (ev) {
+     _onResponse: function(ev) {
        // check if return result is empty OR contains no room (totoalEmptyRooms : 0);
        var _isEmpty = this._isEmptyResultEmpty(this._emptyRoomResult);
        this.set('_skipComputeSelected', _isEmpty);
@@ -644,11 +655,11 @@ Example:
        document.body.style.overflowY = 'hidden';
      },
 
-     _isEmptyResultEmpty: function (_emptyRoomResult) {
+     _isEmptyResultEmpty: function(_emptyRoomResult) {
        return _.isEmpty(_emptyRoomResult) || _emptyRoomResult.totalEmptyRooms === 0;
      },
 
-     _closeResponseDialog: function (ev) {
+     _closeResponseDialog: function(ev) {
        // workaround: resume document scrolling;
        document.body.style.overflowY = null;
        // reset _selectedSiteTab, _selectedFloorTab when closing responseDialog;
@@ -660,21 +671,21 @@ Example:
        this.$.responseDialog.close();
      },
 
-     _computeSites: function (_emptyRoomResult) {
+     _computeSites: function(_emptyRoomResult) {
        var _siteKeys = _.keys(_emptyRoomResult);
        var _keysName = ['', 'alpha', 'beta', 'gamma'];
-       _siteKeys = _siteKeys.filter(function (_key) {
+       _siteKeys = _siteKeys.filter(function(_key) {
          return _key === 'alpha' || _key === 'beta' || _key === 'gamma';
        });
        this._computeFloors(_siteKeys, _emptyRoomResult);
-       _siteKeys = _siteKeys.map(function (_key) {
+       _siteKeys = _siteKeys.map(function(_key) {
          return _sitesArray[_keysName.indexOf(_key)];
        });
        this.set('_resultSites', _siteKeys);
        return _siteKeys;
      },
 
-     _computeFloors: function (_siteKeys, _emptyRoomResult) {
+     _computeFloors: function(_siteKeys, _emptyRoomResult) {
        var _floorKeys = [];
        for (var i = 0; i < _siteKeys.length; i++) {
          _floorKeys.push(_.keys(_emptyRoomResult[_siteKeys[i]]));
@@ -688,7 +699,7 @@ Example:
        }
      },
 
-     _showFloorsInTab: function (_emptyRoomResult, _selectedSiteTab) {
+     _showFloorsInTab: function(_emptyRoomResult, _selectedSiteTab) {
        // skip this function if return result is empty;
        if (this._isEmptyResultEmpty(_emptyRoomResult)) {
          return;
@@ -698,7 +709,7 @@ Example:
        var _floorsNumber = ['1', '2', '3', '3A', '5', '6', '7', '8', '9', '10', '11', '12'];
        var _siteKeys = _.keys(_emptyRoomResult);
        var _newFloors = _.keys(_emptyRoomResult[_siteKeys[_selectedSiteTab]]);
-       var _newFloors = _newFloors.map(function (n) {
+       var _newFloors = _newFloors.map(function(n) {
          return _floorsNumber[_floorsCode.indexOf(n)];
        });
        // workaround: to fix #selectionBar of paper-tabs to show properly;
@@ -714,7 +725,7 @@ Example:
        this.set('_floorsOfSites', _newFloors);
      },
 
-     _showRoomsInTab: function (_emptyRoomResult, _selectedSiteTab, _selectedFloorTab) {
+     _showRoomsInTab: function(_emptyRoomResult, _selectedSiteTab, _selectedFloorTab) {
        // skip this function if return result is empty;
        if (this._isEmptyResultEmpty(_emptyRoomResult)) {
          return;
@@ -731,7 +742,7 @@ Example:
        this.set('_roomsOfFloors', _newFloor);
      },
 
-     _onDownRoom: function (ev) {
+     _onDownRoom: function(ev) {
        var _target = ev.target;
        while (_target && _target.tagName !== 'DIV') {
          _target = _target.parentElement;
@@ -744,7 +755,7 @@ Example:
        }
      },
 
-     _computeRoomBasedOnIdx: function (_idx) {
+     _computeRoomBasedOnIdx: function(_idx) {
        var _err = this._emptyRoomResult;
        var _selectedSite = _.keys(_err)[this._selectedSiteTab];
        var _selectedFloor = _.keys(_err[_selectedSite])[this._selectedFloorTab];
@@ -754,7 +765,7 @@ Example:
        this.set('_selectedRoomInfo', _selectedRoom);
      },
 
-     _onUpRoom: function (ev) {
+     _onUpRoom: function(ev) {
        if (this._disableTap) {
          this.set('_disableTap', false);
          this.set('_tapRipple', false);
@@ -766,7 +777,7 @@ Example:
        document.body.querySelector('iron-overlay-backdrop').style.zIndex = 103;
      },
 
-     _onScroll: function (ev) {
+     _onScroll: function(ev) {
        if (!this._tapRipple) {
          return;
        }
@@ -777,7 +788,7 @@ Example:
        this.$$('#roomRipple' + this._roomIdx).upAction();
      },
 
-     _onVertTap: function (ev) {
+     _onVertTap: function(ev) {
       //  console.log(ev.target.tagName);
        var _target = ev.target;
        while (_target && _target.tagName !== 'PAPER-ICON-BUTTON') {
@@ -787,22 +798,22 @@ Example:
        this.$.optionsDialog.open();
      },
 
-     _decodeSite: function (_siteCode) {
+     _decodeSite: function(_siteCode) {
        var _testCodes = ['', 'alpha', 'beta', 'gamma'];
        return _sitesArray[_testCodes.indexOf(_siteCode)];
      },
 
-     _decodeFloor: function (_floorCode) {
+     _decodeFloor: function(_floorCode) {
        var _testCodes = ['', '01level', '02level', '03level', '04level', '05level', '06level', '07level', '08level', '09level', '10level', '11level', '12level'];
        return _floorsArray[_testCodes.indexOf(_floorCode)];
      },
 
-     _reserveRoom: function (ev) {
+     _reserveRoom: function(ev) {
        this._forceCloseOptions();
        // TODO: This can only be completed once roomify-create in Node is completed!
        var _toast = this.$.reserveRoomToast;
        this._computeRoomBasedOnIdx(this._roomIdx);
-       var _capitalizedRoomName = _.map(_.words(this._selectedRoomInfo.room), function (n) {
+       var _capitalizedRoomName = _.map(_.words(this._selectedRoomInfo.room), function(n) {
          return _.capitalize(n);
        }).join(' ');
        var _msg = _capitalizedRoomName + ' has been reserved successfully!';
@@ -810,19 +821,19 @@ Example:
          _toast.close();
        }
        this.set('_reserveRoomMsg', _msg);
-       this.async(function () {
+       this.async(function() {
          _toast.open();
        });
      },
 
-     _showRoomInfo: function (ev) {
+     _showRoomInfo: function(ev) {
       //  console.log(ev.target.tagName);
        this._forceCloseOptions();
        this._computeRoomBasedOnIdx(this._roomIdx);
        this.$.roomDialog.open();
      },
 
-     _decodeTypes: function (_types) {
+     _decodeTypes: function(_types) {
        var _roomTypes = ['Adjoining Room (Operable Wall)','Panaboard','Polycom CX100 (Audio)','Polycom CX5000 (Video Conferencing)','Projector','Projector Cable Faulty','Projector Faulty','Screen Projector Faulty','SmartBoard 800','Telepresence','TV','Writing Glass Board'];
        var _hexTypes = _.padLeft(parseInt(_types, 16).toString(2), 12, 0);
        var _str2arr = _hexTypes.split('').map(Number);
@@ -834,7 +845,7 @@ Example:
        return _filtered;
      },
 
-     _onIronOverlayOpened: function (ev) {
+     _onIronOverlayOpened: function(ev) {
        // workaround to iron-resize and refit dialog with paper-checkbox inside it;
        this.$.roomDialog.notifyResize();
      },
@@ -843,6 +854,21 @@ Example:
        if (this.$.optionsDialog.opened) {
          this.$.optionsDialog.close();
        }
+     },
+
+     _onPaperRadioGroupChanged: function(ev) {
+       var _target = ev.target;
+       while (_target && _target.tagName !== 'PAPER-DIALOG') {
+         _target = _target.parentElement;
+       }
+
+       if (_target && _target.hasAttribute('site')) {
+         this._updateSite();
+       }else {
+         console.log('floor');
+         this._updateFloor();
+       }
+       _target.close();
      },
 
   });
