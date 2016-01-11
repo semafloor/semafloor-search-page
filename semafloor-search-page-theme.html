@@ -4,13 +4,7 @@
   <template strip-whitespace>
     <style>
       :host {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -o-user-select: none;
         user-select: none;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
         box-sizing: border-box;
 
         display: block;
@@ -92,9 +86,6 @@
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
       }
-      .send-button > iron-icon {
-        margin: 0;
-      }
 
       /* addSiteDialog, addFloorDialog */
       paper-dialog#addSiteDialog,
@@ -118,21 +109,23 @@
         };
       }
 
-      paper-button,
-      paper-checkbox {
+      paper-button {
         -webkit-tap-highlight-color: rgba(0,0,0,0);
         -webkit-tap-highlight-color: transparent;
       }
       paper-button[pressed] {
-        background: #1DDBD8;
-        color: #fff !important;
+        border-radius: 8px;
+        background-color: #1ddbd8;
+        color: #fff;
       }
 
       p > paper-input,
       paper-dropdown-menu {
         --paper-input-container-focus-color: #1DDBD8;
       }
-      paper-dialog > h2,
+      .buttons > paper-button[pressed] {
+        background-color: #fff;
+      }
       .buttons > paper-button {
         color: #1DDBD8;
       }
@@ -258,6 +251,9 @@
         /* tune paper-tab ripple opacity */
         --paper-tab-ink: rgba(255, 255, 141, 0.5);
       }
+      paper-tab.iron-selected {
+        color: #ffff8d;
+      }
       .room-on-each-floor > .room-name {
         font-size: 20px;
         text-transform: capitalize;
@@ -271,7 +267,13 @@
       }
 
       paper-dialog#roomDialog > h2 {
-        text-transform: capitalize;
+        height: 64px;
+        margin-top: 0;
+        background-color: #1ddbd8;
+        color: #fff;
+        text-transform: uppercase;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
       }
       .room-info-container {
         @apply(--layout-vertical);
@@ -286,6 +288,7 @@
         margin: 0;
       }
       .room-info > iron-icon {
+        color: #212121;
         margin-right: 16px;
       }
       .room-info.room-info-types-col > iron-icon {

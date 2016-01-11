@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>semafloor-search-page Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../lodash/lodash.min.js" charset="utf-8"></script>
+
     <link rel="import" href="../semafloor-search-page.html">
     <link rel="import" href="../../app-layout/app-layout.html">
     <link rel="import" href="../../app-layout/app-scroll-effects/app-scroll-effects.html">
@@ -13,33 +15,18 @@
     <style is="custom-style">
       body {
         margin: 0;
-        @apply(--paper-font-common-base);
+        font-family: 'Roboto', 'Noto', 'Helvetica', sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
 
       app-header {
-        --app-header-front-background: {
-          background-color: #009688;
-        };
-        --app-header-back-background: {
-          background-color: #fff;
-        };
+        color: #009688;
       }
 
-      [condensed-title] {
+      [title] {
         color: #009688;
         font-size: 20px;
         margin-left: 8px;
-      }
-      [title] {
-        font-size: 32px;
-        color: #fff;
-        margin-left: 8px;
-      }
-      paper-icon-button {
-        color: #fff;
-      }
-      paper-icon-button.condenses-to-blend {
-        color: #009688;
       }
     </style>
   </head>
@@ -52,12 +39,9 @@
 
       <!-- main panel -->
       <app-header-layout main>
-        <app-header condenses fixed effects="material">
+        <app-header condenses reveals effects="waterfall">
           <app-toolbar>
-            <paper-icon-button id="button" icon="menu" drawer-toggle></paper-icon-button>
-            <div condensed-title>Search &amp; Reserve</div>
-          </app-toolbar>
-          <app-toolbar>
+            <paper-icon-button id="button" icon="icons:menu" drawer-toggle></paper-icon-button>
             <div title>Search &amp; Reserve</div>
           </app-toolbar>
         </app-header>
@@ -73,18 +57,14 @@
         <!-- 31 app shell on FF -->
         <!-- 365 nodes after optimization w/o pickers on OP/ CH -->
         <!-- 365 nodes after optimization w/o pickers on FF -->
-        <!-- 964 nodes after optimization w/ pickers on OP/ CH -->
-        <!-- 964 nodes after optimization w/ pickers on FF -->
+        <!-- 963 nodes after optimization w/ pickers on OP/ CH -->
+        <!-- 963 nodes after optimization w/ pickers on FF -->
         <semafloor-search-page></semafloor-search-page>
       </app-header-layout>
     </app-drawer-layout>
 
     <script>
       var header = document.querySelector('app-header[condenses]');
-      header.addEventListener('app-header-transform', function (ev) {
-        this.toggleClass('condenses-to-blend', ev.detail.progress > 0.5, button);
-      });
-
     </script>
 
   </body>
