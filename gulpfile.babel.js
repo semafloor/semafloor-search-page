@@ -7,7 +7,7 @@ const del = require('del');
 const extract = require('gulp-html-extract');
 const autoprefixer = require('gulp-autoprefixer');
 const minifyHTML = require('gulp-minify-html');
-const cssnano = require('gulp-minify-css');
+const cssnano = require('gulp-cssnano');
 const sequence = require('run-sequence');
 const uglify = require('gulp-uglify');
 const size = require('gulp-size');
@@ -15,7 +15,7 @@ const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const _ = require('lodash');
 
-// const cssnano = require('gulp-cssnano');
+// const cssnano = require('gulp-minify-css');
 // const imagemin = require('gulp-imagemin');
 // const minifyHTML = require('gulp-htmlmin');
 
