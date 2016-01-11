@@ -46,6 +46,7 @@
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "web-component-tester": "*",
-    "app-layout": "PolymerLabs/app-layout#^0.0.6"
+    "app-layout": "PolymerLabs/app-layout#^0.0.6",
+    "productionizer": "semafloor/productionizer#~0.2.4"
   }
 }

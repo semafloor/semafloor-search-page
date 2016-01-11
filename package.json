@@ -1,0 +1,22 @@
+{
+  "name": "semafloor-search-page",
+  "version": "0.2.13",
+  "description": "To make element flies.",
+  "main": "semafloor-search-page.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/semafloor/semafloor-search-page.git"
+  },
+  "author": "motss <wes_ngrongsen@hotmail.com> (https://github.com/semafloor/productionizer)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/semafloor/semafloor-search-page/issues"
+  },
+  "homepage": "https://github.com/semafloor/semafloor-search-page#readme"
+}
