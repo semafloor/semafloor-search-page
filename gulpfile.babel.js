@@ -6,8 +6,8 @@ const babel = require('gulp-babel');
 const del = require('del');
 const extract = require('gulp-html-extract');
 const autoprefixer = require('gulp-autoprefixer');
-const cssnano = require('gulp-cssnano');
 const minifyHTML = require('gulp-minify-html');
+const cssnano = require('gulp-minify-css');
 const sequence = require('run-sequence');
 const uglify = require('gulp-uglify');
 const size = require('gulp-size');
@@ -15,8 +15,9 @@ const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const _ = require('lodash');
 
+// const cssnano = require('gulp-cssnano');
 // const imagemin = require('gulp-imagemin');
-// const htmlmin = require('gulp-htmlmin');
+// const minifyHTML = require('gulp-htmlmin');
 
 let transpiler = 'Babel v5';
 const SRC = 'src';
