@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>semafloor-search-page Demo</title>
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <script src="../../lodash/lodash.min.js" charset="utf-8"></script>
 
     <link rel="import" href="../semafloor-search-page.html">
@@ -48,19 +48,22 @@
           </app-toolbar>
         </app-header>
 
-        <!-- 471 nodes before optimization w/o pickers on OP/ CH -->
-        <!-- 479 nodes before optimization w/o pickers on FF -->
-        <!-- 13xx nodes before optimization w/ pickers on OP/ CH -->
-        <!-- 13xx nodes before optimization w/ pickers on FF -->
+        <!-- 471 el before optimization w/o pickers on OP/ CH -->
+        <!-- 479 el before optimization w/o pickers on FF -->
+        <!-- 13xx el before optimization w/ pickers on OP/ CH -->
+        <!-- 13xx el before optimization w/ pickers on FF -->
 
-        <!-- 54 nodes clean on CH/ OP -->
-        <!-- 64 nodes clean on FF -->
+        <!-- 54 el clean on CH/ OP -->
+        <!-- 64 el clean on FF -->
         <!-- 31 app shell on CH/ OP -->
         <!-- 31 app shell on FF -->
-        <!-- 365 nodes after optimization w/o pickers on OP/ CH -->
-        <!-- 365 nodes after optimization w/o pickers on FF -->
-        <!-- 963 nodes after optimization w/ pickers on OP/ CH -->
-        <!-- 963 nodes after optimization w/ pickers on FF -->
+        <!-- 365 el after optimization w/o pickers on OP/ CH -->
+        <!-- 365 el after optimization w/o pickers on FF -->
+        <!-- 963 el after optimization w/ pickers on OP/ CH -->
+        <!-- 963 el after optimization w/ pickers on FF -->
+
+        <!-- 613 el after datepicker optimization on OP/ CH -->
+        <!-- 613 el after datepicker optimization on FF -->
         <semafloor-search-page></semafloor-search-page>
       </app-header-layout>
     </app-drawer-layout>

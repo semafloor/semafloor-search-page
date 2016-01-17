@@ -1,6 +1,6 @@
 {
   "name": "semafloor-search-page",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "authors": [
     "semafloor <wes_ngrongsen@hotmail.com>"
   ],
@@ -29,7 +29,6 @@
     "paper-listbox": "polymerelements/paper-listbox#^1.0.0",
     "paper-item": "PolymerElements/paper-item#^1.1.3",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.15",
-    "jv-datepicker": "motss/jv-datepicker#^2.0.2",
     "compound-timepicker": "motss/compound-timepicker#^0.3.4",
     "iron-ajax": "PolymerElements/iron-ajax#^1.1.1",
     "paper-tabs": "PolymerElements/paper-tabs#^1.2.4",
@@ -41,12 +40,14 @@
     "neon-animation": "PolymerElements/neon-animation#^1.0.8",
     "paper-toast": "PolymerElements/paper-toast#^1.1.1",
     "paper-radio-group": "PolymerElements/paper-radio-group#~1.0.8",
-    "paper-radio-button": "PolymerElements/paper-radio-button#~1.0.12"
+    "paper-radio-button": "PolymerElements/paper-radio-button#~1.0.12",
+    "compound-datepicker": "motss/compound-datepicker#~0.1.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "web-component-tester": "*",
     "app-layout": "PolymerLabs/app-layout#^0.0.6",
-    "productionizer": "semafloor/productionizer#~0.2.4"
+    "productionizer": "semafloor/productionizer#~0.2.4",
+    "semafloor-icons": "semafloor/semafloor-icons#~0.1.1"
   }
 }
