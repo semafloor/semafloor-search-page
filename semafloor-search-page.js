@@ -173,6 +173,7 @@ Polymer({
         transformTo: 'translateY(100%)'
       }
     };
+    this.fire('search-page-attached');
   },
 
   detached: function() {
