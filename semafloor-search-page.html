@@ -194,31 +194,42 @@ Example:
     </paper-dialog>
 
     <!-- room info from search result -->
-    <paper-dialog id="roomDialog" with-backdrop auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened" no-auto-focuse>
-      <h2>[[_selectedRoomInfo.room]]</h2>
-        <div class="room-info-container">
-            <div class="room-info">
-              <iron-icon icon="icons:room"></iron-icon>[[_decodeSite(_selectedRoomInfo.site)]]
-            </div>
-            <div class="room-info">
-              <iron-icon icon="social:location-city"></iron-icon>[[_decodeFloor(_selectedRoomInfo.floor)]]
-            </div>
-            <div class="room-info">
-              <iron-icon icon="social:person-add"></iron-icon>[[_selectedRoomInfo.capacity]]
-            </div>
-            <div class="room-info room-info-types-col">
-              <iron-icon icon="icons:create"></iron-icon>
-              <div class="room-info-types" id="checkboxesInRoomDialog">
-                <template is="dom-repeat" items="[[_decodeTypes(_selectedRoomInfo.types)]]" index-as="index" strip-whitespace>
-                  <paper-checkbox checked>[[item]]</paper-checkbox>
-                </template>
-              </div>
-            </div>
+    <paper-dialog id="roomDialog" with-backdrop modal="[[_isLoading]]" auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened" no-auto-focuse>
+      <template is="dom-if" if="[[_isLoading]]" restamp="true">
+        <h2>Reserve Room</h2>
+        <div class="loading-content">
+          <paper-spinner-lite active="[[_isLoading]]"></paper-spinner-lite>
+          Processing request...
         </div>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm on-tap="_reserveRoom">Reserve</paper-button>
-      </div>
+      </template>
+
+      <template is="dom-if" if="[[!_isLoading]]" restamp="true">
+        <h2>[[_selectedRoomInfo.room]]</h2>
+        <div class="room-info-container">
+          <div class="room-info">
+            <iron-icon icon="icons:room"></iron-icon>[[_selectedRoomInfo.site]]
+          </div>
+          <div class="room-info">
+            <iron-icon icon="social:location-city"></iron-icon>[[_selectedRoomInfo.floor]]
+          </div>
+          <div class="room-info">
+            <iron-icon icon="social:person-add"></iron-icon>[[_selectedRoomInfo.capacity]]
+          </div>
+          <div class="room-info room-info-types-col">
+            <iron-icon icon="icons:create"></iron-icon>
+            <div class="room-info-types" id="checkboxesInRoomDialog">
+              <template is="dom-repeat" items="[[_decodeTypes(_selectedRoomInfo.types)]]" index-as="index" strip-whitespace>
+                <paper-checkbox checked>[[item]]</paper-checkbox>
+              </template>
+            </div>
+          </div>
+        </div>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button on-tap="_reserveRoom">Reserve</paper-button>
+          <!-- <paper-button dialog-confirm on-tap="_reserveRoom">Reserve</paper-button> -->
+        </div>
+      </template>
     </paper-dialog>
 
     <!-- options dialog of room info -->

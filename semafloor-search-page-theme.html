@@ -199,7 +199,7 @@
       }
 
       /*tabs related sytling*/
-      paper-spinner-lite {
+      iron-pages > paper-spinner-lite {
         display: block;
         margin: 40px auto;
         --paper-spinner-color: #1ddbd8;
@@ -268,15 +268,6 @@
         @apply(--layout-self-center);
       }
 
-      paper-dialog > h2 {
-        height: 64px;
-        margin-top: 0;
-        background-color: #1ddbd8;
-        color: #fff;
-        text-transform: uppercase;
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-      }
       .room-info-container {
         @apply(--layout-vertical);
         @apply(--layout-flex-auto);
@@ -301,7 +292,24 @@
         @apply(--layout-vertical);
       }
 
-      /*optionsDialog*/
+      /* roomDialog */
+      paper-dialog#roomDialog > .loading-content {
+        word-break: break-all;
+        word-wrap: break-word;
+        margin-bottom: 24px;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      paper-dialog#roomDialog > .loading-content > paper-spinner-lite{
+        margin-right: 16px;
+        --paper-spinner-color: #1ddbd8;
+      }
+      paper-dialog#roomDialog h2 {
+        margin-top: 24px;
+        text-transform: capitalize;
+      }
+
+      /* optionsDialog */
       paper-dialog#optionsDialog {
         overflow: initial !important;
         margin: 0;

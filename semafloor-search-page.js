@@ -109,7 +109,7 @@
     _types: String,
     _emptyRoomResult: Object,
     _resultSites: Array,
-    _resultFloors: Array,
+    // _resultFloors: Array,
     _selectedSiteTab: {
       type: Number,
       value: 0
@@ -139,6 +139,9 @@
     _prevFloor: String,
 
     _selectedRoom: Object,
+
+    _isLoading: Boolean,
+    _roomReserved: Boolean,
   },
 
   observers: [
@@ -146,7 +149,9 @@
     '_showFloorsInTab(_emptyRoomResult, _selectedSiteTab)',
     '_setPrevFloor(_selectedFloorTab)',
     '_showRoomsInTab(_emptyRoomResult, _selectedSiteTab, _selectedFloorTab)',
-    '_updateSearchUrl(uid)'
+    '_updateSearchUrl(uid)',
+    '_closeRoomDialogAfterLoading(_roomReserved)',
+    '_proceedToReserveRoom(_isLoading)'
   ],
 
   // Element Lifecycle
@@ -413,6 +418,12 @@
     console.log(_params);
     this.$.searchEmptyRoom.body = _params;
     this.$.searchEmptyRoom.generateRequest();
+    // Reset _isLoading here is much safer before opening the responseDialog.
+    this.set('_isLoading', false);
+    // Reset _roomReserved here is much safer before opening the responseDialog.
+    if (this._roomReserved) {
+      this.set('_roomReserved', false);
+    }
     this.$.responseDialog.open();
   },
 
@@ -423,7 +434,7 @@
     this._hideSiteToolbar = _isEmpty;
     this._loadSearchResult = _isEmpty ? 2 : 1;
     // workaround: stop document scrolling;
-    document.body.style.overflowY = 'hidden';
+    document.body.style.overflow = 'hidden';
   },
 
   _isEmptyResultEmpty: function(_emptyRoomResult) {
@@ -432,11 +443,11 @@
 
   _closeResponseDialog: function(ev) {
     // workaround: resume document scrolling;
-    document.body.style.overflowY = null;
+    document.body.style.overflow = '';
     // reset _selectedSiteTab, _selectedFloorTab when closing responseDialog;
-    // reset _loadSearchResult, _emptyRoomResult when closing responseDialog;
     this.set('_selectedSiteTab', 0);
     this.set('_selectedFloorTab', 0);
+    // reset _loadSearchResult, _emptyRoomResult when closing responseDialog;
     this.set('_loadSearchResult', 0);
     this.set('_emptyRoomResult', null);
     this.$.responseDialog.close();
@@ -490,8 +501,10 @@
     }else {
       this.set('_selectedFloorTab', 0); // for beta and gamma, only 1 floor.
     }
-    this.$.siteTabs.notifyResize();
-    this.$.floorTabs.notifyResize();
+    this.debounce('resizeTabs', function() {
+      this.$.siteTabs.notifyResize();
+      this.$.floorTabs.notifyResize();
+    }, 1);
 
     this.set('_floorsOfSites', _newFloors);
   },
@@ -503,12 +516,14 @@
     }
 
     var _newSite = _.keys(_emptyRoomResult)[_selectedSiteTab];
-    var _newFloor = _.keys(_emptyRoomResult[_newSite]);
-    _newFloor = _emptyRoomResult[_newSite][_newFloor[_selectedFloorTab]];
+    var _newFloor = _.keys(_emptyRoomResult[_newSite])[_selectedFloorTab];
+    _newFloor = _emptyRoomResult[_newSite][_newFloor];
     // workaround: to fix #selectionBar of paper-tabs to show properly;
     // notifyResize() on site tabs and floor tabs;
-    this.$.siteTabs.notifyResize();
-    this.$.floorTabs.notifyResize();
+    this.debounce('resizeTabs', function() {
+      this.$.siteTabs.notifyResize();
+      this.$.floorTabs.notifyResize();
+    }, 1);
 
     this.set('_roomsOfFloors', _newFloor);
   },
@@ -572,15 +587,6 @@
     this.$.optionsDialog.open();
   },
 
-  _decodeSite: function(_siteCode) {
-    var _testCodes = ['', 'alpha', 'beta', 'gamma'];
-    return _sitesArray[_testCodes.indexOf(_siteCode)];
-  },
-
-  _decodeFloor: function(_floorCode) {
-    return _floorsArray[_floorsCode.indexOf(_floorCode)];
-  },
-
   /* jshint ignore:start */
   /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
   _reserveRoom: function(ev) {
@@ -588,8 +594,11 @@
     console.log(this._fromDate, this._toDate, this._fromTime, this._toTime, this._allDayToggle);
     this._forceCloseOptions();
     // TODO: This can only be completed once roomify-create in Node is completed!
-    var _timeDec = this._computeTimeHex(this._fromTime, this._toTime, this._allDayToggle);
-    this._transactionWithReservations(this._fromDate, this._toDate, _timeDec, this._selectedRoomInfo);
+    var _timeDec = this._computeTimeDec(this._fromTime, this._toTime, this._allDayToggle);
+
+    // Set _isLoading to block further user interaction while loading Firebase.
+    // Then the Observer will trigger method _transactionWithReservations once _isLoading is truthy.
+    this.set('_isLoading', true);
   },
   // 0800 0830 | 0830 0900 | 0900 0930 | 0930 1000
   //    1    X |    1    X |    1    X |    1    X
@@ -597,7 +606,7 @@
   //    1    1    X |    1    1    X |
   // 0800 0830 0900 0930 | 0930 1000 1030 1100 |
   //    1    1    1    X |    1    1    1    X |
-  _computeTimeHex: function(_fromTime, _toTime, _allDayToggle) {
+  _computeTimeDec: function(_fromTime, _toTime, _allDayToggle) {
     var _timeBin;
     // if it's all day, all is 1s.
     if (_allDayToggle) {
@@ -640,15 +649,32 @@
     var _sdd = _sd.getDate();
     // Get week number from date.
     function getWeek(_date) {
-      console.log(_date);
       var _now = new Date(_date);
       _now = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate() - _now.getDay() + 4);
       var onejan = new Date(_now.getFullYear(), 0, 1);
       return Math.ceil(((_now - onejan) / 86400000 + 1) / 7);
     }
+    // Compute AND-ed or OR-ed timeHex and return the result to Firebase.
+    function _updateData(_timeHex, _maskDec) {
+      var _timeDec = parseInt(_timeHex, 16).toString(10);
+      var _result = parseInt((_timeDec | _maskDec) >>> 0, 10).toString(16);
+
+      return _result;
+    }
+    // siteNameToCode
+    function _siteNameToCode(_siteName) {
+      var _siteIdx = _sitesArray.indexOf(_siteName);
+      return ['', 'alpha', 'beta', 'gamma'][_siteIdx];
+    }
+    // floorNameToCode
+    function _floorNameToCode(_floorName) {
+      var _floorIdx = _floorsArray.indexOf(_floorName);
+      return _floorsCode[_floorIdx];
+    }
+
     var _datesArray = [];
     // Date array.
-    // TODO: To update room time for one or more dates.
+    // X - TODO: To update room time for one or more dates.
     // Firebase ref to a room, KLB - Tower 5, Level 1, Taipei 101 on 2016-01-29:
     // ref - https://polymer-semaphore.firebaseio.com/mockMessages/
     // year - /2016
@@ -708,20 +734,26 @@
     // site, level, room - /site/alpha/01level/taipei101
     // time - /time
     var _ref = 'https://polymer-semaphore.firebaseio.com/mockMessages';
-    var _site = ['site', _selectedRoomInfo.site, _selectedRoomInfo.floor, _selectedRoomInfo.room].join('/');
+    var _siteToCode = _siteNameToCode(_selectedRoomInfo.site);
+    var _floorToCode = _floorNameToCode(_selectedRoomInfo.floor);
+    var _site = ['site', _siteToCode, _floorToCode, _selectedRoomInfo.room].join('/');
     var _retryDates = [];
+    var _that = this;
+
     var _datesArrayWithPromise = _datesArray.map(function(_date) {
       var _eachRef = new Firebase([_ref, _date.y, _date.m, _date.w, _date.d, _site].join('/'));
-      return _eachRef.once('value').then(function(snapshot) {
-        console.log([_ref, _date.y, _date.m, _date.w, _date.d, _site].join('/'));
-        return _eachRef.child('time').transaction(function(data) {
-          var _andHex = parseInt(data, 16).toString(10) & _timeDec;
-          console.log(_andHex, _timeDec, (_andHex >>> 0 ) === 0);
-          var _isAvailable = (_andHex >>> 0) === 0;
-          if (!_.isUndefined(data) && _isAvailable) {
-            var _orHex = (data | _timeDec) >>> 0;
-            return parseInt(_orHex, 10).toString(16);
+      console.log(_eachRef);
+      return _eachRef.child('time').once('value').then(function(_snapshot) {
+        return _eachRef.child('time').transaction(function(_data) {
+          if (_data === null) {
+            console.warn("Firebase Promise's status: pending");
+            return parseInt(_timeDec, 10).toString(16);
           }else {
+            var _dataDec = parseInt(_data, 16).toString(10);
+            var _slotNotTakenYet = ((_dataDec & _timeDec) >>> 0) === 0;
+            if (_slotNotTakenYet) {
+              return _updateData(_data, _timeDec);
+            }
             return;
           }
         });
@@ -729,34 +761,44 @@
     });
     // Return results of all Promises of all dates.
     Promise.all(_datesArrayWithPromise).then(function(snapshot) {
-      console.log(snapshot[0].committed, snapshot[0].snapshot.val());
-      snapshot.forEach(function(n, idx) {
-        var snapref;
-        // Push ref of uncommitted dates.
-        if (!n.committed) {
-          snapref = n.snapshot.ref();
-          _retryDates.push(snapref);
-        }
+      console.log(snapshot);
+      var _allCommitted = snapshot.every(function(n) {
+        console.log('Added is committed: ', n.committed);
+        console.log('committed value: ', n.snapshot.val());
+        return n.committed === true;
       });
-      console.log(_retryDates);
+      // If one of them is not committed, retry is needed.
+      // TODO: Retry failed Promise.
+      if (!_allCommitted) {
+        snapshot.forEach(function(n, idx) {
+          // Push ref of uncommitted dates.
+          if (!n.committed) {
+            var snapref = n.snapshot.ref();
+            _retryDates.push(snapref);
+          }
+        });
+        console.log(_retryDates);
+      }
+
+      return _allCommitted;
+    }).then(function(_allCommitted) {
+      // If all requests have committed, set _roomReserved to trigger Observer to close dialog.
+      if (_allCommitted) {
+        // TODO: Before setting _roomReserved to trigger closing dialogs.
+        // Show dialog to ask user to change reservations details, eg title, objectives, etc.
+        // This is required for subsequent operation to save all these committed reservations into
+        // global reserve list which is needed for current reservation!
+        _that.set('_roomReserved', true);
+      }else {
+        // TODO: Revert all committed changes in Firebase once failed.
+        // _that._revertCommittedChanges()
+      }
+
     }).catch(function(error) {
       console.error(error);
     });
 
-
-    // var _toast = this.$.reserveRoomToast;
-    // // this._computeRoomBasedOnIdx(this._roomIdx);
-    // var _capitalizedRoomName = _.map(_.words(this._selectedRoomInfo.room), function(n) {
-    //   return _.capitalize(n);
-    // }).join(' ');
-    // var _msg = _capitalizedRoomName + ' has been reserved successfully!';
-    // if (_toast.opened) {
-    //   _toast.close();
-    // }
-    // this.set('_reserveRoomMsg', _msg);
-    // this.async(function() {
-    //   _toast.open();
-    // });
+    // TODO: Close responseDialog after reserving and show toast for successful operation.
   },
   /* jshint ignore:end */
   /* jscs:enable requireCamelCaseOrUpperCaseIdentifiers */
@@ -809,6 +851,43 @@
     var _newUrl = 'https://semafloor-webapp.firebaseio.com/users/google/' + this.uid +
       '/reservations/allreservations';
     this.set('_searchUrl', _newUrl);
+  },
+
+  _closeRoomDialogAfterLoading: function(_roomReserved) {
+    // Observer keeps observing on the value change of _roomReserved.
+    // However, we only interested in when the value is truthy.
+    if (_roomReserved) {
+      // Close roomDialog and responseDialog immediately.
+      this.$.roomDialog.close();
+      this.$.responseDialog.close();
+      // Reset document body overflow scrolling.
+      document.body.style.overflow = '';
+      // After 250ms of debounce rate, setting up the toast.
+      this.debounce('closeResponseDialog', function() {
+        var _toast = this.$.reserveRoomToast;
+        // this._computeRoomBasedOnIdx(this._roomIdx);
+        var _capitalizedRoomName = _.map(_.words(this._selectedRoomInfo.room), function(n) {
+          return _.capitalize(n);
+        }).join(' ');
+        var _msg = _capitalizedRoomName + ' has been reserved successfully!';
+        if (_toast.opened) {
+          _toast.close();
+        }
+        this.set('_reserveRoomMsg', _msg);
+
+        // Async-ly open toast.
+        this.async(function() {
+          _toast.open();
+        }, 1);
+      }, 250);
+    }
+  },
+
+  _proceedToReserveRoom: function(_isLoading) {
+    if (_isLoading) {
+      // Proceed to reserve room.
+      this._transactionWithReservations(this._fromDate, this._toDate, _timeDec, this._selectedRoomInfo);
+    }
   },
 
 });

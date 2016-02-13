@@ -32,8 +32,8 @@
     "iron-ajax": "PolymerElements/iron-ajax#^1.1.1",
     "paper-tabs": "PolymerElements/paper-tabs#^1.2.4",
     "paper-icon-button": "PolymerElements/paper-icon-button#^1.0.6",
-    "iron-list": "PolymerElements/iron-list#^1.1.7",
-    "paper-spinner": "PolymerElements/paper-spinner#^1.1.0",
+    "iron-list": "polymerelements/iron-list#^1.2.4",
+    "paper-spinner": "polymerelements/paper-spinner#^1.1.0",
     "iron-pages": "PolymerElements/iron-pages#^1.0.5",
     "paper-ripple": "PolymerElements/paper-ripple#^1.0.5",
     "neon-animation": "PolymerElements/neon-animation#^1.0.8",
@@ -45,10 +45,10 @@
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "web-component-tester": "*",
-    "app-layout": "PolymerLabs/app-layout#^0.0.6",
     "productionizer": "semafloor/productionizer#~0.2.4",
     "semafloor-icons": "semafloor/semafloor-icons#~0.1.1",
-    "lodash": "lodash/lodash#^4.1.0"
+    "lodash": "lodash/lodash#^4.1.0",
+    "app-layout": "polymerlabs/app-layout#^0.0.7",
+    "web-component-tester": "^4.2.0"
   }
 }
