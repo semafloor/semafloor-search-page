@@ -593,8 +593,6 @@
     console.log(this._selectedRoomInfo);
     console.log(this._fromDate, this._toDate, this._fromTime, this._toTime, this._allDayToggle);
     this._forceCloseOptions();
-    // TODO: This can only be completed once roomify-create in Node is completed!
-    var _timeDec = this._computeTimeDec(this._fromTime, this._toTime, this._allDayToggle);
 
     // Set _isLoading to block further user interaction while loading Firebase.
     // Then the Observer will trigger method _transactionWithReservations once _isLoading is truthy.
@@ -861,6 +859,7 @@
       this.$.roomDialog.close();
       this.$.responseDialog.close();
       // Reset document body overflow scrolling.
+      console.log(document.body.style.overflow);
       document.body.style.overflow = '';
       // After 250ms of debounce rate, setting up the toast.
       this.debounce('closeResponseDialog', function() {
@@ -886,7 +885,16 @@
   _proceedToReserveRoom: function(_isLoading) {
     if (_isLoading) {
       // Proceed to reserve room.
-      this._transactionWithReservations(this._fromDate, this._toDate, _timeDec, this._selectedRoomInfo);
+      if (!this.$.roomDialog.opened) {
+        this.$.roomDialog.open();
+      }
+
+      this.debounce('transactionWithReservations', function() {
+        // TODO: This can only be completed once roomify-create in Node is completed!
+        var _timeDec = this._computeTimeDec(this._fromTime, this._toTime, this._allDayToggle);
+        
+        this._transactionWithReservations(this._fromDate, this._toDate, _timeDec, this._selectedRoomInfo);
+      }, 250);
     }
   },
 
