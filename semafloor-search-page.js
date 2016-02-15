@@ -138,10 +138,20 @@
     _skipComputeSelected: Boolean,
     _prevFloor: String,
 
-    _selectedRoom: Object,
-
     _isLoading: Boolean,
+    _isReserved: Boolean,
+
     _roomReserved: Boolean,
+    _roomReservedSuccessfully: Boolean,
+
+    _userObject: Object,
+
+    _reservedBy: String,
+    _reservedSubject: String,
+    _reservedTime: String,
+
+    _datesArrayCopy: Array,
+
   },
 
   observers: [
@@ -208,6 +218,7 @@
 
   _onFirebaseValue: function(ev) {
     console.log(ev.detail.val());
+    this.set('_userObject', ev.detail.val());
   },
 
   _addPerson: function(ev) {
@@ -390,11 +401,32 @@
   _sendParams: function(ev) {
     var _params = '';
     var _fromTime = this._fromTime;
-    var _toTime = this._toTime;// body...
+    var _toTime = this._toTime;
+    var _fromDate = this._fromDate;
+    var _toDate = this._toDate;
+    var _incorrectTime = _fromTime > _toTime;
+    var _incorrectDate = new Date(_fromDate) > new Date(_toDate);
+    var _reserveRoomToast = this.$.reserveRoomToast;
 
     if (this._allDayToggle) {
       _fromTime = '08:00';
       _toTime = '23:30';
+    }
+
+    // Check date and time before parsing.
+    if (_incorrectTime || _incorrectDate) {
+      _reserveRoomToast.classList.add('warning');
+      this.set('_reserveRoomMsg', 'Incorrect Date/ Time! Please ensure starting date/ time is always smaller.')
+      console.error('Incorrect Date/ Time!');
+      if (_reserveRoomToast.opened) {
+        _reserveRoomToast.close();
+      }
+      this.async(function() {
+        _reserveRoomToast.open();
+      }, 1);
+      return;
+    }else {
+      _reserveRoomToast.classList.remove('warning');
     }
 
     //  console.log(this['_fromDate']);
@@ -420,9 +452,11 @@
     this.$.searchEmptyRoom.generateRequest();
     // Reset _isLoading here is much safer before opening the responseDialog.
     this.set('_isLoading', false);
+    this.set('_isReserved', false);
     // Reset _roomReserved here is much safer before opening the responseDialog.
     if (this._roomReserved) {
       this.set('_roomReserved', false);
+      this.set('_roomReservedSuccessfully', false);
     }
     this.$.responseDialog.open();
   },
@@ -669,6 +703,11 @@
       var _floorIdx = _floorsArray.indexOf(_floorName);
       return _floorsCode[_floorIdx];
     }
+    // monthNameToCode
+    function _monthNameToCode(_date) {
+      var _mm = _date.getMonth();
+      return ('0' + _mm).slice(-2) + _monthNames[_mm];
+    }
 
     var _datesArray = [];
     // Date array.
@@ -700,7 +739,7 @@
       if (_cday > 0 && _cday < 6) {
         _cdfy = _cd.getFullYear();
         _cdm1 = _cd.getMonth();
-        _cdm = ('0' + _cdm1).slice(-2) + _monthNames[_cdm1];
+        _cdm = _monthNameToCode(_cd);
         _cdd = ('0' + _cd.getDate()).slice(-2);
         _cd = [_cdfy, _cdm1 + 1, _cdd].join('-');
         _cdw = getWeek(_cd);
@@ -710,6 +749,7 @@
           m: _cdm,
           w: _cdw,
           d: _cdd,
+          f: _cd,
           day: _cday
         });
       }
@@ -737,6 +777,7 @@
     var _site = ['site', _siteToCode, _floorToCode, _selectedRoomInfo.room].join('/');
     var _retryDates = [];
     var _that = this;
+    // var _searchUrl = this._searchUrl;
 
     var _datesArrayWithPromise = _datesArray.map(function(_date) {
       var _eachRef = new Firebase([_ref, _date.y, _date.m, _date.w, _date.d, _site].join('/'));
@@ -759,7 +800,6 @@
     });
     // Return results of all Promises of all dates.
     Promise.all(_datesArrayWithPromise).then(function(snapshot) {
-      console.log(snapshot);
       var _allCommitted = snapshot.every(function(n) {
         console.log('Added is committed: ', n.committed);
         console.log('committed value: ', n.snapshot.val());
@@ -768,7 +808,7 @@
       // If one of them is not committed, retry is needed.
       // TODO: Retry failed Promise.
       if (!_allCommitted) {
-        snapshot.forEach(function(n, idx) {
+        snapshot.forEach(function(n) {
           // Push ref of uncommitted dates.
           if (!n.committed) {
             var snapref = n.snapshot.ref();
@@ -780,19 +820,76 @@
 
       return _allCommitted;
     }).then(function(_allCommitted) {
+      var _committedDate = new Date();
+      var _committedFullYear = new Date().getFullYear();
+      var _committedMonth = _monthNameToCode(_committedDate);
+      var _committedRef = [_committedFullYear, _committedMonth, 'commitHistory'].join('/');
+      var _committedQuery = _that.$.searchEmptyRoom.body;
+      var _allDayToggle = _that._allDayToggle;
+      var _fromTime = _allDayToggle ? '08:00' : _that._fromTime;
+      var _toTime = _allDayToggle ? '23:30' : _that.toTime;
+      var _displayName = _that._userObject.displayName;
+      var _commitRef = new Firebase(_ref);
       // If all requests have committed, set _roomReserved to trigger Observer to close dialog.
       if (_allCommitted) {
         // TODO: Before setting _roomReserved to trigger closing dialogs.
         // Show dialog to ask user to change reservations details, eg title, objectives, etc.
         // This is required for subsequent operation to save all these committed reservations into
         // global reserve list which is needed for current reservation!
-        _that.set('_roomReserved', true);
+
+        // Push successful commits into history.
+        _commitRef.child(_committedRef).push({
+          timestamp: Firebase.ServerValue.TIMESTAMP,
+          date: _committedDate.toString(),
+          query: _committedQuery,
+          allCommitted: _allCommitted
+        });
       }else {
         // TODO: Revert all committed changes in Firebase once failed.
         // _that._revertCommittedChanges()
+
+        // Push committed failures into history.
+        return _commitRef.child(_committedRef).push({
+          timestamp: Firebase.ServerValue.TIMESTAMP,
+          date: _committedDate.toString(),
+          query: _committedQuery,
+          allCommitted: _allCommitted,
+          reason: _retryDates
+        });
       }
 
-    }).catch(function(error) {
+      // Set if succeeded.
+      _that.set('_roomReservedSuccessfully', _allCommitted);
+
+      // Allow user to fill in reservation details after all committed is true.
+      // Save needed copy to properties.
+      _that.set('_datesArrayCopy', _datesArray);
+      _that.set('_reservedBy', _displayName);
+      _that.set('_reservedSubject', 'meeting');
+      _that.set('_reservedTime', [_fromTime, _toTime].join(' - '));
+      // Set to trigger switching to fill in details.
+      _that.set('_isReserved', true);
+      console.log(_datesArray);
+
+      // return _allCommitted;
+    })
+    // .then(function(_allCommitted) {
+    //   // Push reservations details to global reservations list once successful commits.
+    //   _pushReservationDetails(_datesArray, _ref, _that, _allCommitted);
+    //
+    //
+    //   return _allCommitted;
+    // }).then(function(_allCommitted) {
+    //   // Push reservations details to user's reservations list once successful commits.
+    //   _pushUserReservationDetails(_datesArray, _searchUrl, _that);
+    //
+    //   return _allCommitted;
+    // }).then(function(_allCommitted) {
+    //
+    //   // Set to close all dialogs.
+    //   // _that.set('_roomReserved', true);
+    // })
+    .catch(function(error) {
       console.error(error);
     });
 
@@ -846,8 +943,7 @@
 
   _updateSearchUrl: function(_uid) {
     console.log(_uid);
-    var _newUrl = 'https://semafloor-webapp.firebaseio.com/users/google/' + this.uid +
-      '/reservations/allreservations';
+    var _newUrl = 'https://semafloor-webapp.firebaseio.com/users/google/' + this.uid;
     this.set('_searchUrl', _newUrl);
   },
 
@@ -859,7 +955,6 @@
       this.$.roomDialog.close();
       this.$.responseDialog.close();
       // Reset document body overflow scrolling.
-      console.log(document.body.style.overflow);
       document.body.style.overflow = '';
       // After 250ms of debounce rate, setting up the toast.
       this.debounce('closeResponseDialog', function() {
@@ -868,7 +963,7 @@
         var _capitalizedRoomName = _.map(_.words(this._selectedRoomInfo.room), function(n) {
           return _.capitalize(n);
         }).join(' ');
-        var _msg = _capitalizedRoomName + ' has been reserved successfully!';
+        var _msg = this._roomReservedSuccessfully ? _capitalizedRoomName + ' has been reserved successfully!' : 'Failed to reserve ' + _capitalizedRoomName + '. Please try again.';
         if (_toast.opened) {
           _toast.close();
         }
@@ -896,6 +991,100 @@
         this._transactionWithReservations(this._fromDate, this._toDate, _timeDec, this._selectedRoomInfo);
       }, 250);
     }
+  },
+
+  // Push reservations details into Firebase.
+  _pushReservationDetails: function(_datesArray, _ref, _that, _fromTime, _toTime) {
+    var _selectedRoomInfo = _that._selectedRoomInfo;
+    // var _fromDate = _that._fromDate;
+    // var _toDate = _that._toDate;
+    // var _fromTime = _that._fromTime;
+    // var _toTime = _that._toTime;
+    var _dateString = new Date().toString();
+    var _userObject = _that._userObject;
+
+    var _datesArrayWithPromise = _datesArray.map(function(_date) {
+      var _eachRef = new Firebase([_ref, _date.y, _date.m, _date.w, _date.d, 'reservations'].join('/'));
+      return _eachRef.push({
+        timestamp: Firebase.ServerValue.TIMESTAMP,
+        person: _userObject.displayName || '',
+        subject: _that._reservedSubject || '',
+        date: _date.f,
+        fromTime: _fromTime,
+        toTime: _toTime,
+        reservedDate: _dateString,
+        roomInfo: _selectedRoomInfo
+      });
+    });
+
+    return _datesArrayWithPromise;
+
+    // Promise.all(_datesArrayWithPromise).then(function(_snapshot) {
+    //   console.log('Saved to ' + [_fromDate, _toDate].join(' - ') + ' at ' + [_fromTime, _toTime].join(' - '));
+    // }).catch(function(error) {
+    //   console.error(error);
+    // });
+  },
+  _pushUserReservationDetails: function(_datesArray, _searchUrl, _that, _fromDate, _toDate, _fromTime, _toTime) {
+    var _selectedRoomInfo = _that._selectedRoomInfo;
+    // var _fromDate = _that._fromDate;
+    // var _toDate = _that._toDate;
+    // var _fromTime = _that._fromTime;
+    // var _toTime = _that._toTime;
+    var _dateString = new Date().toString();
+    var _userObject = _that._userObject;
+
+    var _datesArrayWithPromise = _datesArray.map(function(_date) {
+      var _eachRef = new Firebase([_searchUrl, 'reservations'].join('/'));
+      return _eachRef.push({
+        timestamp: Firebase.ServerValue.TIMESTAMP,
+        person: _userObject.displayName || '',
+        subject: _that._reservedSubject || '',
+        date: _date.f,
+        fromTime: _fromTime,
+        toTime: _toTime,
+        reservedDate: _dateString,
+        roomInfo: _selectedRoomInfo
+      });
+    });
+
+    Promise.all(_datesArrayWithPromise).then(function(_snapshot) {
+      console.log('Saved to ' + _searchUrl + ': ' + [_fromDate, _toDate].join(' - ') + ' at ' + [_fromTime, _toTime].join(' - '));
+    }).then(function() {
+      // At here, global reservations list and user reservations list are updated.
+      // Can proceed to close all dialogs and show toast.
+      _that.set('_roomReserved', true);
+    }).catch(function(error) {
+      console.error(error);
+    });
+  },
+  // Allow user to confirm the reservation details with some default values before updating
+  // global reservations list and user reservations list.
+  _confirmReservationDetails: function(ev) {
+    var _datesArrayCopy = this._datesArrayCopy;
+    var _searchUrl = this._searchUrl;
+    var _allDayToggle = this._allDayToggle;
+    var _fromDate = this._fromDate;
+    var _toDate = this._toDate;
+    var _fromTime = _allDayToggle ? '08:00' : this._fromTime;
+    var _toTime = _allDayToggle ? '23:30' : this._toTime;
+    var _that = this;
+
+
+    var _pushReservationDetailsWithPromise = this._pushReservationDetails(_datesArrayCopy, 'https://polymer-semaphore.firebaseio.com/mockMessages', _that, _fromTime, _toTime);
+    var _pushUserReservationDetails = this._pushUserReservationDetails;
+
+    Promise.all(_pushReservationDetailsWithPromise).then(function() {
+      console.log('Saved to ' + [_fromDate, _toDate].join(' - ') + ' at ' + [_fromTime, _toTime].join(' - '));
+    }).then(function() {
+      _pushUserReservationDetails(_datesArrayCopy, _searchUrl, _that, _fromDate, _toDate, _fromTime, _toTime);
+    }).catch(function(error) {
+      console.error(error);
+    });
+
+    // Set _isReserved to switch back to spinner.
+    // Due to Promise is async, this can be done here right after Promise!
+    this.set('_isReserved', false);
   },
 
 });

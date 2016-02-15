@@ -194,16 +194,34 @@ Example:
     </paper-dialog>
 
     <!-- room info from search result -->
-    <paper-dialog id="roomDialog" with-backdrop modal="[[_isLoading]]" auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened" no-auto-focuse>
-      <template is="dom-if" if="[[_isLoading]]" restamp="true">
+    <paper-dialog id="roomDialog" with-backdrop modal="[[_isLoading]]" auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened" no-auto-focus>
+
+      <template is="dom-if" if="[[_isLoading]]" restamp="true" strip-whitespace>
         <h2>Reserve Room</h2>
-        <div class="loading-content">
-          <paper-spinner-lite active="[[_isLoading]]"></paper-spinner-lite>
-          Processing request...
-        </div>
+        <template is="dom-if" if="[[!_isReserved]]" restamp="true" strip-whitespace>
+          <div class="loading-content">
+            <paper-spinner-lite active="[[_isLoading]]"></paper-spinner-lite>
+            Processing request...
+          </div>
+        </template>
+
+        <template is="dom-if" if="[[_isReserved]]" restamp="true" strip-whitespace>
+          <paper-dialog-scrollable>
+            <paper-input label="Reserved by" placeholder="[[_reservedBy]]" value="{{_reservedBy}}"></paper-input>
+            <paper-input label="Subject" placeholder="[[_reservedSubject]]" value="{{_reservedSubject}}"></paper-input>
+            <paper-input label="Reservation time" disabled placeholder="[[_reservedTime]]"></paper-input>
+          </paper-dialog-scrollable>
+        </template>
+
+        <template is="dom-if" if="[[_isReserved]]" restamp="true" strip-whitespace>
+          <div class="buttons">
+            <paper-button on-tap="_confirmReservationDetails">cancel</paper-button>
+            <paper-button on-tap="_confirmReservationDetails">ok</paper-button>
+          </div>
+        </template>
       </template>
 
-      <template is="dom-if" if="[[!_isLoading]]" restamp="true">
+      <template is="dom-if" if="[[!_isLoading]]" restamp="true" strip-whitespace>
         <h2>[[_selectedRoomInfo.room]]</h2>
         <div class="room-info-container">
           <div class="room-info">
@@ -248,7 +266,7 @@ Example:
     </paper-dialog>
 
     <!-- toast for reserving a room -->
-    <paper-toast id="reserveRoomToast" class="fit-bottom" text="[[_reserveRoomMsg]]"></paper-toast>
+    <paper-toast id="reserveRoomToast" class="" text="[[_reserveRoomMsg]]"></paper-toast>
   </template>
 
 </dom-module>

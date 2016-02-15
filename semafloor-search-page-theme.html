@@ -105,13 +105,6 @@
       paper-dialog#addFloorDialog paper-radio-button:last-of-type {
         margin-bottom: 16px;
       }
-      paper-dialog-scrollable {
-        margin-top: 0;
-        margin-bottom: 0;
-        --paper-dialog-scrollable: {
-          padding: 0;
-        };
-      }
 
       paper-button {
         -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -322,6 +315,17 @@
       }
       paper-icon-item {
         color: #6A7180;
+      }
+
+      /* paper-input */
+      paper-input {
+        --paper-input-container-focus-color: #1ddbd8;
+      }
+
+      /* paper-toast warning */
+      paper-toast.warning {
+        background-color: #ff5252;
+        color: #fff;
       }
 
     </style>
