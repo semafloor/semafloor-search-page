@@ -251,10 +251,10 @@
 
     var _siteCode = ['', 'alpha', 'beta', 'gamma'][_site];
     var _floor = (_siteCode === '' || _siteCode === 'alpha') ? 'Any Floor' :
-    _siteCode === 'suite' ? 'Level 1' : 'Level 3';
+    (_siteCode === 'gamma' ? 'Level 1' : 'Level 3');
     // automatically update `floors` when `sites` is updated.
     this.set('_floor', _floor);
-    this.set('_floors', _floor === 'Any Floor' ? '' : _floor);
+    this.set('_floors', _floor === 'Any Floor' ? '' : (_siteCode === 'gamma' ? '01level' : '03level'));
     this.set('_inputFloor', _floor);
     // update `site`.
     this.set('_sites', _siteCode);
@@ -892,7 +892,7 @@
       this.debounce('transactionWithReservations', function() {
         // TODO: This can only be completed once roomify-create in Node is completed!
         var _timeDec = this._computeTimeDec(this._fromTime, this._toTime, this._allDayToggle);
-        
+
         this._transactionWithReservations(this._fromDate, this._toDate, _timeDec, this._selectedRoomInfo);
       }, 250);
     }
