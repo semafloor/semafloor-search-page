@@ -90,10 +90,10 @@
       }
 
       /* addSiteDialog, addFloorDialog */
-      paper-dialog#addSiteDialog,
-      paper-dialog#addFloorDialog {
-        width: 256px;
-        overflow-y: auto;
+      paper-dialog {
+        box-shadow: none;
+        /*width: 256px;
+        overflow-y: auto;*/
       }
       paper-dialog#addSiteDialog paper-radio-button,
       paper-dialog#addFloorDialog paper-radio-button {
@@ -104,6 +104,18 @@
       }
       paper-dialog#addFloorDialog paper-radio-button:last-of-type {
         margin-bottom: 16px;
+      }
+
+      paper-dialog-scrollable {
+        --paper-dialog-scrollable: {
+          max-width: 360px;
+        };
+      }
+      paper-dialog#addSiteDialog > paper-dialog-scrollable,
+      paepr-dialog#addFloorDialog > paper-dialog-scrollable {
+        --paper-dialog-scrollable: {
+          max-width: 240px;
+        };
       }
 
       paper-button {
@@ -141,9 +153,9 @@
       paper-dialog#responseDialog {
         margin: 0;
         left: 0;
+        right: 0;
         width: 100%;
         height: 100%;
-        overflow-y: auto;
       }
       paper-dialog#responseDialog::content > *:first-child,
       paper-dialog#responseDialog::content > *:last-child {

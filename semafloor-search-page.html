@@ -4,9 +4,9 @@
 <link rel="import" href="../jv-datepicker/jv-datepicker-dialog.html">
 <link rel="import" href="../compound-timepicker/compound-timepicker-dialog.html">
 
-<link rel="import" href="../iron-icon/iron-icon.html">
+<!-- <link rel="import" href="../iron-icon/iron-icon.html"> -->
+<!-- <link rel="import" href="../iron-list/iron-list.html"> -->
 <link rel="import" href="../iron-ajax/iron-ajax.html">
-<link rel="import" href="../iron-list/iron-list.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 
 <link rel="import" href="../paper-button/paper-button.html">
@@ -74,11 +74,6 @@ Example:
       </div>
     </div>
 
-    <div class="capacity-container search-item">
-      <iron-icon icon="social:person-add"></iron-icon>
-      <paper-button class="capacity-button" on-tap="_addPerson">[[_capacity]]</paper-button>
-    </div>
-
     <div class="site-container search-item">
       <iron-icon icon="icons:room"></iron-icon>
       <paper-button class="site-button" on-tap="_addSite">[[_site]]</paper-button>
@@ -87,6 +82,11 @@ Example:
     <div class="floor-container search-item">
       <iron-icon icon="social:location-city"></iron-icon>
       <paper-button class="floor-button" on-tap="_addFloor">[[_floor]]</paper-button>
+    </div>
+
+    <!-- <div class="capacity-container search-item">
+      <iron-icon icon="social:person-add"></iron-icon>
+      <paper-button class="capacity-button" on-tap="_addPerson">[[_capacity]]</paper-button>
     </div>
 
     <div class="types-container search-item">
@@ -105,74 +105,121 @@ Example:
         <paper-checkbox data-checked="tv">TV</paper-checkbox>
         <paper-checkbox data-checked="wg">Writing Glass</paper-checkbox>
       </div>
-    </div>
+    </div> -->
 
     <paper-button class="send-button" on-tap="_sendParams"><iron-icon icon="icons:send"></iron-icon>Send</paper-button>
 
     <!-- dialogs: capacity, site, floor. -->
-    <paper-dialog id="addPersonDialog" with-backdrop auto-fit-on-attach no-auto-focus>
-      <h2>Add Person</h2>
-      <p>
-        numerum nec posse intrare
-        <paper-input label="capacity" type="number" min="0" max="99" value="{{_inputCap::input}}" placeholder="1"></paper-input>
-      </p>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm on-tap="_updateCapacity">ok</paper-button>
-      </div>
-    </paper-dialog>
-    <paper-dialog id="addSiteDialog" with-backdrop auto-fit-on-attach no-auto-focus site>
-      <h2>Add Site</h2>
-      <paper-radio-group class="no-padding" selected="{{_inputSite}}" on-paper-radio-group-changed="_onPaperRadioGroupChanged" attr-for-selected="name">
-        <template is="dom-repeat" items="[[_allSites]]" index-as="index" strip-whitespace>
-          <paper-radio-button name="[[item]]" dialog-confirm>[[item]]</paper-radio-button>
-        </template>
-      </paper-radio-group>
-    </paper-dialog>
-    <paper-dialog id="addFloorDialog" with-backdrop auto-fit-on-attach no-auto-focus floor>
-      <h2>Add Site</h2>
-      <paper-dialog-scrollable class="no-padding">
-        <paper-radio-group selected="{{_inputFloor}}" on-paper-radio-group-changed="_onPaperRadioGroupChanged" attr-for-selected="name">
-          <template is="dom-repeat" items="[[_allFloors]]" index-as="index" strip-whitespace>
-            <paper-radio-button name="[[item]]" disabled="[[_isDisabled(_site, item)]]" dialog-confirm>[[item]]</paper-radio-button>
-          </template>
-        </paper-radio-group>
-      </paper-dialog-scrollable>
-    </paper-dialog>
+    <template is="dom-if" if="[[_isPersonOpened]]" restamp="true" strip-whitespace>
+      <paper-dialog id="addPersonDialog"
+        with-backdrop
+        auto-fit-on-attach
+        no-auto-focus
+        on-iron-overlay-closed="_resetDocumentScrolling">
+        <h2>Add Person</h2>
+        <p>
+          numerum nec posse intrare
+          <paper-input label="capacity" type="number" min="0" max="99" value="{{_inputCap::input}}" placeholder="1"></paper-input>
+        </p>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button dialog-confirm on-tap="_updateCapacity">ok</paper-button>
+        </div>
+      </paper-dialog>
+    </template>
+
+    <template is="dom-if" if="[[_isSiteOpened]]" restamp="true" strip-whitespace>
+      <paper-dialog id="addSiteDialog" site
+        with-backdrop
+        auto-fit-on-attach
+        no-auto-focus
+        on-iron-overlay-closed="_resetDocumentScrolling">
+        <paper-dialog-scrollable>
+          <paper-radio-group class="no-padding" selected="{{_inputSite}}" on-paper-radio-group-changed="_onPaperRadioGroupChanged" attr-for-selected="name">
+            <template is="dom-repeat" items="[[_allSites]]" index-as="index" strip-whitespace>
+              <paper-radio-button name="[[item]]" dialog-confirm>[[item]]</paper-radio-button>
+            </template>
+          </paper-radio-group>
+        </paper-dialog-scrollable>
+      </paper-dialog>
+    </template>
+    <template is="dom-if" if="[[_isFloorOpened]]" restamp="true" strip-whitespace>
+      <paper-dialog id="addFloorDialog" floor
+        with-backdrop
+        auto-fit-on-attach
+        no-auto-focus
+        on-iron-overlay-closed="_resetDocumentScrolling">
+        <paper-dialog-scrollable>
+          <paper-radio-group selected="{{_inputFloor}}" on-paper-radio-group-changed="_onPaperRadioGroupChanged" attr-for-selected="name">
+            <template is="dom-repeat" items="[[_allFloors]]" index-as="index" strip-whitespace>
+              <paper-radio-button name="[[item]]" disabled="[[_isDisabled(_site, item)]]" dialog-confirm>[[item]]</paper-radio-button>
+            </template>
+          </paper-radio-group>
+        </paper-dialog-scrollable>
+      </paper-dialog>
+    </template>
 
     <!-- pickers dialog -->
-    <jv-datepicker-dialog id="fromDate" with-backdrop disable-days="[0,6]" date="{{_fromDate}}"></jv-datepicker-dialog>
-    <jv-datepicker-dialog id="toDate" with-backdrop disable-days="[0,6]" date="{{_toDate}}" min-date="[[_fromDate]]"></jv-datepicker-dialog>
-    <compound-timepicker-dialog id="fromTime" with-backdrop time="{{_fromTime}}" time-format="24"></compound-timepicker-dialog>
-    <compound-timepicker-dialog id="toTime" with-backdrop time="{{_toTime}}" time-format="24"></compound-timepicker-dialog>
+    <template is="dom-if" if="[[_isFromDateOpened]]" restamp="true" strip-whitespace>
+      <jv-datepicker-dialog id="fromDate"
+        with-backdrop
+        disable-days="[0,6]"
+        date="{{_fromDate}}"
+        on-iron-overlay-closed="_resetDocumentScrolling"></jv-datepicker-dialog>
+    </template>
+    <template is="dom-if" if="[[_isToDateOpened]]" restamp="true" strip-whitespace>
+      <jv-datepicker-dialog id="toDate"
+        with-backdrop
+        disable-days="[0,6]"
+        date="{{_toDate}}"
+        min-date="[[_fromDate]]"
+        on-iron-overlay-closed="_resetDocumentScrolling"></jv-datepicker-dialog>
+    </template>
+    <template is="dom-if" if="[[_isFromTimeOpened]]" restamp="true" strip-whitespace>
+      <compound-timepicker-dialog id="fromTime"
+        with-backdrop
+        time="{{_fromTime}}"
+        time-format="24"
+        on-iron-overlay-closed="_resetDocumentScrolling"></compound-timepicker-dialog>
+    </template>
+    <template is="dom-if" if="[[_isToTimeOpened]]" restamp="true" strip-whitespace>
+      <compound-timepicker-dialog id="toTime"
+        with-backdrop
+        time="{{_toTime}}"
+        time-format="24"
+        on-iron-overlay-closed="_resetDocumentScrolling"></compound-timepicker-dialog>
+    </template>
 
     <!-- show search result  -->
-    <paper-dialog id="responseDialog" class="" auto-fit-on-attach no-auto-focus>
-      <div class="no-padding">
-        <div class="response-toolbar">
-          <paper-icon-button icon="icons:arrow-back" on-tap="_closeResponseDialog"></paper-icon-button>
-          <div class="response-title">Search Result</div>
-        </div>
-        <div class="response-toolbar" hidden$="[[_hideSiteToolbar]]">
-          <paper-tabs selected="{{_selectedSiteTab}}" bottom-item id="siteTabs">
-            <template is="dom-repeat" items="[[_computeSites(_emptyRoomResult)]]" index-as="index" strip-whitespace>
-              <paper-tab>[[item]]</paper-tab>
-            </template>
-          </paper-tabs>
-        </div>
+    <template is="dom-if" if="[[_isResponseOpened]]" restamp="true" strip-whitespace>
+      <paper-dialog id="responseDialog"
+        auto-fit-on-attach
+        no-auto-focus
+        on-iron-overlay-closed="_resetDocumentScrolling">
+        <div class="no-padding">
+          <div class="response-toolbar">
+            <paper-icon-button icon="icons:arrow-back" on-tap="_closeResponseDialog"></paper-icon-button>
+            <div class="response-title">Search Result</div>
+          </div>
+          <div class="response-toolbar" hidden$="[[_hideSiteToolbar]]">
+            <paper-tabs selected="{{_selectedSiteTab}}" bottom-item id="siteTabs">
+              <template is="dom-repeat" items="[[_computeSites(_emptyRoomResult)]]" index-as="index" strip-whitespace>
+                <paper-tab>[[item]]</paper-tab>
+              </template>
+            </paper-tabs>
+          </div>
 
-        <div class="response-container" on-scroll="_onScroll">
-          <iron-pages selected="[[_loadSearchResult]]">
-            <paper-spinner-lite active></paper-spinner-lite>
+          <div class="response-container" on-scroll="_onScroll">
+            <iron-pages selected="[[_loadSearchResult]]">
+              <paper-spinner-lite active></paper-spinner-lite>
 
-            <div class="result-tab">
-              <paper-tabs id="floorTabs" selected="{{_selectedFloorTab}}" scrollable class="floor-tabs">
-                <template is="dom-repeat" items="[[_floorsOfSites]]" index-as="index" strip-whitespace>
-                  <paper-tab class="floor-tab">[[item]]</paper-tab>
-                </template>
-              </paper-tabs>
-              <iron-list items="[[_roomsOfFloors]]">
-                <template strip-whitespace>
+              <div class="result-tab">
+                <paper-tabs id="floorTabs" selected="{{_selectedFloorTab}}" scrollable class="floor-tabs">
+                  <template is="dom-repeat" items="[[_floorsOfSites]]" index-as="index" strip-whitespace>
+                    <paper-tab class="floor-tab">[[item]]</paper-tab>
+                  </template>
+                </paper-tabs>
+                <template is="dom-repeat" items="[[_roomsOfFloors]]" index-as="index" strip-whitespace>
                   <div class="room-on-each-floor">
                     <div class="room-name" room-idx$="[[index]]" on-down="_onDownRoom" on-up="_onUpRoom">
                       [[item.room]]
@@ -181,89 +228,102 @@ Example:
                     <paper-icon-button icon="icons:more-vert" room-idx$="[[index]]" on-tap="_onVertTap"></paper-icon-button>
                   </div>
                 </template>
-              </iron-list>
-            </div>
+              </div>
 
-            <div class="empty-tab">
-              <iron-icon icon="icons:error-outline"></iron-icon>
-              Sorry, No matched result!
-            </div>
-          </iron-pages>
+              <div class="empty-tab">
+                <iron-icon icon="icons:error-outline"></iron-icon>
+                Sorry, No matched result!
+              </div>
+            </iron-pages>
+          </div>
         </div>
-      </div>
-    </paper-dialog>
+      </paper-dialog>
+    </template>
 
     <!-- room info from search result -->
-    <paper-dialog id="roomDialog" with-backdrop modal="[[_isLoading]]" auto-fit-on-attach on-iron-overlay-opened="_onIronOverlayOpened" no-auto-focus>
+    <template is="dom-if" if="[[_isRoomOpened]]" restamp="true" strip-whitespace>
+      <paper-dialog id="roomDialog"
+        with-backdrop
+        modal="[[_isLoading]]"
+        auto-fit-on-attach
+        no-auto-focus
+        on-iron-overlay-opened="_onIronOverlayOpened">
+        <template is="dom-if" if="[[_isLoading]]" restamp="true" strip-whitespace>
+          <h2>Reserve Room</h2>
+          <paper-dialog-scrollable dialog-element="[[_roomScrollable]]">
+            <template is="dom-if" if="[[!_isReserved]]" restamp="true" strip-whitespace>
+              <div class="loading-content">
+                <paper-spinner-lite active="[[_isLoading]]"></paper-spinner-lite>
+                Processing request...
+              </div>
+            </template>
 
-      <template is="dom-if" if="[[_isLoading]]" restamp="true" strip-whitespace>
-        <h2>Reserve Room</h2>
-        <template is="dom-if" if="[[!_isReserved]]" restamp="true" strip-whitespace>
-          <div class="loading-content">
-            <paper-spinner-lite active="[[_isLoading]]"></paper-spinner-lite>
-            Processing request...
-          </div>
-        </template>
+            <template is="dom-if" if="[[_isReserved]]" restamp="true" strip-whitespace>
+              <paper-input label="Reserved by" placeholder="[[_reservedBy]]" value="{{_reservedBy}}"></paper-input>
+              <paper-input label="Subject" placeholder="[[_reservedSubject]]" value="{{_reservedSubject}}"></paper-input>
+              <paper-input label="Reservation time" disabled placeholder="[[_reservedTime]]"></paper-input>
+            </template>
 
-        <template is="dom-if" if="[[_isReserved]]" restamp="true" strip-whitespace>
-          <paper-dialog-scrollable>
-            <paper-input label="Reserved by" placeholder="[[_reservedBy]]" value="{{_reservedBy}}"></paper-input>
-            <paper-input label="Subject" placeholder="[[_reservedSubject]]" value="{{_reservedSubject}}"></paper-input>
-            <paper-input label="Reservation time" disabled placeholder="[[_reservedTime]]"></paper-input>
+            <template is="dom-if" if="[[_isReserved]]" restamp="true" strip-whitespace>
+              <div class="buttons">
+                <paper-button on-tap="_confirmReservationDetails">cancel</paper-button>
+                <paper-button on-tap="_confirmReservationDetails">ok</paper-button>
+              </div>
+            </template>
           </paper-dialog-scrollable>
         </template>
 
-        <template is="dom-if" if="[[_isReserved]]" restamp="true" strip-whitespace>
+        <template is="dom-if" if="[[!_isLoading]]" restamp="true" strip-whitespace>
+          <h2>[[_selectedRoomInfo.room]]</h2>
+          <paper-dialog-scrollable dialog-element="[[_roomScrollable]]">
+            <div class="room-info-container">
+              <div class="room-info">
+                <iron-icon icon="icons:room"></iron-icon>[[_selectedRoomInfo.site]]
+              </div>
+              <div class="room-info">
+                <iron-icon icon="social:location-city"></iron-icon>[[_selectedRoomInfo.floor]]
+              </div>
+              <div class="room-info">
+                <iron-icon icon="social:person-add"></iron-icon>[[_selectedRoomInfo.capacity]]
+              </div>
+              <div class="room-info room-info-types-col">
+                <iron-icon icon="icons:create"></iron-icon>
+                <div class="room-info-types" id="checkboxesInRoomDialog">
+                  <template is="dom-repeat" items="[[_decodeTypes(_selectedRoomInfo.types)]]" index-as="index" strip-whitespace>
+                    <paper-checkbox checked>[[item]]</paper-checkbox>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </paper-dialog-scrollable>
           <div class="buttons">
-            <paper-button on-tap="_confirmReservationDetails">cancel</paper-button>
-            <paper-button on-tap="_confirmReservationDetails">ok</paper-button>
+            <paper-button dialog-dismiss>Cancel</paper-button>
+            <paper-button on-tap="_reserveRoom">Reserve</paper-button>
           </div>
         </template>
-      </template>
-
-      <template is="dom-if" if="[[!_isLoading]]" restamp="true" strip-whitespace>
-        <h2>[[_selectedRoomInfo.room]]</h2>
-        <div class="room-info-container">
-          <div class="room-info">
-            <iron-icon icon="icons:room"></iron-icon>[[_selectedRoomInfo.site]]
-          </div>
-          <div class="room-info">
-            <iron-icon icon="social:location-city"></iron-icon>[[_selectedRoomInfo.floor]]
-          </div>
-          <div class="room-info">
-            <iron-icon icon="social:person-add"></iron-icon>[[_selectedRoomInfo.capacity]]
-          </div>
-          <div class="room-info room-info-types-col">
-            <iron-icon icon="icons:create"></iron-icon>
-            <div class="room-info-types" id="checkboxesInRoomDialog">
-              <template is="dom-repeat" items="[[_decodeTypes(_selectedRoomInfo.types)]]" index-as="index" strip-whitespace>
-                <paper-checkbox checked>[[item]]</paper-checkbox>
-              </template>
-            </div>
-          </div>
-        </div>
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-button on-tap="_reserveRoom">Reserve</paper-button>
-          <!-- <paper-button dialog-confirm on-tap="_reserveRoom">Reserve</paper-button> -->
-        </div>
-      </template>
-    </paper-dialog>
+      </paper-dialog>
+    </template>
 
     <!-- options dialog of room info -->
-    <paper-dialog id="optionsDialog" with-backdrop no-auto-focus>
-      <paper-listbox selected="0">
-        <paper-icon-item dialog-confirm on-tap="_reserveRoom">
-          <iron-icon icon="icons:add-circle" item-icon></iron-icon>Reserve
-        </paper-icon-item>
-        <paper-icon-item dialog-confirm on-tap="_showRoomInfo">
-          <iron-icon icon="icons:info" item-icon></iron-icon>Info
-        </paper-icon-item>
-        <paper-icon-item dialog-dismiss on-tap="_forceCloseOptions">
-          <iron-icon icon="icons:close" item-icon></iron-icon>Close
-        </paper-icon-item>
-      </paper-listbox>
-    </paper-dialog>
+    <template is="dom-if" if="[[_isOptionsOpened]]" restamp="true" strip-whitespace>
+      <paper-dialog id="optionsDialog"
+        with-backdrop
+        no-auto-focus>
+        <template is="dom-if" if="[[_isOptionsOpened]]" restamp="true" strip-whitespace>
+          <paper-listbox selected="0">
+            <paper-icon-item dialog-confirm on-tap="_reserveRoom">
+              <iron-icon icon="icons:add-circle" item-icon></iron-icon>Reserve
+            </paper-icon-item>
+            <paper-icon-item dialog-confirm on-tap="_showRoomInfo">
+              <iron-icon icon="icons:info" item-icon></iron-icon>Info
+            </paper-icon-item>
+            <paper-icon-item dialog-dismiss on-tap="_forceCloseOptions">
+              <iron-icon icon="icons:close" item-icon></iron-icon>Close
+            </paper-icon-item>
+          </paper-listbox>
+        </template>
+      </paper-dialog>
+    </template>
 
     <!-- toast for reserving a room -->
     <paper-toast id="reserveRoomToast" class="" text="[[_reserveRoomMsg]]"></paper-toast>

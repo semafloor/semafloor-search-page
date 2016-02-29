@@ -22,6 +22,7 @@
       }
 
       app-header {
+        background-color: #fff;
         color: #009688;
       }
 
@@ -34,11 +35,11 @@
   </head>
   <body>
 
-    <app-drawer-layout>
+    <app-drawer-layout force-narrow>
       <app-drawer swipe-open></app-drawer>
 
       <app-header-layout>
-        <app-header condenses reveals effects="waterfall">
+        <app-header fixed reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button id="button" icon="icons:menu" drawer-toggle></paper-icon-button>
             <div title>Search &amp; Reserve</div>
@@ -66,7 +67,22 @@
     </app-drawer-layout>
 
     <script>
-      var header = document.querySelector('app-header[condenses]');
+      // var header = document.querySelector('app-header[condenses]');
+      var _app = document.querySelector('semafloor-search-page');
+      _app.addEventListener('search-page-attached', function() {
+        var _nodes = _app.getElementsByTagName('*').length;
+
+        var dd = document.querySelectorAll('paper-dialog');
+        var ddLen = dd.length;
+        for (var i = 0, el = 0, total = 0; i < ddLen; i++) {
+          el = dd[i].getElementsByTagName('*').length;
+          total += el;
+          console.log(dd[i].getAttribute('id'), 'has element nodes: ', el);
+        }
+        console.log('Total element nodes: ', _nodes);
+        console.log('Total elements nodes after shave-off:', _nodes - total, '(' + _nodes + ' - ' + total + ')');
+      });
+
     </script>
 
   </body>

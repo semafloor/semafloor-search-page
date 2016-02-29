@@ -18,7 +18,6 @@
     "/test/"
   ],
   "dependencies": {
-    "iron-icon": "PolymerElements/iron-icon#^1.0.7",
     "paper-button": "PolymerElements/paper-button#^1.0.8",
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.0.11",
     "paper-dialog": "PolymerElements/paper-dialog#^1.0.3",
@@ -37,16 +36,16 @@
     "paper-ripple": "PolymerElements/paper-ripple#^1.0.5",
     "neon-animation": "PolymerElements/neon-animation#^1.0.8",
     "paper-toast": "PolymerElements/paper-toast#^1.1.1",
-    "paper-radio-group": "PolymerElements/paper-radio-group#~1.0.8",
-    "paper-radio-button": "PolymerElements/paper-radio-button#~1.0.12",
+    "paper-radio-group": "PolymerElements/paper-radio-group#^1.0.8",
+    "paper-radio-button": "PolymerElements/paper-radio-button#^1.0.12",
     "firebase-element": "GoogleWebComponents/firebase-element#^1.0.11",
-    "jv-datepicker": "motss/jv-datepicker#^2.1.9",
+    "jv-datepicker": "motss/jv-datepicker#^2.1.11",
     "polymer": "polymer/polymer#^1.2.4"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "productionizer": "semafloor/productionizer#~0.2.4",
-    "semafloor-icons": "semafloor/semafloor-icons#~0.1.1",
+    "productionizer": "semafloor/productionizer#^0.2.4",
+    "semafloor-icons": "semafloor/semafloor-icons#^0.1.1",
     "lodash": "lodash/lodash#^4.1.0",
     "app-layout": "polymerlabs/app-layout#^0.0.7",
     "web-component-tester": "^4.2.0"

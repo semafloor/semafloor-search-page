@@ -85,7 +85,11 @@
     _toDate: {
       type: String,
       value: function() {
-        return [_notayear, ('0' + (_notamonth+1)).slice(-2), _notadate].join('-');
+        return [
+          _notayear,
+          _.padStart(_notamonth + 1, 2, '0'),
+          _.padStart(_notadate, 2, '0')
+        ].join('-');
       }
     },
     _toTime: {
@@ -97,7 +101,11 @@
     _fromDate: {
       type: String,
       value: function() {
-        return [_notayear, ('0' + (_notamonth+1)).slice(-2), _notadate].join('-');
+        return [
+          _notayear,
+          _.padStart(_notamonth + 1, 2, '0'),
+          _.padStart(_notadate, 2, '0')
+        ].join('-');
       }
     },
     _fromTime: {
@@ -182,21 +190,6 @@
     // This is a good place to perform any work related to your element's
     // visual state or active behavior (measuring sizes, beginning animations,
     // loading resources, etc).
-    var _dialog = this.$.optionsDialog;
-    _dialog.animationConfig = {
-      'entry': {
-        name: 'transform-animation',
-        node: _dialog,
-        transformFrom: 'translateY(100%)',
-        transformTo: 'translateY(0)'
-      },
-      'exit': {
-        name: 'transform-animation',
-        node: _dialog,
-        transformFrom: 'translateY(0)',
-        transformTo: 'translateY(100%)'
-      }
-    };
     this.fire('search-page-attached');
   },
 
@@ -225,29 +218,122 @@
     var _target = ev.target;
 
     if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this.$.addPersonDialog.open();
+      this._disableDocumentScrolling();
+      if (!this._isPersonOpened) {
+        this.set('_isPersonOpened', !0);
+      }
+      this.async(function() {
+        this.$$('#addPersonDialog').open();
+      }, 1);
     }
     _target = null;
   },
-  _updateCapacity: function(ev) {
-    this.set('_capacity', this._inputCap);
-  },
-
   _addSite: function(ev) {
     var _target = ev.target;
 
     if (_target && _target.tagName === 'PAPER-BUTTON') {
+      this._disableDocumentScrolling();
+
+      if (!this._isSiteOpened) {
+        this.set('_isSiteOpened', !0);
+      }
       // dynamically generate sites inside dialog.
       if (this._allSites.length === 1) {
         this.set('_allSites', _sitesArray);
       }
       // open dialog then notifyResize it async-ly.
-      this.$.addSiteDialog.open();
       this.async(function() {
-        this.$.addSiteDialog.notifyResize()
-      });
+        var _dialog = this.$$('#addSiteDialog');
+        _dialog.open();
+        _dialog.notifyResize()
+      }, 1);
     }
     _target = null;
+  },
+  _addFloor: function(ev) {
+    var _target = ev.target;
+    if (_target && _target.tagName === 'PAPER-BUTTON') {
+      this._disableDocumentScrolling();
+
+      if (!this._isFloorOpened) {
+        this.set('_isFloorOpened', !0);
+      }
+      // generate floors inside dialog dynamically.
+      if (this._allFloors.length === 1) {
+        this.set('_allFloors', _floorsArray);
+      }
+      // open dialog then async-ly notifyResize dialog.
+      this.async(function() {
+        var _dialog = this.$$('#addFloorDialog');
+        _dialog.open();
+        _dialog.notifyResize();
+      }, 1);
+    }
+    _target = null;
+  },
+  _addFromDate: function(ev) {
+    var _target = ev.target;
+
+    if (_target && _target.tagName === 'PAPER-BUTTON') {
+      this._disableDocumentScrolling();
+
+      if (!this._isFromDateOpened) {
+        this.set('_isFromDateOpened', !0);
+      }
+      this.async(function() {
+        this.$$('#fromDate').open();
+      }, 1);
+    }
+    _target = null;
+  },
+  _addToDate: function(ev) {
+    var _target = ev.target;
+
+    if (_target && _target.tagName === 'PAPER-BUTTON') {
+      this._disableDocumentScrolling();
+
+      if (!this._isToDateOpened) {
+        this.set('_isToDateOpened', !0);
+      }
+      this.async(function() {
+        this.$$('#toDate').open();
+      }, 1);
+    }
+    _target = null;
+  },
+  _addFromTime: function(ev) {
+    var _target = ev.target;
+
+    if (_target && _target.tagName === 'PAPER-BUTTON') {
+      this._disableDocumentScrolling();
+
+      if (!this._isFromTimeOpened) {
+        this.set('_isFromTimeOpened', !0);
+      }
+      this.async(function() {
+        this.$$('#fromTime').open();
+      }, 1);
+    }
+    _target = null;
+  },
+  _addToTime: function(ev) {
+    var _target = ev.target;
+
+    if (_target && _target.tagName === 'PAPER-BUTTON') {
+      this._disableDocumentScrolling();
+
+      if (!this._isToTimeOpened) {
+        this.set('_isToTimeOpened', !0);
+      }
+      this.async(function() {
+        this.$$('#toTime').open();
+      }, 1);
+    }
+    _target = null;
+  },
+
+  _updateCapacity: function(ev) {
+    this.set('_capacity', this._inputCap);
   },
   _updateSite: function() {
     var _site = _.indexOf(_sitesArray, this._inputSite);
@@ -270,22 +356,6 @@
     // update `site`.
     this.set('_sites', _siteCode);
     this.set('_site', this._inputSite);
-  },
-
-  _addFloor: function(ev) {
-    var _target = ev.target;
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      // generate floors inside dialog dynamically.
-      if (this._allFloors.length === 1) {
-        this.set('_allFloors', _floorsArray);
-      }
-      // open dialog then async-ly notifyResize dialog.
-      this.$.addFloorDialog.open();
-      this.async(function() {
-        this.$.addFloorDialog.notifyResize();
-      });
-    }
-    _target = null;
   },
   _updateFloor: function() {
     var _floor = _.indexOf(_floorsArray, this._inputFloor);
@@ -335,39 +405,6 @@
     }
   },
 
-  _addFromDate: function(ev) {
-    var _target = ev.target;
-
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this.$.fromDate.open();
-    }
-    _target = null;
-  },
-  _addToDate: function(ev) {
-    var _target = ev.target;
-
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this.$.toDate.open();
-    }
-    _target = null;
-  },
-  _addFromTime: function(ev) {
-    var _target = ev.target;
-
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this.$.fromTime.open();
-    }
-    _target = null;
-  },
-  _addToTime: function(ev) {
-    var _target = ev.target;
-
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this.$.toTime.open();
-    }
-    _target = null;
-  },
-
   _hideTime: function(_toggle) {
     this.toggleClass('all-day-hide-time', _toggle, this.$.fromTimeButton);
     this.toggleClass('all-day-hide-time', _toggle, this.$.toTimeButton);
@@ -400,23 +437,31 @@
   // aggregate all inputs before sending it out as request.
   _sendParams: function(ev) {
     var _params = '';
-    var _fromTime = this._fromTime;
-    var _toTime = this._toTime;
+    var _allDayToggle = this._allDayToggle;
+    var _fromTime = _allDayToggle ? '08:00' : this._fromTime;
+    var _toTime = _allDayToggle ? '23:30' : this._toTime;
     var _fromDate = this._fromDate;
     var _toDate = this._toDate;
-    var _incorrectTime = _fromTime > _toTime;
+    var _incorrectTime = _fromTime > _toTime || _fromTime < '08:00' || _toTime > '23:30';
     var _incorrectDate = new Date(_fromDate) > new Date(_toDate);
     var _reserveRoomToast = this.$.reserveRoomToast;
 
-    if (this._allDayToggle) {
-      _fromTime = '08:00';
-      _toTime = '23:30';
-    }
+    console.log(_fromTime < '08:00', _toTime > '23:30', _fromTime, _toTime);
+
+    // if (this._allDayToggle) {
+    //   _fromTime = '08:00';
+    //   _toTime = '23:30';
+    // }
 
     // Check date and time before parsing.
     if (_incorrectTime || _incorrectDate) {
+      var _errorMsg = 'Incorrect Date/ Time! Please ensure starting date/ time is always smaller.';
+
+      if (_fromTime < '08:00' || _toTime > '23:30') {
+        _errorMsg = 'Please select any time in between 08:00 and 23:30.';
+      }
       _reserveRoomToast.classList.add('warning');
-      this.set('_reserveRoomMsg', 'Incorrect Date/ Time! Please ensure starting date/ time is always smaller.')
+      this.set('_reserveRoomMsg', _errorMsg);
       console.error('Incorrect Date/ Time!');
       if (_reserveRoomToast.opened) {
         _reserveRoomToast.close();
@@ -445,7 +490,7 @@
       'capacity=' + encodeURIComponent(this._capacity) + '&' +
       'site=' + encodeURIComponent(this._sites) + '&' +
       'floor=' + encodeURIComponent(this._floors) + '&' +
-      'types=' + encodeURIComponent(this._types);
+      'types=' + encodeURIComponent(this._types || 0);
 
     console.log(_params);
     this.$.searchEmptyRoom.body = _params;
@@ -458,7 +503,14 @@
       this.set('_roomReserved', false);
       this.set('_roomReservedSuccessfully', false);
     }
-    this.$.responseDialog.open();
+    this._disableDocumentScrolling();
+
+    if (!this._isResponseOpened) {
+      this.set('_isResponseOpened', !0);
+    }
+    this.async(function() {
+      this.$$('#responseDialog').open();
+    }, 1);
   },
 
   _onResponse: function(ev) {
@@ -467,8 +519,6 @@
     this.set('_skipComputeSelected', _isEmpty);
     this._hideSiteToolbar = _isEmpty;
     this._loadSearchResult = _isEmpty ? 2 : 1;
-    // workaround: stop document scrolling;
-    document.body.style.overflow = 'hidden';
   },
 
   _isEmptyResultEmpty: function(_emptyRoomResult) {
@@ -484,7 +534,8 @@
     // reset _loadSearchResult, _emptyRoomResult when closing responseDialog;
     this.set('_loadSearchResult', 0);
     this.set('_emptyRoomResult', null);
-    this.$.responseDialog.close();
+
+    this.$$('#responseDialog').close();
   },
 
   _computeSites: function(_emptyRoomResult) {
@@ -536,8 +587,8 @@
       this.set('_selectedFloorTab', 0); // for beta and gamma, only 1 floor.
     }
     this.debounce('resizeTabs', function() {
-      this.$.siteTabs.notifyResize();
-      this.$.floorTabs.notifyResize();
+      this.$$('#siteTabs').notifyResize();
+      this.$$('#floorTabs').notifyResize();
     }, 1);
 
     this.set('_floorsOfSites', _newFloors);
@@ -555,8 +606,8 @@
     // workaround: to fix #selectionBar of paper-tabs to show properly;
     // notifyResize() on site tabs and floor tabs;
     this.debounce('resizeTabs', function() {
-      this.$.siteTabs.notifyResize();
-      this.$.floorTabs.notifyResize();
+      this.$$('#siteTabs').notifyResize();
+      this.$$('#floorTabs').notifyResize();
     }, 1);
 
     this.set('_roomsOfFloors', _newFloor);
@@ -594,7 +645,15 @@
       return;
     }
 
-    this.$.roomDialog.open();
+    if (!this._isRoomOpened) {
+      this.set('_isRoomOpened', !0);
+      // Tell dialog scrollable its parent dialog since they're inside a template.
+      this.set('_roomScrollable', this.$$('#roomDialog'));
+    }
+
+    this.async(function() {
+      this.$$('#roomDialog').open();
+    }, 1);
     // workaround: to display backdrop in nested dialog;
     document.body.querySelector('iron-overlay-backdrop').style.zIndex = 103;
   },
@@ -611,14 +670,21 @@
   },
 
   _onVertTap: function(ev) {
-    console.log(ev);
     var _target = ev.target;
     while (_target && _target.tagName !== 'PAPER-ICON-BUTTON') {
       _target = _target.parentElement;
     }
     this.set('_roomIdx', _target.getAttribute('room-idx'));
     this.set('_selectedRoomInfo', ev.model.item);
-    this.$.optionsDialog.open();
+
+    if (!this._isOptionsOpened) {
+      this.set('_isOptionsOpened', !0);
+    }
+
+    this.async(function() {
+      this._setAnimationConfigToOptionsDialog();
+      this.$$('#optionsDialog').open();
+    }, 1);
   },
 
   /* jshint ignore:start */
@@ -667,8 +733,8 @@
   _transactionWithReservations: function(_fromDate, _toDate, _timeDec, _selectedRoomInfo) {
     // TODO: Steps:
     // X) update room time.
-    // b) update global reservation list so that current reservations will be updated.
-    // c) update user's reservation list.
+    // X) update global reservation list so that current reservations will be updated.
+    // X) update user's reservation list.
 
     var _monthNames = ['january', 'february', 'march', 'april', 'may', 'june',
       'july', 'august', 'september', 'october', 'november', 'december'];
@@ -902,7 +968,14 @@
     console.log(ev, this._selectedRoomInfo);
     this._forceCloseOptions();
     // this._computeRoomBasedOnIdx(this._roomIdx);
-    this.$.roomDialog.open();
+
+    if (!this._isRoomOpened) {
+      this.set('_isRoomOpened', !0);
+    }
+
+    this.async(function() {
+      this.$$('#roomDialog').open();
+    }, 1);
   },
 
   _decodeTypes: function(_types) {
@@ -918,12 +991,13 @@
 
   _onIronOverlayOpened: function(ev) {
     // workaround to iron-resize and refit dialog with paper-checkbox inside it;
-    this.$.roomDialog.notifyResize();
+    this.$$('#roomDialog').notifyResize();
   },
 
   _forceCloseOptions: function() {
-    if (this.$.optionsDialog.opened) {
-      this.$.optionsDialog.close();
+    var _dialog = this.$$('#optionsDialog');
+    if (_dialog.opened) {
+      _dialog.close();
     }
   },
 
@@ -952,8 +1026,8 @@
     // However, we only interested in when the value is truthy.
     if (_roomReserved) {
       // Close roomDialog and responseDialog immediately.
-      this.$.roomDialog.close();
-      this.$.responseDialog.close();
+      this.$$('#roomDialog').close();
+      this.$$('#responseDialog').close();
       // Reset document body overflow scrolling.
       document.body.style.overflow = '';
       // After 250ms of debounce rate, setting up the toast.
@@ -980,8 +1054,9 @@
   _proceedToReserveRoom: function(_isLoading) {
     if (_isLoading) {
       // Proceed to reserve room.
-      if (!this.$.roomDialog.opened) {
-        this.$.roomDialog.open();
+      var _dialog = this.$$('#roomDialog');
+      if (!_dialog.opened) {
+        _dialog.open();
       }
 
       this.debounce('transactionWithReservations', function() {
@@ -1085,6 +1160,31 @@
     // Set _isReserved to switch back to spinner.
     // Due to Promise is async, this can be done here right after Promise!
     this.set('_isReserved', false);
+  },
+
+  _disableDocumentScrolling: function() {
+    document.body.style.overflow = 'hidden';
+  },
+  _resetDocumentScrolling: function() {
+    document.body.style.overflow = '';
+  },
+
+  _setAnimationConfigToOptionsDialog: function() {
+    var _dialog = this.$$('#optionsDialog');
+    _dialog.animationConfig = {
+      'entry': {
+        name: 'transform-animation',
+        node: _dialog,
+        transformFrom: 'translateY(100%)',
+        transformTo: 'translateY(0)'
+      },
+      'exit': {
+        name: 'transform-animation',
+        node: _dialog,
+        transformFrom: 'translateY(0)',
+        transformTo: 'translateY(100%)'
+      }
+    };
   },
 
 });
