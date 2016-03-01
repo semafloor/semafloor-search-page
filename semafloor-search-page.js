@@ -249,7 +249,7 @@
         _dialog.notifyResize()
       });
     }
-    _target = null; _button = null;
+    _target = null;
   },
   _addFloor: function(ev) {
     var _target = ev.target;
@@ -273,8 +273,9 @@
     _target = null;
   },
   _addMoreOptions: function(ev) {
-    console.log(ev);
-    this.set('_isMoreOptionsOpened', !1);
+    this.debounce('_addMoreOptions', function() {
+      this.set('_isMoreOptionsOpened', !1);
+    }, 1);
   },
   _addPerson: function(ev) {
     var _target = ev.target;
@@ -629,7 +630,6 @@
   },
 
   _onDownRoom: function(ev) {
-    console.log(ev);
     var _target = ev.target;
     while (_target && _target.tagName !== 'DIV') {
       _target = _target.parentElement;
@@ -666,11 +666,12 @@
       this.set('_roomScrollable', this.$$('#roomDialog'));
     }
 
+    // workaround: 300ms to mimic the effect of transitionend as if the dialog waits until the ripple fades out.
     this.async(function() {
       this.$$('#roomDialog').open();
       // workaround: to display backdrop in nested dialog;
       // document.body.querySelector('iron-overlay-backdrop').style.zIndex = 103;
-    });
+    }, 300);
   },
 
   _onTouchMove: function(ev) {
@@ -680,8 +681,10 @@
 
     //  console.log('scrolling...');
     // End ripple animation loop during scrolling...
-    this.set('_disableTap', true);
-    this.$$('#roomRipple' + this._roomIdx).upAction();
+    if (!this._disableTap) {
+      this.set('_disableTap', !0);
+      this.$$('#roomRipple' + this._roomIdx).upAction();
+    }
   },
 
   _onVertTap: function(ev) {

@@ -87,7 +87,7 @@ Example:
 
     <div class="more-options-container">
       <template is="dom-if" if="[[_isMoreOptionsOpened]]" restamp="true" strip-whitespace>
-        <paper-button on-tap="_addMoreOptions">more options</paper-button>
+        <paper-button on-transitionend="_addMoreOptions">more options</paper-button>
       </template>
       <template is="dom-if" if="[[!_isMoreOptionsOpened]]" restamp="true" strip-whitespace>
         <div class="capacity-container search-item">
