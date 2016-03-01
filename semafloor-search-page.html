@@ -7,6 +7,7 @@
 <!-- <link rel="import" href="../iron-icon/iron-icon.html"> -->
 <!-- <link rel="import" href="../iron-list/iron-list.html"> -->
 <!-- <link rel="import" href="../iron-collapse/iron-collapse.html"> -->
+<!-- <link rel="import" href="../iron-media-query/iron-media-query.html"> -->
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 
@@ -87,7 +88,7 @@ Example:
 
     <div class="more-options-container">
       <template is="dom-if" if="[[_isMoreOptionsOpened]]" restamp="true" strip-whitespace>
-        <paper-button on-transitionend="_addMoreOptions">more options</paper-button>
+        <paper-button more-options on-transitionend="_addMoreOptions">more options</paper-button>
       </template>
       <template is="dom-if" if="[[!_isMoreOptionsOpened]]" restamp="true" strip-whitespace>
         <div class="capacity-container search-item">
@@ -216,17 +217,19 @@ Example:
               </template>
             </paper-tabs>
           </div>
+          <div class="response-toolbar" hidden$="[[_hideSiteToolbar]]">
+            <paper-tabs id="floorTabs" selected="{{_selectedFloorTab}}" scrollable class="floor-tabs">
+              <template is="dom-repeat" items="[[_floorsOfSites]]" index-as="index" strip-whitespace>
+                <paper-tab class="floor-tab">[[item]]</paper-tab>
+              </template>
+            </paper-tabs>
+          </div>
 
           <div class="response-container" on-touchmove="_onTouchMove">
             <iron-pages selected="[[_loadSearchResult]]">
               <paper-spinner-lite active></paper-spinner-lite>
 
               <div class="result-tab">
-                <paper-tabs id="floorTabs" selected="{{_selectedFloorTab}}" scrollable class="floor-tabs">
-                  <template is="dom-repeat" items="[[_floorsOfSites]]" index-as="index" strip-whitespace>
-                    <paper-tab class="floor-tab">[[item]]</paper-tab>
-                  </template>
-                </paper-tabs>
                 <template is="dom-repeat" items="[[_roomsOfFloors]]" index-as="index" strip-whitespace>
                   <div class="room-on-each-floor">
                     <div class="room-name" room-idx$="[[index]]" on-down="_onDownRoom" on-up="_onUpRoom">
@@ -271,14 +274,13 @@ Example:
               <paper-input label="Subject" placeholder="[[_reservedSubject]]" value="{{_reservedSubject}}"></paper-input>
               <paper-input label="Reservation time" disabled placeholder="[[_reservedTime]]"></paper-input>
             </template>
-
-            <template is="dom-if" if="[[_isReserved]]" restamp="true" strip-whitespace>
-              <div class="buttons">
-                <paper-button on-tap="_confirmReservationDetails">cancel</paper-button>
-                <paper-button on-tap="_confirmReservationDetails">ok</paper-button>
-              </div>
-            </template>
           </paper-dialog-scrollable>
+          <template is="dom-if" if="[[_isReserved]]" restamp="true" strip-whitespace>
+            <div class="buttons">
+              <paper-button on-tap="_confirmReservationDetails">cancel</paper-button>
+              <paper-button on-tap="_confirmReservationDetails">ok</paper-button>
+            </div>
+          </template>
         </template>
 
         <template is="dom-if" if="[[!_isLoading]]" restamp="true" strip-whitespace>

@@ -24,12 +24,13 @@
         margin-top: 5px;
       }
       div.more-options-container > paper-button {
+        color: #737373;
+        border-bottom: 1px solid #ddd;
         height: 64px;
-        width: 100%;
         margin: 0;
         padding: calc(64px / 2 - 19px / 2) 24px;
         text-align: left;
-        border-bottom: 1px solid #ddd;
+        width: 100%;
       }
       div.more-options-container > paper-button[pressed] {
         background-color: rgba(0, 0, 0, 0);
@@ -97,8 +98,8 @@
 
       /* send-button */
       paper-button.send-button {
-        margin: 24px auto;
         max-width: 84px;
+        margin: 24px auto;
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
       }
@@ -206,7 +207,7 @@
       }
       paper-dialog#responseDialog .response-container {
         @apply(--layout-fit);
-        margin-top: 96px;
+        margin-top: calc(48px + 48px + 48px + 8px);
         overflow-y: auto;
       }
       paper-dialog#responseDialog .response-content {
@@ -255,6 +256,7 @@
       .room-on-each-floor {
         position: relative;
         border-bottom: 1px solid #ddd;
+        cursor: pointer;
         height: 64px;
         transition: all .2s cubic-bezier(0.22, 0.61, 0.36, 1);
         padding-left: 24px;
@@ -309,14 +311,14 @@
       }
 
       /* roomDialog */
-      paper-dialog#roomDialog > .loading-content {
+      paper-dialog#roomDialog div.loading-content {
         word-break: break-all;
         word-wrap: break-word;
         margin-bottom: 24px;
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
       }
-      paper-dialog#roomDialog > .loading-content > paper-spinner-lite{
+      paper-dialog#roomDialog div.loading-content > paper-spinner-lite{
         margin-right: 16px;
         --paper-spinner-color: #1ddb8b;
       }
@@ -351,6 +353,41 @@
         color: #fff;
       }
 
+      @media all and (min-width: 376px) {
+        :host {
+          background-color: #fff;
+          margin: 16px auto;
+          padding-bottom: 1px;
+          width: 360px;
+          /* @apply(--shadow-elevation-12dp); */
+          box-shadow: 0 12px 16px 1px rgba(0, 0, 0, 0.14),
+                      0 4px 22px 3px rgba(0, 0, 0, 0.12),
+                      0 6px 7px -4px rgba(0, 0, 0, 0.4);
+        }
+
+        paper-dialog#responseDialog > div.no-padding > div.response-toolbar > paper-tabs{
+          position: relative;
+          right: auto;
+        }
+
+        paper-dialog#responseDialog > div.no-padding > div.response-container > iron-pages {
+          min-height: 100%;
+          max-height: calc(100% + 16px + 8px);
+          margin: 0 auto;
+          width: 360px;
+          @apply(--shadow-elevation-8dp);
+        }
+        paper-dialog#responseDialog iron-pages > paper-spinner-lite {
+          margin: 0 auto;
+        }
+
+        paper-dialog#optionsDialog {
+          width: 360px;
+          left: auto;
+          right: auto;
+        }
+
+      }
     </style>
 
   </template>

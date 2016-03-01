@@ -178,6 +178,11 @@
 
   },
 
+  listeners: {
+    'touchmove': '_onTouchMove',
+    'down': '_resetDisableTap',
+  },
+
   observers: [
     '_hideTime(_allDayToggle)',
     '_showFloorsInTab(_emptyRoomResult, _selectedSiteTab)',
@@ -185,7 +190,7 @@
     '_showRoomsInTab(_emptyRoomResult, _selectedSiteTab, _selectedFloorTab)',
     '_updateSearchUrl(uid)',
     '_closeRoomDialogAfterLoading(_roomReserved)',
-    '_proceedToReserveRoom(_isLoading)'
+    '_proceedToReserveRoom(_isLoading)',
   ],
 
   // Element Lifecycle
@@ -274,6 +279,10 @@
   },
   _addMoreOptions: function(ev) {
     this.debounce('_addMoreOptions', function() {
+      if (this._disableTap) {
+        return;
+      }
+
       this.set('_isMoreOptionsOpened', !1);
     }, 1);
   },
@@ -635,7 +644,8 @@
       _target = _target.parentElement;
     }
     if (_target) {
-      this.set('_tapRipple', true);
+      this.set('_disableTap', !1);
+      this.set('_tapRipple', !0);
       // compute and save room info;
       this.set('_roomIdx', _target.getAttribute('room-idx'));
       // this._computeRoomBasedOnIdx(_target.getAttribute('room-idx'));
@@ -655,8 +665,7 @@
 
   _onUpRoom: function(ev) {
     if (this._disableTap) {
-      this.set('_disableTap', false);
-      this.set('_tapRipple', false);
+      this.set('_tapRipple', !1);
       return;
     }
 
@@ -675,15 +684,33 @@
   },
 
   _onTouchMove: function(ev) {
+    // End ripple effect on moreOptions button.
+    if (ev.target.tagName === 'PAPER-BUTTON') {
+      var _target = ev.target;
+      if (_target.tagName === 'PAPER-BUTTON') {
+        if (_target.hasAttribute('more-options')) {
+          var _ripple = _target.getRipple();
+          this.set('_disableTap', !0);
+          _ripple.upAction();
+        }
+      }
+    }
+
     if (!this._tapRipple) {
       return;
     }
 
-    //  console.log('scrolling...');
     // End ripple animation loop during scrolling...
     if (!this._disableTap) {
       this.set('_disableTap', !0);
       this.$$('#roomRipple' + this._roomIdx).upAction();
+    }
+  },
+  _resetDisableTap: function(ev) {
+    if (ev.target.tagName === 'PAPER-BUTTON') {
+      if (ev.target.hasAttribute('more-options')) {
+        this.set('_disableTap', !1);
+      }
     }
   },
 
@@ -702,7 +729,7 @@
     this.async(function() {
       this._setAnimationConfigToOptionsDialog();
       this.$$('#optionsDialog').open();
-    });
+    }, 300);
   },
 
   /* jshint ignore:start */
@@ -714,7 +741,10 @@
 
     // Set _isLoading to block further user interaction while loading Firebase.
     // Then the Observer will trigger method _transactionWithReservations once _isLoading is truthy.
-    this.set('_isLoading', true);
+    this.set('_isLoading', !0);
+    this.async(function() {
+      this.$$('#roomDialog').notifyResize();
+    }, 1);
   },
   // 0800 0830 | 0830 0900 | 0900 0930 | 0930 1000
   //    1    X |    1    X |    1    X |    1    X
@@ -952,7 +982,11 @@
       _that.set('_reservedSubject', 'meeting');
       _that.set('_reservedTime', [_fromTime, _toTime].join(' - '));
       // Set to trigger switching to fill in details.
-      _that.set('_isReserved', true);
+      _that.set('_isReserved', !0);
+      // Center content-changed dialog.
+      _that.async(function() {
+        _that.$$('#roomDialog').notifyResize();
+      }, 1);
       console.log(_datesArray);
 
       // return _allCommitted;
@@ -1014,7 +1048,7 @@
 
   _forceCloseOptions: function() {
     var _dialog = this.$$('#optionsDialog');
-    if (_dialog.opened) {
+    if (_dialog && _dialog.opened) {
       _dialog.close();
     }
   },
@@ -1177,7 +1211,10 @@
 
     // Set _isReserved to switch back to spinner.
     // Due to Promise is async, this can be done here right after Promise!
-    this.set('_isReserved', false);
+    this.set('_isReserved', !1);
+    this.async(function() {
+      this.$$('#roomDialog').notifyResize();
+    }, 1);
   },
 
   _disableDocumentScrolling: function() {
@@ -1204,5 +1241,4 @@
       }
     };
   },
-
 });
