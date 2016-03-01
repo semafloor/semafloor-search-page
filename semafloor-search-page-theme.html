@@ -151,11 +151,6 @@
         color: #1ddb8b;
       }
 
-      /* workaround to solve long pickers */
-      /*jv-datepicker-dialog {
-        position: fixed;
-      }*/
-
       /* all-da-toggle */
       .all-day-hide-time {
         display: none;
@@ -175,7 +170,6 @@
         margin-bottom: 0;
       }
       paper-dialog#responseDialog paper-icon-button {
-        /*--paper-icon-button-ink-color: #1ddb8b;*/
         font-size: 0;
       }
       paper-dialog#responseDialog .response-toolbar {
@@ -247,12 +241,6 @@
         width: 32px;
       }
 
-      iron-list {
-        /* to hide odd overflow-x */
-        padding-bottom: 64px;
-        overflow-x: hidden;
-        @apply(--layout-flex-auto);
-      }
       .room-on-each-floor {
         position: relative;
         border-bottom: 1px solid #ddd;
@@ -353,6 +341,7 @@
         color: #fff;
       }
 
+      /* desktop mode */
       @media all and (min-width: 376px) {
         :host {
           background-color: #fff;
