@@ -6,6 +6,7 @@
 
 <!-- <link rel="import" href="../iron-icon/iron-icon.html"> -->
 <!-- <link rel="import" href="../iron-list/iron-list.html"> -->
+<!-- <link rel="import" href="../iron-collapse/iron-collapse.html"> -->
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 
@@ -84,28 +85,35 @@ Example:
       <paper-button class="floor-button" on-tap="_addFloor">[[_floor]]</paper-button>
     </div>
 
-    <!-- <div class="capacity-container search-item">
-      <iron-icon icon="social:person-add"></iron-icon>
-      <paper-button class="capacity-button" on-tap="_addPerson">[[_capacity]]</paper-button>
-    </div>
+    <div class="more-options-container">
+      <template is="dom-if" if="[[_isMoreOptionsOpened]]" restamp="true" strip-whitespace>
+        <paper-button on-tap="_addMoreOptions">more options</paper-button>
+      </template>
+      <template is="dom-if" if="[[!_isMoreOptionsOpened]]" restamp="true" strip-whitespace>
+        <div class="capacity-container search-item">
+          <iron-icon icon="social:person-add"></iron-icon>
+          <paper-button class="capacity-button" on-tap="_addPerson">[[_capacity]]</paper-button>
+        </div>
 
-    <div class="types-container search-item">
-      <iron-icon class="types-icon" icon="icons:create"></iron-icon>
-      <div class="types-column item-data-column" on-iron-change="_getWhatBeingChecked">
-        <paper-checkbox data-checked="ar">Adjoining Room (Operable Wall)</paper-checkbox>
-        <paper-checkbox data-checked="pb">Panaboard</paper-checkbox>
-        <paper-checkbox data-checked="pca">Polycom CX100 (Audio)</paper-checkbox>
-        <paper-checkbox data-checked="pcv">Polycom CX5000 (Video Conferencing)</paper-checkbox>
-        <paper-checkbox data-checked="pj">Projector</paper-checkbox>
-        <paper-checkbox data-checked="pcf">Projector Cable Faulty</paper-checkbox>
-        <paper-checkbox data-checked="pf">Projector Faulty</paper-checkbox>
-        <paper-checkbox data-checked="spf">Screen Projector Faulty</paper-checkbox>
-        <paper-checkbox data-checked="sb">SmartBoard 800</paper-checkbox>
-        <paper-checkbox data-checked="tp">Telepresence</paper-checkbox>
-        <paper-checkbox data-checked="tv">TV</paper-checkbox>
-        <paper-checkbox data-checked="wg">Writing Glass</paper-checkbox>
-      </div>
-    </div> -->
+        <div class="types-container search-item">
+          <iron-icon class="types-icon" icon="icons:create"></iron-icon>
+          <div class="types-column item-data-column" on-iron-change="_getWhatBeingChecked">
+            <paper-checkbox data-checked="ar">Adjoining Room (Operable Wall)</paper-checkbox>
+            <paper-checkbox data-checked="pb">Panaboard</paper-checkbox>
+            <paper-checkbox data-checked="pca">Polycom CX100 (Audio)</paper-checkbox>
+            <paper-checkbox data-checked="pcv">Polycom CX5000 (Video Conferencing)</paper-checkbox>
+            <paper-checkbox data-checked="pj">Projector</paper-checkbox>
+            <paper-checkbox data-checked="pcf">Projector Cable Faulty</paper-checkbox>
+            <paper-checkbox data-checked="pf">Projector Faulty</paper-checkbox>
+            <paper-checkbox data-checked="spf">Screen Projector Faulty</paper-checkbox>
+            <paper-checkbox data-checked="sb">SmartBoard 800</paper-checkbox>
+            <paper-checkbox data-checked="tp">Telepresence</paper-checkbox>
+            <paper-checkbox data-checked="tv">TV</paper-checkbox>
+            <paper-checkbox data-checked="wg">Writing Glass</paper-checkbox>
+          </div>
+        </div>
+      </template>
+    </div>
 
     <paper-button class="send-button" on-tap="_sendParams"><iron-icon icon="icons:send"></iron-icon>Send</paper-button>
 
@@ -209,7 +217,7 @@ Example:
             </paper-tabs>
           </div>
 
-          <div class="response-container" on-scroll="_onScroll">
+          <div class="response-container" on-touchmove="_onTouchMove">
             <iron-pages selected="[[_loadSearchResult]]">
               <paper-spinner-lite active></paper-spinner-lite>
 

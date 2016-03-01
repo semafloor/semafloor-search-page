@@ -160,6 +160,22 @@
 
     _datesArrayCopy: Array,
 
+    _isPersonOpened: Boolean,
+    _isSiteOpened: Boolean,
+    _isFloorOpened: Boolean,
+    _isFromDateOpened: Boolean,
+    _isToDateOpened: Boolean,
+    _isFromTimeOpened: Boolean,
+    _isToTimeOpened: Boolean,
+    _isResponseOpened: Boolean,
+    _isRoomOpened: Boolean,
+    _isOptionsOpened: Boolean,
+
+    _isMoreOptionsOpened: {
+      type: Boolean,
+      value: true
+    },
+
   },
 
   observers: [
@@ -214,23 +230,8 @@
     this.set('_userObject', ev.detail.val());
   },
 
-  _addPerson: function(ev) {
-    var _target = ev.target;
-
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._disableDocumentScrolling();
-      if (!this._isPersonOpened) {
-        this.set('_isPersonOpened', !0);
-      }
-      this.async(function() {
-        this.$$('#addPersonDialog').open();
-      }, 1);
-    }
-    _target = null;
-  },
   _addSite: function(ev) {
     var _target = ev.target;
-
     if (_target && _target.tagName === 'PAPER-BUTTON') {
       this._disableDocumentScrolling();
 
@@ -246,9 +247,9 @@
         var _dialog = this.$$('#addSiteDialog');
         _dialog.open();
         _dialog.notifyResize()
-      }, 1);
+      });
     }
-    _target = null;
+    _target = null; _button = null;
   },
   _addFloor: function(ev) {
     var _target = ev.target;
@@ -267,13 +268,30 @@
         var _dialog = this.$$('#addFloorDialog');
         _dialog.open();
         _dialog.notifyResize();
-      }, 1);
+      });
     }
     _target = null;
   },
+  _addMoreOptions: function(ev) {
+    console.log(ev);
+    this.set('_isMoreOptionsOpened', !1);
+  },
+  _addPerson: function(ev) {
+    var _target = ev.target;
+    if (_target && _target.tagName === 'PAPER-BUTTON') {
+      this._disableDocumentScrolling();
+      if (!this._isPersonOpened) {
+        this.set('_isPersonOpened', !0);
+      }
+      this.async(function() {
+        this.$$('#addPersonDialog').open();
+      });
+    }
+    _target = null;
+  },
+
   _addFromDate: function(ev) {
     var _target = ev.target;
-
     if (_target && _target.tagName === 'PAPER-BUTTON') {
       this._disableDocumentScrolling();
 
@@ -282,13 +300,12 @@
       }
       this.async(function() {
         this.$$('#fromDate').open();
-      }, 1);
+      });
     }
     _target = null;
   },
   _addToDate: function(ev) {
     var _target = ev.target;
-
     if (_target && _target.tagName === 'PAPER-BUTTON') {
       this._disableDocumentScrolling();
 
@@ -297,13 +314,12 @@
       }
       this.async(function() {
         this.$$('#toDate').open();
-      }, 1);
+      });
     }
     _target = null;
   },
   _addFromTime: function(ev) {
     var _target = ev.target;
-
     if (_target && _target.tagName === 'PAPER-BUTTON') {
       this._disableDocumentScrolling();
 
@@ -312,13 +328,12 @@
       }
       this.async(function() {
         this.$$('#fromTime').open();
-      }, 1);
+      });
     }
     _target = null;
   },
   _addToTime: function(ev) {
     var _target = ev.target;
-
     if (_target && _target.tagName === 'PAPER-BUTTON') {
       this._disableDocumentScrolling();
 
@@ -327,13 +342,13 @@
       }
       this.async(function() {
         this.$$('#toTime').open();
-      }, 1);
+      });
     }
     _target = null;
   },
 
   _updateCapacity: function(ev) {
-    this.set('_capacity', this._inputCap);
+    this.set('_capacity', this._inputCap || 1);
   },
   _updateSite: function() {
     var _site = _.indexOf(_sitesArray, this._inputSite);
@@ -589,7 +604,7 @@
     this.debounce('resizeTabs', function() {
       this.$$('#siteTabs').notifyResize();
       this.$$('#floorTabs').notifyResize();
-    }, 1);
+    });
 
     this.set('_floorsOfSites', _newFloors);
   },
@@ -608,7 +623,7 @@
     this.debounce('resizeTabs', function() {
       this.$$('#siteTabs').notifyResize();
       this.$$('#floorTabs').notifyResize();
-    }, 1);
+    });
 
     this.set('_roomsOfFloors', _newFloor);
   },
@@ -653,12 +668,12 @@
 
     this.async(function() {
       this.$$('#roomDialog').open();
-    }, 1);
-    // workaround: to display backdrop in nested dialog;
-    document.body.querySelector('iron-overlay-backdrop').style.zIndex = 103;
+      // workaround: to display backdrop in nested dialog;
+      // document.body.querySelector('iron-overlay-backdrop').style.zIndex = 103;
+    });
   },
 
-  _onScroll: function(ev) {
+  _onTouchMove: function(ev) {
     if (!this._tapRipple) {
       return;
     }
@@ -684,7 +699,7 @@
     this.async(function() {
       this._setAnimationConfigToOptionsDialog();
       this.$$('#optionsDialog').open();
-    }, 1);
+    });
   },
 
   /* jshint ignore:start */
@@ -975,7 +990,7 @@
 
     this.async(function() {
       this.$$('#roomDialog').open();
-    }, 1);
+    });
   },
 
   _decodeTypes: function(_types) {
@@ -1029,7 +1044,7 @@
       this.$$('#roomDialog').close();
       this.$$('#responseDialog').close();
       // Reset document body overflow scrolling.
-      document.body.style.overflow = '';
+      this._resetDocumentScrolling();
       // After 250ms of debounce rate, setting up the toast.
       this.debounce('closeResponseDialog', function() {
         var _toast = this.$.reserveRoomToast;
@@ -1046,7 +1061,7 @@
         // Async-ly open toast.
         this.async(function() {
           _toast.open();
-        }, 1);
+        });
       }, 250);
     }
   },

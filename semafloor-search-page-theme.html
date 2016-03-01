@@ -23,6 +23,19 @@
       .types-container > iron-icon {
         margin-top: 5px;
       }
+      div.more-options-container > paper-button {
+        height: 64px;
+        width: 100%;
+        margin: 0;
+        padding: calc(64px / 2 - 19px / 2) 24px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      div.more-options-container > paper-button[pressed] {
+        background-color: rgba(0, 0, 0, 0);
+        color: inherit;
+        border-radius: 0;
+      }
       div.date-container > iron-icon.date-icon,
       div.types-container > iron-icon.types-icon {
         margin-top: 10px;
@@ -53,9 +66,9 @@
       }
       .all-day-row > paper-toggle-button {
         margin-top: 3px;
-        --paper-toggle-button-checked-button-color: #1DDBD8;
-        --paper-toggle-button-checked-bar-color: #1DDBD8;
-        --paper-toggle-button-checked-ink-color: #1DDBD8;
+        --paper-toggle-button-checked-button-color: #1ddb8b;
+        --paper-toggle-button-checked-bar-color: #1ddb8b;
+        --paper-toggle-button-checked-ink-color: #1ddb8b;
       }
       paper-toggle-button.all-day-toggle,
       paper-button.from-time-button,
@@ -75,10 +88,11 @@
       }
 
       paper-checkbox {
-        --paper-checkbox-checked-color: #1DDBD8;
-        --paper-checkbox-checked-ink-color: #1DDBD8;
         display: block;
         margin-bottom: 16px;
+        --paper-checkbox-checked-color: #1ddb8b;
+        --paper-checkbox-checked-ink-color: #1ddb8b;
+        --paper-checkbox-unchecked-ink-color: #1ddb8b;
       }
 
       /* send-button */
@@ -97,10 +111,9 @@
       }
       paper-dialog#addSiteDialog paper-radio-button,
       paper-dialog#addFloorDialog paper-radio-button {
-        padding-left: 24px;
         width: 100%;
-        --paper-radio-button-checked-color: #1ddbd8;
-        --paper-radio-button-checked-ink-color: #1ddbd8;
+        --paper-radio-button-checked-color: #1ddb8b;
+        --paper-radio-button-checked-ink-color: #1ddb8b;
       }
       paper-dialog#addFloorDialog paper-radio-button:last-of-type {
         margin-bottom: 16px;
@@ -120,23 +133,21 @@
 
       paper-button {
         -webkit-tap-highlight-color: rgba(0,0,0,0);
-        -webkit-tap-highlight-color: transparent;
       }
       paper-button[pressed] {
-        border-radius: 8px;
-        background-color: #1ddbd8;
+        background-color: #1ddb8b;
         color: #fff;
       }
 
       p > paper-input,
       paper-dropdown-menu {
-        --paper-input-container-focus-color: #1DDBD8;
+        --paper-input-container-focus-color: #1ddb8b;
       }
       .buttons > paper-button[pressed] {
         background-color: #fff;
       }
       .buttons > paper-button {
-        color: #1DDBD8;
+        color: #1ddb8b;
       }
 
       /* workaround to solve long pickers */
@@ -163,7 +174,7 @@
         margin-bottom: 0;
       }
       paper-dialog#responseDialog paper-icon-button {
-        /*--paper-icon-button-ink-color: #1ddbd8;*/
+        /*--paper-icon-button-ink-color: #1ddb8b;*/
         font-size: 0;
       }
       paper-dialog#responseDialog .response-toolbar {
@@ -207,7 +218,7 @@
       iron-pages > paper-spinner-lite {
         display: block;
         margin: 40px auto;
-        --paper-spinner-color: #1ddbd8;
+        --paper-spinner-color: #1ddb8b;
       }
       .empty-tab {
         font-weight: bold;
@@ -307,7 +318,7 @@
       }
       paper-dialog#roomDialog > .loading-content > paper-spinner-lite{
         margin-right: 16px;
-        --paper-spinner-color: #1ddbd8;
+        --paper-spinner-color: #1ddb8b;
       }
       paper-dialog#roomDialog h2 {
         margin-top: 24px;
@@ -331,7 +342,7 @@
 
       /* paper-input */
       paper-input {
-        --paper-input-container-focus-color: #1ddbd8;
+        --paper-input-container-focus-color: #1ddb8b;
       }
 
       /* paper-toast warning */
