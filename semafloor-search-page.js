@@ -1241,4 +1241,6 @@
       }
     };
   },
+
+  // X - TODO: set min-height when loading since at least 1 room must be shown on screen.
 });
