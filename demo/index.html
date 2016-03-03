@@ -22,11 +22,20 @@
       }
 
       app-header {
-        background-color: #fff;
         color: #009688;
+        --app-header-background-front-layer: {
+          background-color: #fff;
+        };
+        --app-header-background-rear-layer: {
+          background-color: #009688;
+        };
+      }
+      app-header.condensed,
+      app-header.condensed .title {
+        color: #fff;
       }
 
-      [title] {
+      .title {
         color: #009688;
         font-size: 20px;
         margin-left: 8px;
@@ -39,10 +48,12 @@
       <app-drawer swipe-open></app-drawer>
 
       <app-header-layout>
-        <app-header fixed reveals effects="waterfall">
+        <app-header fixed reveals effects="waterfall fade-background">
           <app-toolbar>
             <paper-icon-button id="button" icon="icons:menu" drawer-toggle></paper-icon-button>
-            <div title>Search &amp; Reserve</div>
+            <span title hidden></span>
+            <span condensed-title hidden></span>
+            <div class="title">Search &amp; Reserve</div>
           </app-toolbar>
         </app-header>
 
@@ -69,6 +80,13 @@
     <script>
       // var header = document.querySelector('app-header[condenses]');
       var _app = document.querySelector('semafloor-search-page');
+      var _header = document.querySelector('app-header');
+
+      _header.addEventListener('app-header-transform', function(ev) {
+        console.log(ev);
+        _header.toggleClass('condensed', ev.detail.progress > 0.5);
+      });
+
       _app.addEventListener('search-page-attached', function() {
         var _nodes = _app.getElementsByTagName('*').length;
 

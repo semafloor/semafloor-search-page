@@ -33,7 +33,7 @@
 
     _allDayToggle:  {
       type: Boolean,
-      value: false
+      value: !1
     },
     _capacity: {
       type: Number,
@@ -128,20 +128,17 @@
     },
     _floorsOfSites: Array,
     _roomsOfFloors: Array,
-    _loadSearchResult: {
-      type: Number,
-      value: 0
-    },
+    _loadSearchResult: Number,
     _selectedRoomInfo: Object,
     _tapRipple: {
       type: Boolean,
-      value: false
+      value: !1
     },
     _roomIdx: Number,
     _reserveRoomMsg: String,
     _hideSiteToolbar: {
       type: Boolean,
-      value: false
+      value: !1
     },
     _skipComputeSelected: Boolean,
     _prevFloor: String,
@@ -173,7 +170,12 @@
 
     _isMoreOptionsOpened: {
       type: Boolean,
-      value: true
+      value: !0
+    },
+
+    _isSpinnerLoading: {
+      type: Boolean,
+      value: !0
     },
 
   },
@@ -238,7 +240,7 @@
   _addSite: function(ev) {
     var _target = ev.target;
     if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._disableDocumentScrolling();
+      this._manipulateDocumentScrolling('hidden');
 
       if (!this._isSiteOpened) {
         this.set('_isSiteOpened', !0);
@@ -259,7 +261,7 @@
   _addFloor: function(ev) {
     var _target = ev.target;
     if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._disableDocumentScrolling();
+      this._manipulateDocumentScrolling('hidden');
 
       if (!this._isFloorOpened) {
         this.set('_isFloorOpened', !0);
@@ -289,7 +291,7 @@
   _addPerson: function(ev) {
     var _target = ev.target;
     if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._disableDocumentScrolling();
+      this._manipulateDocumentScrolling('hidden');
       if (!this._isPersonOpened) {
         this.set('_isPersonOpened', !0);
       }
@@ -303,7 +305,7 @@
   _addFromDate: function(ev) {
     var _target = ev.target;
     if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._disableDocumentScrolling();
+      this._manipulateDocumentScrolling('hidden');
 
       if (!this._isFromDateOpened) {
         this.set('_isFromDateOpened', !0);
@@ -317,7 +319,7 @@
   _addToDate: function(ev) {
     var _target = ev.target;
     if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._disableDocumentScrolling();
+      this._manipulateDocumentScrolling('hidden');
 
       if (!this._isToDateOpened) {
         this.set('_isToDateOpened', !0);
@@ -331,7 +333,7 @@
   _addFromTime: function(ev) {
     var _target = ev.target;
     if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._disableDocumentScrolling();
+      this._manipulateDocumentScrolling('hidden');
 
       if (!this._isFromTimeOpened) {
         this.set('_isFromTimeOpened', !0);
@@ -345,7 +347,7 @@
   _addToTime: function(ev) {
     var _target = ev.target;
     if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._disableDocumentScrolling();
+      this._manipulateDocumentScrolling('hidden');
 
       if (!this._isToTimeOpened) {
         this.set('_isToTimeOpened', !0);
@@ -426,7 +428,7 @@
         return _updateMenu.call(this, 'any');
       default:
         //  console.log('any floor for any site.');
-        return false;
+        return !1;
     }
   },
 
@@ -521,14 +523,14 @@
     this.$.searchEmptyRoom.body = _params;
     this.$.searchEmptyRoom.generateRequest();
     // Reset _isLoading here is much safer before opening the responseDialog.
-    this.set('_isLoading', false);
-    this.set('_isReserved', false);
+    this.set('_isLoading', !1);
+    this.set('_isReserved', !1);
     // Reset _roomReserved here is much safer before opening the responseDialog.
     if (this._roomReserved) {
-      this.set('_roomReserved', false);
-      this.set('_roomReservedSuccessfully', false);
+      this.set('_roomReserved', !1);
+      this.set('_roomReservedSuccessfully', !1);
     }
-    this._disableDocumentScrolling();
+    this._manipulateDocumentScrolling('hidden');
 
     if (!this._isResponseOpened) {
       this.set('_isResponseOpened', !0);
@@ -542,8 +544,10 @@
     // check if return result is empty OR contains no room (totoalEmptyRooms : 0);
     var _isEmpty = this._isEmptyResultEmpty(this._emptyRoomResult);
     this.set('_skipComputeSelected', _isEmpty);
-    this._hideSiteToolbar = _isEmpty;
-    this._loadSearchResult = _isEmpty ? 2 : 1;
+    this.set('_hideSiteToolbar', _isEmpty);
+
+    this.set('_isSpinnerLoading', !1);
+    this.set('_loadSearchResult', _isEmpty ? 1 : 0);
   },
 
   _isEmptyResultEmpty: function(_emptyRoomResult) {
@@ -552,12 +556,12 @@
 
   _closeResponseDialog: function(ev) {
     // workaround: resume document scrolling;
-    document.body.style.overflow = '';
+    this._manipulateDocumentScrolling();
     // reset _selectedSiteTab, _selectedFloorTab when closing responseDialog;
     this.set('_selectedSiteTab', 0);
     this.set('_selectedFloorTab', 0);
     // reset _loadSearchResult, _emptyRoomResult when closing responseDialog;
-    this.set('_loadSearchResult', 0);
+    this.set('_isSpinnerLoading', !0);
     this.set('_emptyRoomResult', null);
 
     this.$$('#responseDialog').close();
@@ -771,7 +775,7 @@
     }
 
     var _fromTimeInMin = _timeToMin(_fromTime);
-    var _toTimeInMin = _timeToMin(_toTime, true);
+    var _toTimeInMin = _timeToMin(_toTime, !0);
     var _startPos = _timeToIdx(_fromTimeInMin);
     var _timeLength = _timeToIdx(_toTimeInMin) + 1;
     _timeBin = _.fill(_.fill(Array(32), 0), 1, _startPos, _timeLength).join('');
@@ -917,7 +921,7 @@
       var _allCommitted = snapshot.every(function(n) {
         console.log('Added is committed: ', n.committed);
         console.log('committed value: ', n.snapshot.val());
-        return n.committed === true;
+        return n.committed === !0;
       });
       // If one of them is not committed, retry is needed.
       // TODO: Retry failed Promise.
@@ -975,7 +979,7 @@
       // Set if succeeded.
       _that.set('_roomReservedSuccessfully', _allCommitted);
 
-      // Allow user to fill in reservation details after all committed is true.
+      // Allow user to fill in reservation details after all committed is !0.
       // Save needed copy to properties.
       _that.set('_datesArrayCopy', _datesArray);
       _that.set('_reservedBy', _displayName);
@@ -1005,7 +1009,7 @@
     // }).then(function(_allCommitted) {
     //
     //   // Set to close all dialogs.
-    //   // _that.set('_roomReserved', true);
+    //   // _that.set('_roomReserved', !0);
     // })
     .catch(function(error) {
       console.error(error);
@@ -1081,7 +1085,7 @@
       this.$$('#roomDialog').close();
       this.$$('#responseDialog').close();
       // Reset document body overflow scrolling.
-      this._resetDocumentScrolling();
+      this._manipulateDocumentScrolling();
       // After 250ms of debounce rate, setting up the toast.
       this.debounce('closeResponseDialog', function() {
         var _toast = this.$.reserveRoomToast;
@@ -1180,7 +1184,7 @@
     }).then(function() {
       // At here, global reservations list and user reservations list are updated.
       // Can proceed to close all dialogs and show toast.
-      _that.set('_roomReserved', true);
+      _that.set('_roomReserved', !0);
     }).catch(function(error) {
       console.error(error);
     });
@@ -1217,11 +1221,10 @@
     }, 1);
   },
 
-  _disableDocumentScrolling: function() {
-    document.body.style.overflow = 'hidden';
-  },
-  _resetDocumentScrolling: function() {
-    document.body.style.overflow = '';
+  _manipulateDocumentScrolling: function(_state) {
+    var _overflow = typeof _state == 'object' ? '' : _state || '';
+
+    document.body.style.overflow = _overflow;
   },
 
   _setAnimationConfigToOptionsDialog: function() {
@@ -1242,5 +1245,12 @@
     };
   },
 
+  _computeLoadingCls: function(_isSpinnerLoading) {
+    return _isSpinnerLoading ? '' : 'finish-loading';
+  },
+
   // X - TODO: set min-height when loading since at least 1 room must be shown on screen.
+  // X - TODO: _manipulateDocumentScrolling FTW.
+  // X - TODO: calculate width for all raised elements for desktop mode.
+  // X - TODO: page transition between spinner and real pages.
 });

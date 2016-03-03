@@ -124,7 +124,7 @@ Example:
         with-backdrop
         auto-fit-on-attach
         no-auto-focus
-        on-iron-overlay-closed="_resetDocumentScrolling">
+        on-iron-overlay-closed="_manipulateDocumentScrolling">
         <h2>Add Person</h2>
         <p>
           numerum nec posse intrare
@@ -142,7 +142,7 @@ Example:
         with-backdrop
         auto-fit-on-attach
         no-auto-focus
-        on-iron-overlay-closed="_resetDocumentScrolling">
+        on-iron-overlay-closed="_manipulateDocumentScrolling">
         <paper-dialog-scrollable>
           <paper-radio-group class="no-padding" selected="{{_inputSite}}" on-paper-radio-group-changed="_onPaperRadioGroupChanged" attr-for-selected="name">
             <template is="dom-repeat" items="[[_allSites]]" index-as="index" strip-whitespace>
@@ -157,7 +157,7 @@ Example:
         with-backdrop
         auto-fit-on-attach
         no-auto-focus
-        on-iron-overlay-closed="_resetDocumentScrolling">
+        on-iron-overlay-closed="_manipulateDocumentScrolling">
         <paper-dialog-scrollable>
           <paper-radio-group selected="{{_inputFloor}}" on-paper-radio-group-changed="_onPaperRadioGroupChanged" attr-for-selected="name">
             <template is="dom-repeat" items="[[_allFloors]]" index-as="index" strip-whitespace>
@@ -174,7 +174,7 @@ Example:
         with-backdrop
         disable-days="[0,6]"
         date="{{_fromDate}}"
-        on-iron-overlay-closed="_resetDocumentScrolling"></jv-datepicker-dialog>
+        on-iron-overlay-closed="_manipulateDocumentScrolling"></jv-datepicker-dialog>
     </template>
     <template is="dom-if" if="[[_isToDateOpened]]" restamp="true" strip-whitespace>
       <jv-datepicker-dialog id="toDate"
@@ -182,21 +182,21 @@ Example:
         disable-days="[0,6]"
         date="{{_toDate}}"
         min-date="[[_fromDate]]"
-        on-iron-overlay-closed="_resetDocumentScrolling"></jv-datepicker-dialog>
+        on-iron-overlay-closed="_manipulateDocumentScrolling"></jv-datepicker-dialog>
     </template>
     <template is="dom-if" if="[[_isFromTimeOpened]]" restamp="true" strip-whitespace>
       <compound-timepicker-dialog id="fromTime"
         with-backdrop
         time="{{_fromTime}}"
         time-format="24"
-        on-iron-overlay-closed="_resetDocumentScrolling"></compound-timepicker-dialog>
+        on-iron-overlay-closed="_manipulateDocumentScrolling"></compound-timepicker-dialog>
     </template>
     <template is="dom-if" if="[[_isToTimeOpened]]" restamp="true" strip-whitespace>
       <compound-timepicker-dialog id="toTime"
         with-backdrop
         time="{{_toTime}}"
         time-format="24"
-        on-iron-overlay-closed="_resetDocumentScrolling"></compound-timepicker-dialog>
+        on-iron-overlay-closed="_manipulateDocumentScrolling"></compound-timepicker-dialog>
     </template>
 
     <!-- show search result  -->
@@ -204,7 +204,7 @@ Example:
       <paper-dialog id="responseDialog"
         auto-fit-on-attach
         no-auto-focus
-        on-iron-overlay-closed="_resetDocumentScrolling">
+        on-iron-overlay-closed="_manipulateDocumentScrolling">
         <div class="no-padding">
           <div class="response-toolbar">
             <paper-icon-button icon="icons:arrow-back" on-tap="_closeResponseDialog"></paper-icon-button>
@@ -226,9 +226,9 @@ Example:
           </div>
 
           <div class="response-container" on-touchmove="_onTouchMove">
-            <iron-pages selected="[[_loadSearchResult]]">
-              <paper-spinner-lite active></paper-spinner-lite>
+            <paper-spinner-lite class$="[[_computeLoadingCls(_isSpinnerLoading)]]" active></paper-spinner-lite>
 
+            <iron-pages class$="[[_computeLoadingCls(_isSpinnerLoading)]]" selected="[[_loadSearchResult]]">
               <div class="result-tab">
                 <template is="dom-repeat" items="[[_roomsOfFloors]]" index-as="index" strip-whitespace>
                   <div class="room-on-each-floor">
