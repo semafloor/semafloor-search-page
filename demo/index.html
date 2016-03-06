@@ -7,6 +7,7 @@
     <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <script src="../../lodash/dist/lodash.min.js" charset="utf-8"></script>
 
+    <link rel="import" href="semafloor-main.html">
     <link rel="import" href="../semafloor-search-page.html">
     <link rel="import" href="../../semafloor-icons/semafloor-icons.html">
 
@@ -17,11 +18,12 @@
     <style is="custom-style">
       body {
         margin: 0;
+        padding: 0;
         font-family: 'Roboto', 'Noto', 'Helvetica', sans-serif;
         -webkit-font-smoothing: antialiased;
       }
 
-      app-header {
+      /*app-header {
         color: #009688;
         --app-header-background-front-layer: {
           background-color: #fff;
@@ -39,12 +41,28 @@
         color: #009688;
         font-size: 20px;
         margin-left: 8px;
-      }
+      }*/
     </style>
   </head>
   <body>
+    <!-- 471 el before optimization w/o pickers on OP/ CH -->
+    <!-- 479 el before optimization w/o pickers on FF -->
+    <!-- 13xx el before optimization w/ pickers on OP/ CH -->
+    <!-- 13xx el before optimization w/ pickers on FF -->
 
-    <app-drawer-layout force-narrow>
+    <!-- 54 el clean on CH/ OP -->
+    <!-- 64 el clean on FF -->
+    <!-- 31 app shell on CH/ OP -->
+    <!-- 31 app shell on FF -->
+    <!-- 365 el after optimization w/o pickers on OP/ CH -->
+    <!-- 365 el after optimization w/o pickers on FF -->
+    <!-- 963 el after optimization w/ pickers on OP/ CH -->
+    <!-- 963 el after optimization w/ pickers on FF -->
+
+    <!-- 613 el after datepicker optimization on OP/ CH -->
+    <!-- 613 el after datepicker optimization on FF -->
+
+    <!-- <app-drawer-layout force-narrow>
       <app-drawer swipe-open></app-drawer>
 
       <app-header-layout>
@@ -57,49 +75,35 @@
           </app-toolbar>
         </app-header>
 
-        <!-- 471 el before optimization w/o pickers on OP/ CH -->
-        <!-- 479 el before optimization w/o pickers on FF -->
-        <!-- 13xx el before optimization w/ pickers on OP/ CH -->
-        <!-- 13xx el before optimization w/ pickers on FF -->
-
-        <!-- 54 el clean on CH/ OP -->
-        <!-- 64 el clean on FF -->
-        <!-- 31 app shell on CH/ OP -->
-        <!-- 31 app shell on FF -->
-        <!-- 365 el after optimization w/o pickers on OP/ CH -->
-        <!-- 365 el after optimization w/o pickers on FF -->
-        <!-- 963 el after optimization w/ pickers on OP/ CH -->
-        <!-- 963 el after optimization w/ pickers on FF -->
-
-        <!-- 613 el after datepicker optimization on OP/ CH -->
-        <!-- 613 el after datepicker optimization on FF -->
         <semafloor-search-page></semafloor-search-page>
       </app-header-layout>
-    </app-drawer-layout>
+    </app-drawer-layout> -->
+
+    <semafloor-main></semafloor-main>
 
     <script>
       // var header = document.querySelector('app-header[condenses]');
-      var _app = document.querySelector('semafloor-search-page');
-      var _header = document.querySelector('app-header');
-
-      _header.addEventListener('app-header-transform', function(ev) {
-        console.log(ev);
-        _header.toggleClass('condensed', ev.detail.progress > 0.5);
-      });
-
-      _app.addEventListener('search-page-attached', function() {
-        var _nodes = _app.getElementsByTagName('*').length;
-
-        var dd = document.querySelectorAll('paper-dialog');
-        var ddLen = dd.length;
-        for (var i = 0, el = 0, total = 0; i < ddLen; i++) {
-          el = dd[i].getElementsByTagName('*').length;
-          total += el;
-          console.log(dd[i].getAttribute('id'), 'has element nodes: ', el);
-        }
-        console.log('Total element nodes: ', _nodes);
-        console.log('Total elements nodes after shave-off:', _nodes - total, '(' + _nodes + ' - ' + total + ')');
-      });
+      // var _app = document.querySelector('semafloor-search-page');
+      // var _header = document.querySelector('app-header');
+      //
+      // _header.addEventListener('app-header-transform', function(ev) {
+      //   console.log(ev);
+      //   _header.toggleClass('condensed', ev.detail.progress > 0.5);
+      // });
+      //
+      // _app.addEventListener('search-page-attached', function() {
+      //   var _nodes = _app.getElementsByTagName('*').length;
+      //
+      //   var dd = document.querySelectorAll('paper-dialog');
+      //   var ddLen = dd.length;
+      //   for (var i = 0, el = 0, total = 0; i < ddLen; i++) {
+      //     el = dd[i].getElementsByTagName('*').length;
+      //     total += el;
+      //     console.log(dd[i].getAttribute('id'), 'has element nodes: ', el);
+      //   }
+      //   console.log('Total element nodes: ', _nodes);
+      //   console.log('Total elements nodes after shave-off:', _nodes - total, '(' + _nodes + ' - ' + total + ')');
+      // });
 
     </script>
 

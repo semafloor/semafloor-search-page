@@ -1,0 +1,451 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../semafloor-icons/semafloor-icons.html">
+<link rel="import" href="../semafloor-search-page.html">
+
+<link rel="import" href="../../app-layout/app-layout.html">
+<link rel="import" href="../../app-layout/app-scroll-effects/app-scroll-effects.html">
+
+<link rel="import" href="../../iron-page-url/iron-page-url.html">
+<link rel="import" href="../../iron-pages/iron-pages.html">
+<link rel="import" href="../../iron-image/iron-image.html">
+<link rel="import" href="../../iron-media-query/iron-media-query.html">
+
+<link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../paper-toast/paper-toast.html">
+<link rel="import" href="../../paper-tabs/paper-tabs.html">
+
+<link rel="import" href="../../firebase-element/firebase-auth.html">
+
+<dom-module id="semafloor-main">
+  <template strip-whitespace>
+    <style>
+      :host {
+        display: block;
+
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      iron-pages {
+        height: 9999px;
+      }
+
+      app-header {
+        color: #1ddbd8;
+        --app-header-background-front-layer: {
+          background-color: #fff;
+        };
+        --app-header-background-rear-layer: {
+          background-color: #009688;
+        };
+        --app-header-shadow: {
+          box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.2);
+          height: 10px;
+          bottom: -10px;
+        };
+      }
+      app-header:not([shadow]) {
+        border-bottom: 1px solid #ddd;
+      }
+
+      .title {
+        margin: 0 auto;
+        font-size: 20px;
+      }
+      [shadow] .title,
+      [shadow] paper-icon-button {
+        color: #fff;
+        --paper-icon-button-ink-color: #1ddbd8;
+      }
+
+      .main-toolbar {
+        height: 110px;
+      }
+
+      paper-tabs {
+        margin-left: -55px;
+        color: #1ddbd8;
+        font-size: 13px;
+        --paper-tabs-selection-bar-color: #1ddbd8;
+      }
+      paper-tab {
+        @apply(--layout-flex-none);
+        padding: 0;
+        --paper-tab-ink: #1ddbd8;
+      }
+      paper-tab a {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #7c7c7c;
+        font-weight: 500;
+        padding: 0 20px;
+        height: 100%;
+      }
+      app-header paper-tabs.condensed {
+        --paper-tabs-selection-bar-color: #ffff00;
+      }
+      app-header paper-tabs.condensed a {
+        color: #ffff00
+      }
+
+      app-drawer {
+        --app-drawer-content-container: {
+          background-color: #fafafa;
+        };
+      }
+      /*app-drawer app-header.signed-in {
+        height: calc(144px + 8px);
+      }
+      app-drawer app-header {
+        height: 48px;
+      }*/
+
+      .account-image {
+        position: relative;
+        height: 144px;
+        padding: 0 16px;
+        background-image: url(//lh3.googleusercontent.com/-S0NlQSizDuM/VSHcZNxiJqI/AAAAAAAAIio/MfI3_-S54B8/w640-h361-n-no/20150402_192344.jpg);
+        background-blend-mode: overlay;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: #555;
+      }
+      .account-pic {
+        position: absolute;
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        background-color: #7c7c7c;
+        top: 16px;
+        --iron-image-placeholder: {
+          border-radius: 50%;
+        };
+      }
+      .account-menu {
+        position: absolute;
+        bottom: 16px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 300;
+      }
+      .account-name {
+        font-weight: 500;
+        line-height: 16px;
+      }
+      .account-sign-in {
+        padding-left: 16px;
+        /*background-color: #007968;*/
+        background-color: #1ddb8b;
+        color: #444;
+        cursor: pointer;
+        height: 48px;
+        font-size: 20px;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      /* anchor tags */
+      a {
+        text-decoration: none;
+        color: inherit;
+        font-size: inherit;
+      }
+      .nav-menu {
+        margin-top: 8px;
+      }
+      .nav-menu > a {
+        display: block;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        height: 48px;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+      .nav-menu a.active {
+        background-color: #eee;
+        color: #7c7c7c;
+        font-weight: 400;
+      }
+
+      .home {
+        padding: 24px 16px 16px;
+      }
+
+      app-toolbar > [icon] {
+        display: none;
+      }
+
+      /* small desktop & tablet */
+      @media all and (max-width: 1200px) {
+        .main-toolbar {
+          height: 64px;
+        }
+      }
+
+      /* Mobile */
+      @media all and (max-width: 400px) {
+        app-toolbar > [icon] {
+          display: block;
+        }
+
+        .main-toolbar {
+          height: 64px;
+        }
+      }
+    </style>
+
+    <iron-page-url hash="{{urlHash}}"></iron-page-url>
+    <iron-media-query query="max-width: 400px" query-matches="{{smallScreen}}"></iron-media-query>
+
+    <firebase-auth id="semafloorAuth"
+      location="[[authURL]]"
+      provider="[[authProvider]]"
+      redirect="[[authRedirect]]"
+      status-known="{{authStatus}}"
+      user="{{authUser}}"
+      on-login="_onLogin"
+      on-logout="_onLogout"
+      on-error="_onError"
+      params='{"scope": "email"}'></firebase-auth>
+
+    <app-drawer-layout force-narrow>
+      <app-drawer id="drawer" swipe-open>
+        <template is="dom-if" if="[[smallScreen]]" restamp="true" strip-whitespace>
+          <template is="dom-if" if="[[_computeLoggedIn(authStatus, authUser)]]" restamp="true" strip-whitespace>
+            <div class="account-image">
+              <iron-image class="account-pic" src$="[[authUser.google.profileImageURL]]" preload sizing="contain" fade></iron-image>
+              <div class="account-menu" on-tap="_logout">
+                <div class="account-name"> [[authUser.google.displayName]] </div>
+                <div class="account-email"> [[authUser.google.email]] </div>
+              </div>
+            </div>
+          </template>
+
+          <template is="dom-if" if="[[!_computeLoggedIn(authStatus, authUser)]]" restamp="true" strip-whitespace>
+            <div class="account-sign-in" on-tap="_loginWithGoogle"> Sign in </div>
+          </template>
+
+          <div class="nav-menu">
+            <template is="dom-repeat" items="[[_categories]]" index-as="index" strip-whitespace>
+              <a href="#[[item]]/view"
+                class$="[[_computeCategoryCls(item, category)]]"
+                hidden$="[[_computeHidden(item, authStatus, authUser)]]">
+                [[_computeCategoryName(index)]]
+              </a>
+            </template>
+          </div>
+        </template>
+      </app-drawer>
+
+      <app-header-layout>
+        <app-header id="header" fixed="[[smallScreen]]" condenses="[[!smallScreen]]" reveals="[[!smallScreen]]" effects="material fade-background" on-app-header-transform="_onAppHeaderTransform">
+          <app-toolbar class="main-toolbar">
+            <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
+            <span condensed-title hidden></span>
+            <span title hidden></span>
+            <span class="title">[[pageTitle]]</span>
+          </app-toolbar>
+          <template is="dom-if" if="[[_shouldShowTabs(urlHash, smallScreen)]]" restamp="true" strip-whitespace>
+            <paper-tabs id="tabs" selected="{{category}}" scrollable primary$="[[_shouldShowTabs(urlHash, smallScreen)]]" attr-for-selected="tab">
+              <template is="dom-repeat" items="[[_categories]]" index-as="index" strip-whitespace>
+                <paper-tab tab="[[item]]">
+                  <a href="#[[item]]/view"> [[_computeCategoryName(index)]] </a>
+                </paper-tab>
+              </template>
+            </paper-tabs>
+          </template>
+        </app-header>
+
+        <iron-pages selected="[[category]]" attr-for-selected="page">
+          <div class="home" page="home">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, minima!
+          </div>
+
+          <template is="dom-if" if="[[_isSearchPageOpened]]" restamp="true" strip-whitespace>
+            <semafloor-search-page page="search" uid="[[uid]]"
+            on-search-page-attached="_onPageAttached"></semafloor-search-page>
+          </template>
+        </iron-pages>
+      </app-header-layout>
+
+      <paper-toast id="authToast" text="[[authMsg]]"></paper-toast>
+    </app-drawer-layout>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'semafloor-main',
+
+      properties: {
+        uid: String,
+        category: String,
+        pageTitle: String,
+        // smallScreen: Boolean,
+
+        authURL: {
+          type: String,
+          value: '//semafloor-webapp.firebaseio.com'
+        },
+        authProvider: {
+          type: String,
+          value: 'google'
+        },
+        authRedirect: Boolean,
+        authStatus: Boolean,
+        authUser: Object,
+        authMsg: String,
+
+        _isSearchPageOpened: Boolean,
+        _categories: {
+          type: Array,
+          value: [ 'home', 'profile', 'reserve', 'search', 'current', 'room' ]
+          // value: [ 'home', 'search' ]
+        },
+        _categoryNames: {
+          type: Array,
+          value: [
+            'Home', 'My Profile', 'My Reservations', 'Search & Reserve',
+            'Current Reservations', 'Room Information'
+          ]
+          // value: [ 'Home', 'Search & Reserve' ]
+        },
+      },
+
+      attached: function() {
+        var _redirectIfMobile = window.navigator.maxTouchPoints > 0 && window.outerWidth < 1367;
+        this.set('authRedirect', _redirectIfMobile);
+
+        this.fire('main-page-attached', 'main');
+      },
+
+      observers: [
+        '_hashDidChange(urlHash)'
+      ],
+
+      _computeLoginCls: function(_authStatus, _authUser) {
+        var _isLoggedIn = !_authStatus || !!_authUser;
+        return _isLoggedIn ? 'signed-in' : '';
+      },
+      _computeCategoryCls: function(_item, _category) {
+        return _item === _category ? 'active' : '';
+      },
+
+      _computeLoggedIn: function(_authStatus, _authUser) {
+        console.log(!_authStatus || !!_authUser);
+        return !_authStatus || !!_authUser;
+      },
+      _computeHidden: function(_item, _authStatus, _authUser) {
+        var _isLoggedIn = !_authStatus || !!_authUser;
+        var _shouldItemHide = _item === 'profile' || _item === 'reserve' || _item === 'search';
+        return !_isLoggedIn && _shouldItemHide;
+      },
+      _computeCategoryName: function(_item) {
+        return this._categoryNames[_item];
+      },
+      _shouldShowTabs: function(_urlHash, _smallScreen) {
+        var _isHashCategoryView = this._isHashCategoryView(_urlHash);
+        return _isHashCategoryView && !_smallScreen;
+      },
+
+      _onAppHeaderTransform: function(ev) {
+        if (!this.smallScreen) {
+          this.toggleClass('condensed', ev.detail.progress > 0.5, this.$$('#tabs'));
+          this.$$('#tabs').updateStyles();
+        }
+      },
+      _onPageAttached: function(ev) {
+        var _isPageAttached = '_' + _.camelCase('is ' + ev.type);
+        if (!this[_isPageAttached]) {
+          this.set(_isPageAttached, !0);
+        }
+      },
+      _onError: function(ev) {
+        console.log('_onError: ', ev.detail.message);
+      },
+      _onLogin: function() {
+        var _authMsg = 'Logged in';
+        var _authToast = this.$.authToast;
+        var _authUser = this.authUser;
+
+        _authMsg += !!_authUser ? ' as ' + _authUser.google.displayName + '.' : '!';
+
+        if (_authToast.opened) {
+          _authToast.close();
+        }
+
+        this.set('authMsg', _authMsg);
+        this.async(function() {
+          _authToast.open();
+        }, 1);
+      },
+      _onLogout: function() {
+        var _authMsg = 'Logged out!';
+        var _authToast = this.$.authToast;
+
+        if (_authToast.opened) {
+          _authToast.close();
+        }
+
+        this.set('authMsg', _authMsg);
+        this.async(function() {
+          _authToast.open();
+        }, 1);
+      },
+
+      _intepretHash: function(_urlHash) {
+        var _capturingGroup = /^([a-z]+)\/([a-z]+)/i.exec(_urlHash);
+        return _capturingGroup;
+      },
+      _isHashCategoryView: function(_urlHash) {
+        var _capturingGroup = this._intepretHash(_urlHash);
+        var _isView = _capturingGroup[2] === 'view';
+        var _isCategory = this._categories.indexOf(_capturingGroup[1]) >= 0;
+
+        return [_isView && _isCategory, _capturingGroup[1]];
+      },
+      _hashDidChange: function(_urlHash) {
+        var _isHashCategoryView = this._isHashCategoryView(_urlHash);
+        var _category = this.category;
+        var _categoryFromHash = _isHashCategoryView[1];
+        var _isPageOpened = '_is' + _.capitalize(_categoryFromHash) + 'PageOpened';
+        var _pageIdx = this._categories.indexOf(_categoryFromHash);
+        var _pageTitle = this._categoryNames[_pageIdx];
+
+        if (_isHashCategoryView[0]) {
+          if (_category !== _categoryFromHash) {
+            this.set('category', _categoryFromHash);
+          }
+        }
+
+        if (!this[_isPageOpened]) {
+          this.set(_isPageOpened, !0);
+        }
+
+        this.set('pageTitle', _pageTitle);
+
+        // this.$.header._scrollTop = 0;
+        // this.$.header.resetLayout();
+        this.$.drawer.close();
+      },
+
+      _loginWithGoogle: function() {
+        if (!!this.authUser) {
+          return;
+        }
+        console.log('_loginWithGoogle');
+        this.$.semafloorAuth.login();
+      },
+      _logout: function() {
+        this.$.semafloorAuth.logout();
+      },
+
+    });
+  </script>
+</dom-module>
