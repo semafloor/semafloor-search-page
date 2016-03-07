@@ -39,53 +39,51 @@
       }*/
 
       app-header {
-        background-color: #fff;
         color: #1ddbd8;
-        /*--app-header-background-front-layer: {
+        --app-header-background-front-layer:`` {
           background-color: #fff;
         };
         --app-header-background-rear-layer: {
           background-color: #009688;
-        };*/
+        };
         --app-header-shadow: {
-          /*box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.2);*/
+          box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.2);
           height: 10px;
           bottom: -10px;
         };
-        will-change: background-color;
-        transition: background-color ease-in .4s;
       }
       app-header:not([shadow]) {
         border-bottom: 1px solid #ddd;
+      }
+      app-header[shadow] {
+        color: #fff;
+      }
+      app-header[shadow] #tabs,
+      app-header[shadow] #tabs ::content #selectionBar,
+      app-header[shadow] #tabs paper-tab ::content paper-ripple,
+      app-header[shadow] #tabs paper-tab a {
+        color: #ffff00;
+      }
+      app-header[shadow] #tabs ::content #selectionBar{
+        background-color: #ffff00;
+        /*--paper-tabs-selection-bar-color: #ffff00;*/
+      }
+      app-header[shadow] #tabs paper-tab ::content paper-ripple {
+        color: #ffff00;
+        /*--paper-tab-ink: #ffff00;*/
       }
 
       .title {
         margin: 0 auto;
         font-size: 20px;
       }
-      [shadow] {
-        color: #fff;
-        background-color: #009688;
-      }
-      /* This could kill Chrome */
-      /*[shadow] #tabs {
-        color: #fff;
-      }*/
-      /*[shadow] #tabs paper-tab a {
-        color: #fff;
-      }
-      [shadow] .title,
-      [shadow] paper-icon-button {
-        color: #fff;
-        --paper-icon-button-ink-color: #1ddbd8;
-      }*/
 
       .main-toolbar {
         height: 110px;
       }
-      .reserve-toolbar {
+      /*.reserve-toolbar {
         background-color: #fff;
-      }
+      }*/
 
       #tabs {
         margin-left: -55px;
@@ -112,27 +110,12 @@
         height: 64px;
         background-color: #fff;
       }
-      app-header #tabs.condensed {
-        --paper-tabs-selection-bar-color: #ffff00;
-      }
-      app-header #tabs.condensed paper-tab {
-        --paper-tab-ink: #ffff00;
-      }
-      app-header #tabs.condensed a {
-        color: #ffff00
-      }
 
       app-drawer {
         --app-drawer-content-container: {
           background-color: #fafafa;
         };
       }
-      /*app-drawer app-header.signed-in {
-        height: calc(144px + 8px);
-      }
-      app-drawer app-header {
-        height: 48px;
-      }*/
 
       .account-image {
         position: relative;
@@ -288,7 +271,7 @@
 
       <app-header-layout>
         <!-- <app-header id="header" fixed="[[smallScreen]]" condenses="[[_shouldShowTabsToolbar(urlHash, smallScreen)]]" reveals="[[_shouldShowTabsToolbar(urlHash, smallScreen)]]" effects="material fade-background" on-app-header-transform="_onAppHeaderTransform"> -->
-        <app-header id="header" fixed="[[!smallScreen]]" condenses="[[smallScreen]]" reveals="[[smallScreen]]" effects="material" on-app-header-transform="_onAppHeaderTransform">
+        <app-header id="header" fixed="[[!smallScreen]]" condenses="[[smallScreen]]" reveals="[[smallScreen]]" effects="waterfall blend-background fade-background">
           <app-toolbar class="main-toolbar">
             <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
             <span condensed-title hidden></span>
@@ -296,7 +279,7 @@
             <span class="title">[[pageTitle]]</span>
           </app-toolbar>
 
-          <template is="dom-if" if="[[_shouldShowTabsToolbar(urlHash, smallScreen, 'hide')]]" restamp="true" strip-whitespace>
+          <!-- <template is="dom-if" if="[[_shouldShowTabsToolbar(urlHash, smallScreen, 'hide')]]" restamp="true" strip-whitespace>
             <app-toolbar class="reserve-toolbar">
               <paper-tabs class="reserve-tabs" selected="{{reserveTab}}">
                 <template is="dom-repeat" items="[[_reserveCategories]]" index-as="index" strip-whitespace>
@@ -304,7 +287,7 @@
                 </template>
               </paper-tabs>
             </app-toolbar>
-          </template>
+          </template> -->
 
           <template is="dom-if" if="[[_shouldShowTabs(urlHash, smallScreen)]]" restamp="true" strip-whitespace>
             <paper-tabs id="tabs" selected="{{category}}" scrollable primary$="[[_shouldShowTabs(urlHash, smallScreen)]]" attr-for-selected="tab">
@@ -356,9 +339,15 @@
 
       properties: {
         uid: String,
-        category: String,
+        category: {
+          type: String,
+          value: 'home'
+        },
         pageTitle: String,
-        // smallScreen: Boolean,
+        urlHash: {
+          type: String,
+        },
+        smallScreen: Boolean,
 
         authURL: {
           type: String,
@@ -392,21 +381,29 @@
           type: Array,
           value: [ 'today', 'this week', 'upcoming' ]
         },
-        reserveTab: Number,
 
+      },
+
+      observers: [
+        '_hashDidChange(urlHash, _forceUpdateHash)',
+        '_updateUid(authUser)',
+        '_logCategory(category)'
+      ],
+
+      _logCategory: function(_category) {
+        console.log('_logCategory', _category);
       },
 
       attached: function() {
         var _redirectIfMobile = window.navigator.maxTouchPoints > 0 && window.outerWidth < 1367;
         this.set('authRedirect', _redirectIfMobile);
+        // workaround to force update tabs according to hash value.
+        this.async(function() {
+          this.set('_forceUpdateHash', !0);
+        }, 1);
 
         this.fire('main-page-attached', 'main');
       },
-
-      observers: [
-        '_hashDidChange(urlHash)',
-        '_updateUid(authUser)'
-      ],
 
       _computeLoginCls: function(_authStatus, _authUser) {
         var _isLoggedIn = !_authStatus || !!_authUser;
@@ -428,11 +425,14 @@
         return this._categoryNames[_item];
       },
       _shouldShowTabs: function(_urlHash, _smallScreen) {
+        console.log('_shouldShowTabs');
+        // workaround as this is the first place to run that triggers _hashDidChange method.
         // Redirect to home page is hash in empty.
         if (!_urlHash) {
           window.location.href = '#home/view';
           return;
         }
+        console.log(this.category);
 
         var _isHashCategoryView = this._isHashCategoryView(_urlHash);
         return _isHashCategoryView[0] && !_smallScreen;
@@ -458,21 +458,7 @@
         console.log('_shouldShowTabsToolbar', _shouldShow, _forceToHide);
         return _shouldShow;
       },
-      // _shouldShowReserveTabs: function(_urlHash, _smallScreen) {
-      //   var _isHashCategoryView = this._isHashCategoryView(_urlHash);
-      //   return !_smallScreen && _isHashCategoryView[0] && _isHashCategoryView[1] === 'reserve';
-      // },
-      _computeReserveTabName: function(_reserveTab) {
-        console.log(_reserveTab);
-        return ['today', 'thisweek', 'upcoming'][_reserveTab];
-      },
 
-      _onAppHeaderTransform: function(ev) {
-        if (!this.smallScreen && !!this.$$('#tabs')) {
-          this.toggleClass('condensed', ev.detail.progress > 0.8, this.$$('#tabs'));
-          this.$$('#tabs').updateStyles();
-        }
-      },
       _onPageAttached: function(ev) {
         var _isPageAttached = '_' + _.camelCase('is ' + ev.type);
         if (!this[_isPageAttached]) {
@@ -524,13 +510,7 @@
 
         return [_isView && _isCategory, _capturingGroup[1]];
       },
-      _hashDidChange: function(_urlHash) {
-        if (!_urlHash) {
-          // Redirect to home page if hash is empty.
-          window.location.href = '#home/view';
-          return;
-        }
-
+      _hashDidChange: function(_urlHash, _forceUpdateHash) {
         var _isHashCategoryView = this._isHashCategoryView(_urlHash);
         var _category = this.category;
         var _categoryFromHash = _isHashCategoryView[1];
@@ -539,6 +519,7 @@
         var _pageTitle = this._categoryNames[_pageIdx];
 
         if (_isHashCategoryView[0]) {
+          console.log(_categoryFromHash, _category);
           if (_category !== _categoryFromHash) {
             this.set('category', _categoryFromHash);
           }
@@ -550,9 +531,12 @@
 
         this.set('pageTitle', _pageTitle);
 
-        // this.$.header._scrollTop = 0;
-        // this.$.header.resetLayout();
+        // workaround as needed to resetlayout of app-header when transition from
+        // no hash to URL with hash value.
+        this.$.header._scrollTop = 0;
+        this.$.header.resetLayout();
         this.$.drawer.close();
+        console.log('_hashDidChange', this.category);
       },
       // Slimmed down version of _checkIfUserExists(authUser).
       // As only setting uid is needed in this demo.
