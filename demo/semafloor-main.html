@@ -2,6 +2,11 @@
 <link rel="import" href="../../semafloor-icons/semafloor-icons.html">
 <link rel="import" href="../semafloor-search-page.html">
 
+<link rel="import" href="../../semafloor-profile-page/semafloor-profile-page.html">
+<link rel="import" href="../../semafloor-reserve-page/semafloor-reserve-page.html">
+<link rel="import" href="../../semafloor-current-page/semafloor-current-page.html">
+<link rel="import" href="../../semafloor-room-page/semafloor-room-page.html">
+
 <link rel="import" href="../../app-layout/app-layout.html">
 <link rel="import" href="../../app-layout/app-scroll-effects/app-scroll-effects.html">
 
@@ -29,23 +34,26 @@
         box-sizing: border-box;
       }
 
-      iron-pages {
+      /*iron-pages {
         height: 9999px;
-      }
+      }*/
 
       app-header {
+        background-color: #fff;
         color: #1ddbd8;
-        --app-header-background-front-layer: {
+        /*--app-header-background-front-layer: {
           background-color: #fff;
         };
         --app-header-background-rear-layer: {
           background-color: #009688;
-        };
+        };*/
         --app-header-shadow: {
-          box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.2);
+          /*box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.2);*/
           height: 10px;
           bottom: -10px;
         };
+        will-change: background-color;
+        transition: background-color ease-in .4s;
       }
       app-header:not([shadow]) {
         border-bottom: 1px solid #ddd;
@@ -55,28 +63,42 @@
         margin: 0 auto;
         font-size: 20px;
       }
+      [shadow] {
+        color: #fff;
+        background-color: #009688;
+      }
+      /* This could kill Chrome */
+      /*[shadow] #tabs {
+        color: #fff;
+      }*/
+      /*[shadow] #tabs paper-tab a {
+        color: #fff;
+      }
       [shadow] .title,
       [shadow] paper-icon-button {
         color: #fff;
         --paper-icon-button-ink-color: #1ddbd8;
-      }
+      }*/
 
       .main-toolbar {
         height: 110px;
       }
+      .reserve-toolbar {
+        background-color: #fff;
+      }
 
-      paper-tabs {
+      #tabs {
         margin-left: -55px;
         color: #1ddbd8;
         font-size: 13px;
         --paper-tabs-selection-bar-color: #1ddbd8;
       }
-      paper-tab {
+      #tabs paper-tab {
         @apply(--layout-flex-none);
         padding: 0;
         --paper-tab-ink: #1ddbd8;
       }
-      paper-tab a {
+      #tabs paper-tab a {
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
         text-decoration: none;
@@ -86,10 +108,17 @@
         padding: 0 20px;
         height: 100%;
       }
-      app-header paper-tabs.condensed {
+      .big-reserve-tabs {
+        height: 64px;
+        background-color: #fff;
+      }
+      app-header #tabs.condensed {
         --paper-tabs-selection-bar-color: #ffff00;
       }
-      app-header paper-tabs.condensed a {
+      app-header #tabs.condensed paper-tab {
+        --paper-tab-ink: #ffff00;
+      }
+      app-header #tabs.condensed a {
         color: #ffff00
       }
 
@@ -198,6 +227,19 @@
         .main-toolbar {
           height: 64px;
         }
+
+        .reserve-tabs {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 100%;
+          --paper-tabs-selection-bar-color: #1ddbd8;
+        }
+        .reserve-tabs paper-tab {
+          text-transform: uppercase;
+          --paper-tab-ink: #1ddbd8;
+        }
       }
     </style>
 
@@ -216,7 +258,7 @@
       params='{"scope": "email"}'></firebase-auth>
 
     <app-drawer-layout force-narrow>
-      <app-drawer id="drawer" swipe-open>
+      <app-drawer id="drawer" swipe-open="[[smallScreen]]">
         <template is="dom-if" if="[[smallScreen]]" restamp="true" strip-whitespace>
           <template is="dom-if" if="[[_computeLoggedIn(authStatus, authUser)]]" restamp="true" strip-whitespace>
             <div class="account-image">
@@ -245,13 +287,25 @@
       </app-drawer>
 
       <app-header-layout>
-        <app-header id="header" fixed="[[smallScreen]]" condenses="[[!smallScreen]]" reveals="[[!smallScreen]]" effects="material fade-background" on-app-header-transform="_onAppHeaderTransform">
+        <!-- <app-header id="header" fixed="[[smallScreen]]" condenses="[[_shouldShowTabsToolbar(urlHash, smallScreen)]]" reveals="[[_shouldShowTabsToolbar(urlHash, smallScreen)]]" effects="material fade-background" on-app-header-transform="_onAppHeaderTransform"> -->
+        <app-header id="header" fixed="[[!smallScreen]]" condenses="[[smallScreen]]" reveals="[[smallScreen]]" effects="material" on-app-header-transform="_onAppHeaderTransform">
           <app-toolbar class="main-toolbar">
             <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
             <span condensed-title hidden></span>
             <span title hidden></span>
             <span class="title">[[pageTitle]]</span>
           </app-toolbar>
+
+          <template is="dom-if" if="[[_shouldShowTabsToolbar(urlHash, smallScreen, 'hide')]]" restamp="true" strip-whitespace>
+            <app-toolbar class="reserve-toolbar">
+              <paper-tabs class="reserve-tabs" selected="{{reserveTab}}">
+                <template is="dom-repeat" items="[[_reserveCategories]]" index-as="index" strip-whitespace>
+                  <paper-tab>[[item]]</paper-tab>
+                </template>
+              </paper-tabs>
+            </app-toolbar>
+          </template>
+
           <template is="dom-if" if="[[_shouldShowTabs(urlHash, smallScreen)]]" restamp="true" strip-whitespace>
             <paper-tabs id="tabs" selected="{{category}}" scrollable primary$="[[_shouldShowTabs(urlHash, smallScreen)]]" attr-for-selected="tab">
               <template is="dom-repeat" items="[[_categories]]" index-as="index" strip-whitespace>
@@ -267,6 +321,23 @@
           <div class="home" page="home">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, minima!
           </div>
+
+          <template is="dom-if" if="[[_isProfilePageOpened]]" restamp="true" strip-whitespace>
+            <semafloor-profile-page page="profile" uid="[[uid]]"
+              on-profile-page-attached="_onPageAttached"></semafloor-profile-page>
+          </template>
+          <template is="dom-if" if="[[_isReservePageOpened]]" restamp="true" strip-whitespace>
+            <semafloor-reserve-page page="reserve" uid="[[uid]]"
+              on-reserve-page-attached="_onPageAttached"></semafloor-reserve-page>
+          </template>
+          <template is="dom-if" if="[[_isCurrentPageOpened]]" restamp="true" strip-whitespace>
+            <semafloor-current-page page="current" uid="[[uid]]"
+              on-current-page-attached="_onPageAttached"></semafloor-current-page>
+          </template>
+          <template is="dom-if" if="[[_isRoomPageOpened]]" restamp="true" strip-whitespace>
+            <semafloor-room-page page="room" uid="[[uid]]"
+              on-room-page-attached="_onPageAttached"></semafloor-room-page>
+          </template>
 
           <template is="dom-if" if="[[_isSearchPageOpened]]" restamp="true" strip-whitespace>
             <semafloor-search-page page="search" uid="[[uid]]"
@@ -316,6 +387,13 @@
           ]
           // value: [ 'Home', 'Search & Reserve' ]
         },
+
+        _reserveCategories: {
+          type: Array,
+          value: [ 'today', 'this week', 'upcoming' ]
+        },
+        reserveTab: Number,
+
       },
 
       attached: function() {
@@ -326,7 +404,8 @@
       },
 
       observers: [
-        '_hashDidChange(urlHash)'
+        '_hashDidChange(urlHash)',
+        '_updateUid(authUser)'
       ],
 
       _computeLoginCls: function(_authStatus, _authUser) {
@@ -338,7 +417,6 @@
       },
 
       _computeLoggedIn: function(_authStatus, _authUser) {
-        console.log(!_authStatus || !!_authUser);
         return !_authStatus || !!_authUser;
       },
       _computeHidden: function(_item, _authStatus, _authUser) {
@@ -350,13 +428,48 @@
         return this._categoryNames[_item];
       },
       _shouldShowTabs: function(_urlHash, _smallScreen) {
+        // Redirect to home page is hash in empty.
+        if (!_urlHash) {
+          window.location.href = '#home/view';
+          return;
+        }
+
         var _isHashCategoryView = this._isHashCategoryView(_urlHash);
-        return _isHashCategoryView && !_smallScreen;
+        return _isHashCategoryView[0] && !_smallScreen;
+      },
+      _shouldShowTabsToolbar: function(_urlHash, _smallScreen, _forceToHide) {
+        if (!_urlHash) {
+          window.location.href = '#home/view';
+          return;
+        }
+        // Show tabs inside toolbar when smallScreen and at reserve page.
+        // True - when !smallScreen || smallScreen && 'reserve';
+        // criterion   home | profile | reserve | search | current | room
+        // smallScreen    0 |       0 |       0 |      0 |       0 |    0 - dekstop
+        // urlHash        x |       x |       x |      x |       x |    x - dontcare
+        // smallScreen    1 |       1 |       1 |      1 |       1 |    1 - mobile
+        // urlHash        0 |       1 |       0 |      0 |       0 |    0 - only 'reserve'
+        // result = !smallScreen || smallScreen && 'reserve';
+        var _isHashCategoryView = this._isHashCategoryView(_urlHash);
+        var _isSmallScreen = ( _smallScreen && _isHashCategoryView[1] === 'reserve');
+        var _shouldShow = !_smallScreen || _isSmallScreen;
+        var _hasForceHide = _forceToHide ? _isSmallScreen : _shouldShow;
+        _shouldShow = _isHashCategoryView[0] && _hasForceHide;
+        console.log('_shouldShowTabsToolbar', _shouldShow, _forceToHide);
+        return _shouldShow;
+      },
+      // _shouldShowReserveTabs: function(_urlHash, _smallScreen) {
+      //   var _isHashCategoryView = this._isHashCategoryView(_urlHash);
+      //   return !_smallScreen && _isHashCategoryView[0] && _isHashCategoryView[1] === 'reserve';
+      // },
+      _computeReserveTabName: function(_reserveTab) {
+        console.log(_reserveTab);
+        return ['today', 'thisweek', 'upcoming'][_reserveTab];
       },
 
       _onAppHeaderTransform: function(ev) {
-        if (!this.smallScreen) {
-          this.toggleClass('condensed', ev.detail.progress > 0.5, this.$$('#tabs'));
+        if (!this.smallScreen && !!this.$$('#tabs')) {
+          this.toggleClass('condensed', ev.detail.progress > 0.8, this.$$('#tabs'));
           this.$$('#tabs').updateStyles();
         }
       },
@@ -364,6 +477,7 @@
         var _isPageAttached = '_' + _.camelCase('is ' + ev.type);
         if (!this[_isPageAttached]) {
           this.set(_isPageAttached, !0);
+          console.log('_onPageAttached', ev.type);
         }
       },
       _onError: function(ev) {
@@ -411,6 +525,12 @@
         return [_isView && _isCategory, _capturingGroup[1]];
       },
       _hashDidChange: function(_urlHash) {
+        if (!_urlHash) {
+          // Redirect to home page if hash is empty.
+          window.location.href = '#home/view';
+          return;
+        }
+
         var _isHashCategoryView = this._isHashCategoryView(_urlHash);
         var _category = this.category;
         var _categoryFromHash = _isHashCategoryView[1];
@@ -434,18 +554,33 @@
         // this.$.header.resetLayout();
         this.$.drawer.close();
       },
+      // Slimmed down version of _checkIfUserExists(authUser).
+      // As only setting uid is needed in this demo.
+      _updateUid: function(_authUser) {
+        if (!!_authUser) {
+          this.set('uid', _authUser.uid);
+          console.log('_updateUid', _authUser.uid);
+        }
+      },
 
       _loginWithGoogle: function() {
         if (!!this.authUser) {
           return;
         }
-        console.log('_loginWithGoogle');
+
         this.$.semafloorAuth.login();
       },
       _logout: function() {
         this.$.semafloorAuth.logout();
       },
 
+      // TODO: Using slimmed down version of _checkIfUserExists(authUser), check _updateUid(authUser).
+      // TODO: Redirect to home page if hash is empty.
+      // TODO: Awaiting Polymer to support native customProp (tabs' selection bar needs polyfill).
+      // TODO: No longer double tabs in a page. No more disaster! Just like google search, today, thisweek and upcoming all show in one page and show horizontally if screen size is large enough.
+      // TODO: Reserve page dialog not working properly, always shows under backdrop.
+      // TODO: Current page needs a new height, maybe use customProp to resolve it.
+      // TODO: Add Semafloor logo maybe?
     });
   </script>
 </dom-module>

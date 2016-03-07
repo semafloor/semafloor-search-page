@@ -104,6 +104,12 @@
       //   console.log('Total element nodes: ', _nodes);
       //   console.log('Total elements nodes after shave-off:', _nodes - total, '(' + _nodes + ' - ' + total + ')');
       // });
+      var _main = document.querySelector('semafloor-main');
+
+      _main.addEventListener('main-page-attached', function(ev) {
+        var _tel = _main.getElementsByTagName('*').length;
+        console.log('Total element nodes w/ Lazy-Loading:', _tel);
+      });
 
     </script>
 

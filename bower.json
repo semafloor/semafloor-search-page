@@ -50,6 +50,10 @@
     "semafloor-icons": "semafloor/semafloor-icons#^0.1.1",
     "lodash": "lodash/lodash#^4.1.0",
     "app-layout": "polymerlabs/app-layout#^0.0.12",
-    "web-component-tester": "^4.2.0"
+    "web-component-tester": "^4.2.0",
+    "semafloor-profile-page": "semafloor/semafloor-profile-page#^0.2.0",
+    "semafloor-current-page": "semafloor/semafloor-current-page#^0.5.7",
+    "semafloor-room-page": "semafloor/semafloor-room-page#^0.6.8",
+    "semafloor-reserve-page": "semafloor/semafloor-reserve-page#^0.3.20"
   }
 }

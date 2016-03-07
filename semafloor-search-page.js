@@ -21,14 +21,11 @@
   is: 'semafloor-search-page',
 
   properties: {
-    uid: {
-      type: String,
-      value: 'google:9999'
-    },
+    uid: String,
 
     _searchUrl: {
       type: String,
-      value: 'https://semafloor-webapp.firebaseio.com'
+      value: '//semafloor-webapp.firebaseio.com'
     },
 
     _allDayToggle:  {
@@ -831,7 +828,7 @@
     // Date array.
     // X - TODO: To update room time for one or more dates.
     // Firebase ref to a room, KLB - Tower 5, Level 1, Taipei 101 on 2016-01-29:
-    // ref - https://polymer-semaphore.firebaseio.com/mockMessages/
+    // ref - //polymer-semaphore.firebaseio.com/mockMessages/
     // year - /2016
     // month - /00january
     // week - /week05
@@ -882,14 +879,14 @@
     // types: "803"
     // Now new url will be:
     //
-    // ref - https://polymer-semaphore.firebaseio.com/mockMessages/
+    // ref - //polymer-semaphore.firebaseio.com/mockMessages/
     // year - /2016
     // month - /00january
     // week - /week05
     // day - /29
     // site, level, room - /site/alpha/01level/taipei101
     // time - /time
-    var _ref = 'https://polymer-semaphore.firebaseio.com/mockMessages';
+    var _ref = '//polymer-semaphore.firebaseio.com/mockMessages';
     var _siteToCode = _siteNameToCode(_selectedRoomInfo.site);
     var _floorToCode = _floorNameToCode(_selectedRoomInfo.floor);
     var _site = ['site', _siteToCode, _floorToCode, _selectedRoomInfo.room].join('/');
@@ -1073,7 +1070,7 @@
 
   _updateSearchUrl: function(_uid) {
     console.log(_uid);
-    var _newUrl = 'https://semafloor-webapp.firebaseio.com/users/google/' + this.uid;
+    var _newUrl = '//semafloor-webapp.firebaseio.com/users/google/' + this.uid;
     this.set('_searchUrl', _newUrl);
   },
 
@@ -1202,7 +1199,7 @@
     var _that = this;
 
 
-    var _pushReservationDetailsWithPromise = this._pushReservationDetails(_datesArrayCopy, 'https://polymer-semaphore.firebaseio.com/mockMessages', _that, _fromTime, _toTime);
+    var _pushReservationDetailsWithPromise = this._pushReservationDetails(_datesArrayCopy, '//polymer-semaphore.firebaseio.com/mockMessages', _that, _fromTime, _toTime);
     var _pushUserReservationDetails = this._pushUserReservationDetails;
 
     Promise.all(_pushReservationDetailsWithPromise).then(function() {
