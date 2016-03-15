@@ -4,10 +4,6 @@
 <link rel="import" href="../jv-datepicker/jv-datepicker-dialog.html">
 <link rel="import" href="../compound-timepicker/compound-timepicker-dialog.html">
 
-<!-- <link rel="import" href="../iron-icon/iron-icon.html"> -->
-<!-- <link rel="import" href="../iron-list/iron-list.html"> -->
-<!-- <link rel="import" href="../iron-collapse/iron-collapse.html"> -->
-<!-- <link rel="import" href="../iron-media-query/iron-media-query.html"> -->
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 
@@ -66,34 +62,34 @@ Example:
           <paper-toggle-button class="all-day-toggle" checked="{{_allDayToggle}}"></paper-toggle-button>
         </div>
         <div class="from-date-row">
-          <paper-button on-tap="_addFromDate">[[_fromDate]]</paper-button>
-          <paper-button id="fromTimeButton" class="from-time-button" on-tap="_addFromTime">[[_fromTime]]</paper-button>
+          <paper-button on-tap="_addFromDate" on-transitionend="_addFromDate">[[_fromDate]]</paper-button>
+          <paper-button id="fromTimeButton" class="from-time-button" on-tap="_addFromTime" on-transitionend="_addFromTime">[[_fromTime]]</paper-button>
         </div>
         <div class="to-date-row">
-          <paper-button on-tap="_addToDate">[[_toDate]]</paper-button>
-          <paper-button id="toTimeButton" class="to-time-button" on-tap="_addToTime">[[_toTime]]</paper-button>
+          <paper-button on-tap="_addToDate" on-transitionend="_addToDate">[[_toDate]]</paper-button>
+          <paper-button id="toTimeButton" class="to-time-button" on-tap="_addToTime" on-transitionend="_addToTime">[[_toTime]]</paper-button>
         </div>
       </div>
     </div>
 
     <div class="site-container search-item">
       <iron-icon icon="icons:room"></iron-icon>
-      <paper-button class="site-button" on-tap="_addSite">[[_site]]</paper-button>
+      <paper-button class="site-button" on-tap="_addSite" on-transitionend="_addSite">[[_site]]</paper-button>
     </div>
 
     <div class="floor-container search-item">
       <iron-icon icon="social:location-city"></iron-icon>
-      <paper-button class="floor-button" on-tap="_addFloor">[[_floor]]</paper-button>
+      <paper-button class="floor-button" on-tap="_addFloor" on-transitionend="_addFloor">[[_floor]]</paper-button>
     </div>
 
     <div class="more-options-container">
       <template is="dom-if" if="[[_isMoreOptionsOpened]]" restamp="true" strip-whitespace>
-        <paper-button more-options on-transitionend="_addMoreOptions">more options</paper-button>
+        <paper-button more-options on-tap="_addMoreOptions" on-transitionend="_addMoreOptions">more options</paper-button>
       </template>
       <template is="dom-if" if="[[!_isMoreOptionsOpened]]" restamp="true" strip-whitespace>
         <div class="capacity-container search-item">
           <iron-icon icon="social:person-add"></iron-icon>
-          <paper-button class="capacity-button" on-tap="_addPerson">[[_capacity]]</paper-button>
+          <paper-button class="capacity-button" on-tap="_addPerson" on-transitionend="_addPerson">[[_capacity]]</paper-button>
         </div>
 
         <div class="types-container search-item">
@@ -116,10 +112,12 @@ Example:
       </template>
     </div>
 
-    <paper-button class="send-button" on-tap="_sendParams"><iron-icon icon="icons:send"></iron-icon>Send</paper-button>
+    <paper-button class="send-button" on-tap="_sendParams" on-transitionend="_sendParams">
+      <span>send</span>
+      <iron-icon icon="icons:send"></iron-icon>
+    </paper-button>
 
-    <!-- dialogs: capacity, site, floor. -->
-    <template is="dom-if" if="[[_isPersonOpened]]" restamp="true" strip-whitespace>
+    <template is="dom-if" if="[[_isPersonOpened]]" restamp="true" strip-whitespace on-dom-change="_hasPersonRendered">
       <paper-dialog id="addPersonDialog"
         with-backdrop
         auto-fit-on-attach
@@ -137,7 +135,7 @@ Example:
       </paper-dialog>
     </template>
 
-    <template is="dom-if" if="[[_isSiteOpened]]" restamp="true" strip-whitespace>
+    <template is="dom-if" if="[[_isSiteOpened]]" restamp="true" strip-whitespace on-dom-change="_hasSiteRendered">
       <paper-dialog id="addSiteDialog" site
         with-backdrop
         auto-fit-on-attach
@@ -152,7 +150,7 @@ Example:
         </paper-dialog-scrollable>
       </paper-dialog>
     </template>
-    <template is="dom-if" if="[[_isFloorOpened]]" restamp="true" strip-whitespace>
+    <template is="dom-if" if="[[_isFloorOpened]]" restamp="true" strip-whitespace on-dom-change="_hasFloorRendered">
       <paper-dialog id="addFloorDialog" floor
         with-backdrop
         auto-fit-on-attach
@@ -168,15 +166,14 @@ Example:
       </paper-dialog>
     </template>
 
-    <!-- pickers dialog -->
-    <template is="dom-if" if="[[_isFromDateOpened]]" restamp="true" strip-whitespace>
+    <template is="dom-if" if="[[_isFromDateOpened]]" restamp="true" strip-whitespace on-dom-change="_hasFromDateRendered">
       <jv-datepicker-dialog id="fromDate"
         with-backdrop
         disable-days="[0,6]"
         date="{{_fromDate}}"
         on-iron-overlay-closed="_manipulateDocumentScrolling"></jv-datepicker-dialog>
     </template>
-    <template is="dom-if" if="[[_isToDateOpened]]" restamp="true" strip-whitespace>
+    <template is="dom-if" if="[[_isToDateOpened]]" restamp="true" strip-whitespace on-dom-change="_hasToDateRendered">
       <jv-datepicker-dialog id="toDate"
         with-backdrop
         disable-days="[0,6]"
@@ -184,14 +181,14 @@ Example:
         min-date="[[_fromDate]]"
         on-iron-overlay-closed="_manipulateDocumentScrolling"></jv-datepicker-dialog>
     </template>
-    <template is="dom-if" if="[[_isFromTimeOpened]]" restamp="true" strip-whitespace>
+    <template is="dom-if" if="[[_isFromTimeOpened]]" restamp="true" strip-whitespace on-dom-change="_hasFromTimeRendered">
       <compound-timepicker-dialog id="fromTime"
         with-backdrop
         time="{{_fromTime}}"
         time-format="24"
         on-iron-overlay-closed="_manipulateDocumentScrolling"></compound-timepicker-dialog>
     </template>
-    <template is="dom-if" if="[[_isToTimeOpened]]" restamp="true" strip-whitespace>
+    <template is="dom-if" if="[[_isToTimeOpened]]" restamp="true" strip-whitespace on-dom-change="_hasToTimeRendered">
       <compound-timepicker-dialog id="toTime"
         with-backdrop
         time="{{_toTime}}"
@@ -199,15 +196,14 @@ Example:
         on-iron-overlay-closed="_manipulateDocumentScrolling"></compound-timepicker-dialog>
     </template>
 
-    <!-- show search result  -->
-    <template is="dom-if" if="[[_isResponseOpened]]" restamp="true" strip-whitespace>
+    <template is="dom-if" if="[[_isResponseOpened]]" restamp="true" strip-whitespace on-dom-change="_hasResponseRendered">
       <paper-dialog id="responseDialog"
         auto-fit-on-attach
         no-auto-focus
         on-iron-overlay-closed="_manipulateDocumentScrolling">
         <div class="no-padding">
           <div class="response-toolbar">
-            <paper-icon-button icon="icons:arrow-back" on-tap="_closeResponseDialog"></paper-icon-button>
+            <paper-icon-button icon="icons:arrow-back" on-tap="_closeResponseDialog" on-transitionend="_closeResponseDialog"></paper-icon-button>
             <div class="response-title">Search Result</div>
           </div>
           <div class="response-toolbar" hidden$="[[_hideSiteToolbar]]">
@@ -251,7 +247,6 @@ Example:
       </paper-dialog>
     </template>
 
-    <!-- room info from search result -->
     <template is="dom-if" if="[[_isRoomOpened]]" restamp="true" strip-whitespace>
       <paper-dialog id="roomDialog"
         with-backdrop
@@ -314,7 +309,6 @@ Example:
       </paper-dialog>
     </template>
 
-    <!-- options dialog of room info -->
     <template is="dom-if" if="[[_isOptionsOpened]]" restamp="true" strip-whitespace>
       <paper-dialog id="optionsDialog"
         with-backdrop
@@ -335,7 +329,6 @@ Example:
       </paper-dialog>
     </template>
 
-    <!-- toast for reserving a room -->
     <paper-toast id="reserveRoomToast" class="" text="[[_reserveRoomMsg]]"></paper-toast>
   </template>
 

@@ -155,8 +155,8 @@
     _datesArrayCopy: Array,
 
     _isPersonOpened: Boolean,
-    _isSiteOpened: Boolean,
     _isFloorOpened: Boolean,
+    _isSiteOpened: Boolean,
     _isFromDateOpened: Boolean,
     _isToDateOpened: Boolean,
     _isFromTimeOpened: Boolean,
@@ -174,6 +174,35 @@
       type: Boolean,
       value: !0
     },
+
+    _readyToAddFromDate: Boolean,
+    _hasFromDateRendered: Boolean,
+
+    _readyToAddFromTime: Boolean,
+    _hasFromTimeRendered: Boolean,
+
+    _readyToAddToDate: Boolean,
+    _hasToDateRendered: Boolean,
+
+    _readyToAddToTime: Boolean,
+    _hasToTimeRendered: Boolean,
+
+    _readyToAddSite: Boolean,
+    _hasSiteRendered: Boolean,
+
+    _readyToAddFloor: Boolean,
+    _hasFloorRendered: Boolean,
+
+    _readyToAddMoreOptions: Boolean,
+    _hasMoreOptionsRendered: Boolean,
+
+    _readyToAddPerson: Boolean,
+    _hasPersonRendered: Boolean,
+
+    _readyToSendParams: Boolean,
+    _hasResponseRendered: Boolean,
+
+    _readyToCloseResponse: Boolean,
 
   },
 
@@ -235,127 +264,237 @@
   },
 
   _addSite: function(ev) {
-    var _target = ev.target;
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._manipulateDocumentScrolling('hidden');
+    this.debounce('_addSite', function() {
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToAddSite', !0);
+      }else {
+        if (this._readyToAddSite) {
+          this.set('_readyToAddSite', !1);
+          this._manipulateDocumentScrolling('hidden');
 
-      if (!this._isSiteOpened) {
-        this.set('_isSiteOpened', !0);
+          // dynamically generate sites inside dialog.
+          if (this._allSites.length === 1) {
+            this.set('_allSites', _sitesArray);
+          }
+
+          if (!this._isSiteOpened) {
+            this.set('_isSiteOpened', !0);
+          }else {
+            this.async(function() {
+              this.$$('#addSiteDialog').open();
+            }, 1);
+          }
+        }
       }
-      // dynamically generate sites inside dialog.
-      if (this._allSites.length === 1) {
-        this.set('_allSites', _sitesArray);
-      }
-      // open dialog then notifyResize it async-ly.
+      _target = null; _type = null;
+    }, 1);
+  },
+  _hasSiteRendered: function(ev) {
+    if (ev.target.if) {
       this.async(function() {
-        var _dialog = this.$$('#addSiteDialog');
-        _dialog.open();
-        _dialog.notifyResize()
-      });
+        this.$$('#addSiteDialog').open();
+      }, 1);
     }
-    _target = null;
   },
   _addFloor: function(ev) {
-    var _target = ev.target;
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._manipulateDocumentScrolling('hidden');
+    this.debounce('_addFloor', function() {
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToAddFloor', !0);
+      }else {
+        if (this._readyToAddFloor) {
+          this.set('_readyToAddFloor', !1);
+          this._manipulateDocumentScrolling('hidden');
 
-      if (!this._isFloorOpened) {
-        this.set('_isFloorOpened', !0);
+          // generate floors inside dialog dynamically.
+          if (this._allFloors.length === 1) {
+            this.set('_allFloors', _floorsArray);
+          }
+
+          if (!this._isFloorOpened) {
+            this.set('_isFloorOpened', !0);
+          }else {
+            this.async(function() {
+              this.$$('#addFloorDialog').open();
+            }, 1);
+          }
+        }
       }
-      // generate floors inside dialog dynamically.
-      if (this._allFloors.length === 1) {
-        this.set('_allFloors', _floorsArray);
-      }
-      // open dialog then async-ly notifyResize dialog.
+      _target = null; _type = null;
+    }, 1);
+  },
+  _hasFloorRendered: function(ev) {
+    if (ev.target.if) {
       this.async(function() {
-        var _dialog = this.$$('#addFloorDialog');
-        _dialog.open();
-        _dialog.notifyResize();
-      });
+        this.$$('#addFloorDialog').open();
+      }, 1);
     }
-    _target = null;
   },
   _addMoreOptions: function(ev) {
     this.debounce('_addMoreOptions', function() {
-      if (this._disableTap) {
-        return;
-      }
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToAddMoreOptions', !0);
+      }else {
+        if (this._readyToAddMoreOptions) {
+          this.set('_readyToAddMoreOptions', !1);
 
-      this.set('_isMoreOptionsOpened', !1);
+          if (this._disableTap) {
+            return;
+          }
+
+          this.set('_isMoreOptionsOpened', !1);
+        }
+      }
+      _type = null;
     }, 1);
   },
   _addPerson: function(ev) {
-    var _target = ev.target;
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._manipulateDocumentScrolling('hidden');
-      if (!this._isPersonOpened) {
-        this.set('_isPersonOpened', !0);
+    this.debounce('_addPerson', function() {
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToAddPerson', !0);
+      }else {
+        if (this._readyToAddPerson) {
+          this.set('_readyToAddPerson', !1);
+          this._manipulateDocumentScrolling('hidden');
+
+          if (!this._isPersonOpened) {
+            this.set('_isPersonOpened', !0);
+          }else {
+            this.async(function() {
+              this.$$('#addPersonDialog').open();
+            }, 1);
+          }
+        }
       }
+      _target = null; _type = null;
+    }, 1);
+  },
+  _hasPersonRendered: function(ev) {
+    if (ev.target.if) {
       this.async(function() {
         this.$$('#addPersonDialog').open();
-      });
+      }, 1);
     }
-    _target = null;
   },
-
   _addFromDate: function(ev) {
-    var _target = ev.target;
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._manipulateDocumentScrolling('hidden');
+    this.debounce('_addFromDate', function() {
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToAddFromDate', !0);
+      }else {
+        if (this._readyToAddFromDate) {
+          this.set('_readyToAddFromDate', !1);
+          this._manipulateDocumentScrolling('hidden');
 
-      if (!this._isFromDateOpened) {
-        this.set('_isFromDateOpened', !0);
+          if (!this._isFromDateOpened) {
+            this.set('_isFromDateOpened', !0);
+          }else {
+            this.async(function() {
+              this.$$('#fromDate').open();
+            }, 1);
+          }
+        }
       }
+      _target = null; _type = null;
+    }, 1);
+  },
+  _hasFromDateRendered: function(ev) {
+    if (ev.target.if) {
       this.async(function() {
         this.$$('#fromDate').open();
-      });
+      }, 1);
     }
-    _target = null;
   },
   _addToDate: function(ev) {
-    var _target = ev.target;
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._manipulateDocumentScrolling('hidden');
+    this.debounce('_addToDate', function() {
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToAddToDate', !0);
+      }else {
+        if (this._readyToAddToDate) {
+          this.set('_readyToAddToDate', !1);
+          this._manipulateDocumentScrolling('hidden');
 
-      if (!this._isToDateOpened) {
-        this.set('_isToDateOpened', !0);
+          if (!this._isToDateOpened) {
+            this.set('_isToDateOpened', !0);
+          }else {
+            this.async(function() {
+              this.$$('#toDate').open();
+            }, 1);
+          }
+        }
       }
+      _target = null; _type = null;
+    }, 1);
+  },
+  _hasToDateRendered: function(ev) {
+    if (ev.target.if) {
       this.async(function() {
         this.$$('#toDate').open();
-      });
+      }, 1);
     }
-    _target = null;
   },
   _addFromTime: function(ev) {
-    var _target = ev.target;
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._manipulateDocumentScrolling('hidden');
+    this.debounce('_addFromTime', function() {
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToAddFromTime', !0);
+      }else {
+        if (this._readyToAddFromTime) {
+          this.set('_readyToAddFromTime', !1);
+          this._manipulateDocumentScrolling('hidden');
 
-      if (!this._isFromTimeOpened) {
-        this.set('_isFromTimeOpened', !0);
+          if (!this._isFromTimeOpened) {
+            this.set('_isFromTimeOpened', !0);
+          }else {
+            this.async(function() {
+              this.$$('#fromTime').open();
+            }, 1);
+          }
+        }
       }
+      _target = null; _type = null;
+    }, 1);
+  },
+  _hasFromTimeRendered: function(ev) {
+    if (ev.target.if) {
       this.async(function() {
         this.$$('#fromTime').open();
-      });
+      }, 1);
     }
-    _target = null;
   },
   _addToTime: function(ev) {
-    var _target = ev.target;
-    if (_target && _target.tagName === 'PAPER-BUTTON') {
-      this._manipulateDocumentScrolling('hidden');
+    this.debounce('_addToTime', function() {
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToAddToTime', !0);
+      }else {
+        if (this._readyToAddToTime) {
+          this.set('_readyToAddToTime', !1);
+          this._manipulateDocumentScrolling('hidden');
 
-      if (!this._isToTimeOpened) {
-        this.set('_isToTimeOpened', !0);
+          if (!this._isToTimeOpened) {
+            this.set('_isToTimeOpened', !0);
+          }else {
+            this.async(function() {
+              this.$$('#toTime').open();
+            }, 1);
+          }
+        }
       }
+      _target = null; _type = null;
+    }, 1);
+  },
+  _hasToTimeRendered: function(ev) {
+    if (ev.target.if) {
       this.async(function() {
         this.$$('#toTime').open();
-      });
+      }, 1);
     }
-    _target = null;
   },
-
   _updateCapacity: function(ev) {
     this.set('_capacity', this._inputCap || 1);
   },
@@ -460,81 +599,85 @@
 
   // aggregate all inputs before sending it out as request.
   _sendParams: function(ev) {
-    var _params = '';
-    var _allDayToggle = this._allDayToggle;
-    var _fromTime = _allDayToggle ? '08:00' : this._fromTime;
-    var _toTime = _allDayToggle ? '23:30' : this._toTime;
-    var _fromDate = this._fromDate;
-    var _toDate = this._toDate;
-    var _incorrectTime = _fromTime > _toTime || _fromTime < '08:00' || _toTime > '23:30';
-    var _incorrectDate = new Date(_fromDate) > new Date(_toDate);
-    var _reserveRoomToast = this.$.reserveRoomToast;
+    this.debounce('_sendParams', function() {
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToSendParams', !0);
+      }else {
+        if (this._readyToSendParams) {
+          var _params = '';
+          var _allDayToggle = this._allDayToggle;
+          var _fromTime = _allDayToggle ? '08:00' : this._fromTime;
+          var _toTime = _allDayToggle ? '23:30' : this._toTime;
+          var _fromDate = this._fromDate;
+          var _toDate = this._toDate;
+          var _incorrectTime = _fromTime > _toTime || _fromTime < '08:00' || _toTime > '23:30';
+          var _incorrectDate = new Date(_fromDate) > new Date(_toDate);
+          var _reserveRoomToast = this.$.reserveRoomToast;
 
-    console.log(_fromTime < '08:00', _toTime > '23:30', _fromTime, _toTime);
+          // console.log(_fromTime < '08:00', _toTime > '23:30', _fromTime, _toTime);
+          this.set('_readyToSendParams', !1);
 
-    // if (this._allDayToggle) {
-    //   _fromTime = '08:00';
-    //   _toTime = '23:30';
-    // }
+          // Check date and time before parsing.
+          if (_incorrectTime || _incorrectDate) {
+            var _errorMsg = 'Incorrect Date/ Time! Please ensure starting date/ time is always smaller.';
 
-    // Check date and time before parsing.
-    if (_incorrectTime || _incorrectDate) {
-      var _errorMsg = 'Incorrect Date/ Time! Please ensure starting date/ time is always smaller.';
+            if (_fromTime < '08:00' || _toTime > '23:30') {
+              _errorMsg = 'Please select any time in between 08:00 and 23:30.';
+            }
+            _reserveRoomToast.classList.add('warning');
+            this.set('_reserveRoomMsg', _errorMsg);
+            console.error('Incorrect Date/ Time!');
+            if (_reserveRoomToast.opened) {
+              _reserveRoomToast.close();
+            }
+            this.async(function() {
+              _reserveRoomToast.open();
+            }, 1);
+            return;
+          }else {
+            _reserveRoomToast.classList.remove('warning');
+          }
 
-      if (_fromTime < '08:00' || _toTime > '23:30') {
-        _errorMsg = 'Please select any time in between 08:00 and 23:30.';
+          _params = 'startDate=' + encodeURIComponent(this._fromDate) + '&' +
+                    'endDate=' + encodeURIComponent(this._toDate) + '&' +
+                    'tStart=' + encodeURIComponent(_fromTime) + '&' +
+                    'tEnd=' + encodeURIComponent(_toTime) + '&' +
+                    'capacity=' + encodeURIComponent(this._capacity) + '&' +
+                    'site=' + encodeURIComponent(this._sites) + '&' +
+                    'floor=' + encodeURIComponent(this._floors) + '&' +
+                    'types=' + encodeURIComponent(this._types || 0);
+
+          console.log(_params);
+          this.$.searchEmptyRoom.body = _params;
+          this.$.searchEmptyRoom.generateRequest();
+          // Reset _isLoading here is much safer before opening the responseDialog.
+          this.set('_isLoading', !1);
+          this.set('_isReserved', !1);
+          // Reset _roomReserved here is much safer before opening the responseDialog.
+          if (this._roomReserved) {
+            this.set('_roomReserved', !1);
+            this.set('_roomReservedSuccessfully', !1);
+          }
+
+          this._manipulateDocumentScrolling('hidden');
+          if (!this._isResponseOpened) {
+            this.set('_isResponseOpened', !0);
+          }else {
+            this.async(function() {
+              this.$$('#responseDialog').open();
+            }, 1);
+          }
+        }
       }
-      _reserveRoomToast.classList.add('warning');
-      this.set('_reserveRoomMsg', _errorMsg);
-      console.error('Incorrect Date/ Time!');
-      if (_reserveRoomToast.opened) {
-        _reserveRoomToast.close();
-      }
-      this.async(function() {
-        _reserveRoomToast.open();
-      }, 1);
-      return;
-    }else {
-      _reserveRoomToast.classList.remove('warning');
-    }
-
-    //  console.log(this['_fromDate']);
-    //  console.log(this._toDate);
-    //  console.log(this._fromTime);
-    //  console.log(this._toTime);
-    //  console.log(this._allDayToggle);
-    //  console.log(this._capacity);
-    //  console.log(this._sites);
-    //  console.log(this._floors);
-    //  console.log(this._types);
-    _params = 'startDate=' + encodeURIComponent(this._fromDate) + '&' +
-      'endDate=' + encodeURIComponent(this._toDate) + '&' +
-      'tStart=' + encodeURIComponent(_fromTime) + '&' +
-      'tEnd=' + encodeURIComponent(_toTime) + '&' +
-      'capacity=' + encodeURIComponent(this._capacity) + '&' +
-      'site=' + encodeURIComponent(this._sites) + '&' +
-      'floor=' + encodeURIComponent(this._floors) + '&' +
-      'types=' + encodeURIComponent(this._types || 0);
-
-    console.log(_params);
-    this.$.searchEmptyRoom.body = _params;
-    this.$.searchEmptyRoom.generateRequest();
-    // Reset _isLoading here is much safer before opening the responseDialog.
-    this.set('_isLoading', !1);
-    this.set('_isReserved', !1);
-    // Reset _roomReserved here is much safer before opening the responseDialog.
-    if (this._roomReserved) {
-      this.set('_roomReserved', !1);
-      this.set('_roomReservedSuccessfully', !1);
-    }
-    this._manipulateDocumentScrolling('hidden');
-
-    if (!this._isResponseOpened) {
-      this.set('_isResponseOpened', !0);
-    }
-    this.async(function() {
-      this.$$('#responseDialog').open();
     }, 1);
+  },
+  _hasResponseRendered: function(ev) {
+    if (ev.type.if) {
+      this.async(function() {
+        this.$$('#responseDialog').open();
+      }, 1);
+    }
   },
 
   _onResponse: function(ev) {
@@ -552,16 +695,28 @@
   },
 
   _closeResponseDialog: function(ev) {
-    // workaround: resume document scrolling;
-    this._manipulateDocumentScrolling();
-    // reset _selectedSiteTab, _selectedFloorTab when closing responseDialog;
-    this.set('_selectedSiteTab', 0);
-    this.set('_selectedFloorTab', 0);
-    // reset _loadSearchResult, _emptyRoomResult when closing responseDialog;
-    this.set('_isSpinnerLoading', !0);
-    this.set('_emptyRoomResult', null);
+    this.debounce('_closeResponseDialog', function() {
+      var _type = ev.type;
+      if (_type === 'tap') {
+        this.set('_readyToCloseResponse', !0);
+      }else {
+        if (this._readyToCloseResponse) {
+          this.set('_readyToCloseResponse', !1);
 
-    this.$$('#responseDialog').close();
+          // reset _selectedSiteTab, _selectedFloorTab when closing responseDialog;
+          this.set('_selectedSiteTab', 0);
+          this.set('_selectedFloorTab', 0);
+          // reset _loadSearchResult, _emptyRoomResult when closing responseDialog;
+          this.set('_isSpinnerLoading', !0);
+          this.set('_emptyRoomResult', null);
+
+          this.async(function() {
+            this._manipulateDocumentScrolling();
+            this.$$('#responseDialog').close();
+          }, 1);
+        }
+      }
+    }, 1);
   },
 
   _computeSites: function(_emptyRoomResult) {

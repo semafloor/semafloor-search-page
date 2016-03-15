@@ -16,6 +16,10 @@
         box-sizing: inherit;
       }
 
+      paper-button {
+        /*-webkit-tap-highlight-color: rgba(0,0,0,0);*/
+      }
+
       .date-container > iron-icon,
       .capacity-container > iron-icon,
       .site-container > iron-icon,
@@ -32,11 +36,11 @@
         text-align: left;
         width: 100%;
       }
-      div.more-options-container > paper-button[pressed] {
+      /*div.more-options-container > paper-button[pressed] {
         background-color: rgba(0, 0, 0, 0);
         color: inherit;
         border-radius: 0;
-      }
+      }*/
       div.date-container > iron-icon.date-icon,
       div.types-container > iron-icon.types-icon {
         margin-top: 10px;
@@ -98,14 +102,20 @@
 
       /* send-button */
       paper-button.send-button {
-        max-width: 84px;
+        max-width: 96px;
         margin: 24px auto;
+        color: #1ddb8b;
+        background-color: #fcfcfc;
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
+      }
+      paper-button.send-button > iron-icon {
+        margin-left: 8px;
       }
 
       /* addSiteDialog, addFloorDialog */
       paper-dialog {
+        font-size: 12px;
         box-shadow: none;
       }
       paper-dialog#addSiteDialog paper-radio-button,
@@ -128,18 +138,18 @@
       paper-button {
         -webkit-tap-highlight-color: rgba(0,0,0,0);
       }
-      paper-button[pressed] {
+      /*paper-button[pressed] {
         background-color: #1ddb8b;
         color: #fff;
-      }
+      }*/
 
       p > paper-input,
       paper-dropdown-menu {
         --paper-input-container-focus-color: #1ddb8b;
       }
-      .buttons > paper-button[pressed] {
+      /*.buttons > paper-button[pressed] {
         background-color: #fff;
-      }
+      }*/
       .buttons > paper-button {
         color: #1ddb8b;
       }
@@ -226,9 +236,6 @@
 
       /*tabs related sytling*/
       .response-container > paper-spinner-lite {
-        /*display: block;*/
-        /*margin: 40px auto;*/
-        /*top: 16px;*/
         position: absolute;
         left: 50%;
         top: calc(16px + 16px);
