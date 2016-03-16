@@ -22,231 +22,109 @@
 
     <script>
       var el;
-      var _btn;
 
-      suite('button-tap', function() {
+      suite('<semafloor-search-page>', function() {
         setup(function() {
           el = fixture('search');
         });
 
-        test('button pressed', function(done) {
-          _btn = el.querySelector('.send-button');
-          if (_btn === null) {
-            _btn = Polymer.dom(el.root).querySelector('.send-button');
-          }
-
-          _btn.addEventListener('tap', function() {
-            Polymer.Base.async(function() {
-              // assert.isTrue(el._readyToSendParams);
-              _btn.dispatchEvent(new CustomEvent('transitionend'));
-            }, 100);
-          });
-
-          _btn.addEventListener('transitionend', function() {
-            flush(function() {
-              Polymer.Base.async(function() {
-                var _dialog = el.querySelector('#responseDialog');
-                if (_dialog === null) {
-                  _dialog = Polymer.dom(el.root).querySelector('#responseDialog');
-                }
-
-                // assert.isFalse(el._readyToSendParams);
-
-                assert.isTrue(_dialog instanceof HTMLElement);
-                done();
-              }, 100);
-            });
-          });
-
-          MockInteractions.tap(_btn);
+        test('uid should be undefined on first init', function() {
+          assert.isUndefined(el.uid);
         });
       });
 
-      // suite('<semafloor-search-page>', function() {
+      suite('Load elements dynamically', function() {
+        setup(function() {
+          el = fixture('search');
+        });
+
+        test('#fromDate dialog is null on first init', function() {
+          var _dialog = Polymer.dom(el).querySelector('#fromDate');
+
+          assert.isUndefined(el._isFromDateOpened);
+          assert.isNull(_dialog);
+        });
+
+        test('#toDate dialog is null on first init', function() {
+          var _dialog = Polymer.dom(el).querySelector('#toDate');
+
+          assert.isUndefined(el._isToDateOpened);
+          assert.isNull(_dialog);
+        });
+
+        test('#fromTime dialog is null on first init', function() {
+          var _dialog = Polymer.dom(el).querySelector('#fromTime');
+
+          assert.isUndefined(el._isFromTimeOpened);
+          assert.isNull(_dialog);
+        });
+
+        test('#toTime dialog is null on first init', function() {
+          var _dialog = Polymer.dom(el).querySelector('#toTime');
+
+          assert.isUndefined(el._isToTimeOpened);
+          assert.isNull(_dialog);
+        });
+
+        test('#addSiteDialog is null on first init', function() {
+          var _dialog = Polymer.dom(el).querySelector('#addSiteDialog');
+
+          assert.isUndefined(el._isSiteOpened);
+          assert.isNull(_dialog);
+        });
+
+        test('#addFloorDialog is null on first init', function() {
+          var _dialog = Polymer.dom(el).querySelector('#addFloorDialog');
+
+          assert.isUndefined(el._isFloorOpened);
+          assert.isNull(_dialog);
+        });
+
+        test('more options button on first init', function() {
+          assert.isTrue(el._isMoreOptionsOpened);
+        });
+
+        test('responseDialog is null on first init', function() {
+          var _dialog = Polymer.dom(el).querySelector('responseDialog');
+
+          assert.isNull(_dialog);
+        });
+      });
+
+      // suite('button-tap', function() {
       //   setup(function() {
       //     el = fixture('search');
       //   });
       //
-      //   test('uid should be undefined on first init', function() {
-      //     assert.isUndefined(el.uid);
-      //   });
+      //   test('button pressed', function(done) {
+      //     _btn = el.querySelector('.send-button');
+      //     if (_btn === null) {
+      //       _btn = Polymer.dom(el.root).querySelector('.send-button');
+      //     }
       //
-      //   suite('Load elements dynamically', function() {
-      //     setup(function() {
-      //       el = fixture('search');
-      //     });
-      //
-      //     test('#fromDate dialog is null on first init', function() {
-      //       var _dialog = Polymer.dom(el).querySelector('#fromDate');
-      //
-      //       assert.isUndefined(el._isFromDateOpened);
-      //       assert.isNull(_dialog);
-      //     });
-      //
-      //     test('#toDate dialog is null on first init', function() {
-      //       var _dialog = Polymer.dom(el).querySelector('#toDate');
-      //
-      //       assert.isUndefined(el._isToDateOpened);
-      //       assert.isNull(_dialog);
-      //     });
-      //
-      //     test('#fromTime dialog is null on first init', function() {
-      //       var _dialog = Polymer.dom(el).querySelector('#fromTime');
-      //
-      //       assert.isUndefined(el._isFromTimeOpened);
-      //       assert.isNull(_dialog);
-      //     });
-      //
-      //     test('#toTime dialog is null on first init', function() {
-      //       var _dialog = Polymer.dom(el).querySelector('#toTime');
-      //
-      //       assert.isUndefined(el._isToTimeOpened);
-      //       assert.isNull(_dialog);
-      //     });
-      //
-      //     test('#addSiteDialog is null on first init', function() {
-      //       var _dialog = Polymer.dom(el).querySelector('#addSiteDialog');
-      //
-      //       assert.isUndefined(el._isSiteOpened);
-      //       assert.isNull(_dialog);
-      //     });
-      //
-      //     test('#addFloorDialog is null on first init', function() {
-      //       var _dialog = Polymer.dom(el).querySelector('#addFloorDialog');
-      //
-      //       assert.isUndefined(el._isFloorOpened);
-      //       assert.isNull(_dialog);
-      //     });
-      //
-      //     test('more options button on first init', function() {
-      //       assert.isTrue(el._isMoreOptionsOpened);
-      //     });
-      //
-      //     test('responseDialog is null on first init', function() {
-      //       var _dialog = Polymer.dom(el).querySelector('responseDialog');
-      //
-      //       assert.isNull(_dialog);
-      //     });
-      //   });
-      //
-      //   suite('Generate element dynamically after being triggered', function() {
-      //     setup(function() {
-      //       el = fixture('search');
-      //     });
-      //
-      //     test('open responseDialog after clicking submit button', function(done) {
-      //       el._readyToSendParams = !0;
-      //       // Polymer.dom(el).querySelector('.send-button').dispatchEvent(new CustomEvent('transitionend'));;
-      //       var _btn = Polymer.dom(el).querySelector('.send-button');
-      //       MockInteractions.tap(_btn);
-      //
-      //       flush(function() {
-      //         // setTimeout to workaround with IE11.
-      //         window.setTimeout(function() {
-      //           var _dialog = Polymer.dom(el).querySelector('#responseDialog');
-      //
-      //           if (_dialog) {
-      //             assert.isFalse(el._readyToSendParams);
-      //
-      //             assert.isFalse(el._isLoading);
-      //             assert.isFalse(el._isReserved);
-      //             assert.isUndefined(el._roomReserved);
-      //             assert.isUndefined(el._roomReservedSuccessfully);
-      //
-      //             assert.isTrue(el._isResponseOpened);
-      //             assert.isTrue(_dialog instanceof HTMLElement);
+      //     var _test = function(ev) {
+      //       el.debounce('_test', function() {
+      //         var _type = ev.type;
+      //         if (_type === 'tap') {
+      //           assert.isTrue(el._readyToSendParams);
+      //         }else {
+      //           var _dialog = el.querySelector('#responseDialog');
+      //           if (_dialog === null) {
+      //             _dialog = Polymer.dom(el.root).querySelector('#responseDialog');
       //           }
-      //           done();
-      //         }, 1);
-      //       });
-      //     });
-      //
-      //     test('open #fromDate dialog after clicking on #fromDate button', function(done) {
-      //       el._readyToAddFromDate = !0;
-      //       var _btn = Polymer.dom(el).querySelector('.from-date-row paper-button');
-      //       MockInteractions.tap(_btn);
-      //
-      //       flush(function() {
-      //         // setTimeout to workaround with IE11.
-      //         window.setTimeout(function() {
-      //           var _dialog = Polymer.dom(el).querySelector('#fromDate');
-      //
-      //           assert.isFalse(el._readyToAddFromDate);
+      //           assert.isFalse(el._readyToSendParams);
       //           assert.isTrue(_dialog instanceof HTMLElement);
       //           done();
-      //         }, 1);
-      //       });
-      //     });
+      //         }
+      //       }, 1);
+      //     };
       //
-      //     test('open #toDate dialog after clicking on #toDate button', function(done) {
-      //       el._readyToAddToDate = !0;
-      //       Polymer.dom(el).querySelector('.to-date-row paper-button').dispatchEvent(new CustomEvent('transitionend'));;
+      //     _btn.addEventListener('tap', _test);
+      //     _btn.addEventListener('transitionend', _test);
       //
-      //       flush(function() {
-      //         // setTimeout to workaround with IE11.
-      //         window.setTimeout(function() {
-      //           var _dialog = Polymer.dom(el).querySelector('#toDate');
-      //
-      //           assert.isFalse(el._readyToAddToDate);
-      //           assert.isTrue(_dialog instanceof HTMLElement);
-      //           done();
-      //         }, 1);
-      //       });
-      //     });
-      //
-      //     // TODO: Something wrong here. Backlog until inspection on the cause.
-      //     // test('open #fromTime dialog after clicking on #fromTime button', function(done) {
-      //     //   el._readyToAddFromTime = !0;
-      //     //   Polymer.dom(el).querySelector('.from-time-button').dispatchEvent(new CustomEvent('transitionend'));;
-      //     //
-      //     //   flush(function() {
-      //     //     //   // setTimeout to workaround with IE11.
-      //     //     Polymer.Base.async(function() {
-      //     //       var _dialog = Polymer.dom(el).querySelector('#fromTime');
-      //     //
-      //     //       assert.equal(el._readyToAddFromTime, !1);
-      //     //       // assert.equal(typeof _dialog, 'object');
-      //     //       // assert.equal(_dialog instanceof HTMLElement, !0);
-      //     //       done();
-      //     //     });
-      //     //   });
-      //     // });
-      //
-      //     // test('open #toTime dialog after clicking on #toTime button', function(done) {
-      //     //   el._readyToAddToTime = !0;
-      //     //   Polymer.dom(el).querySelector('.to-time-button').dispatchEvent(new CustomEvent('transitionend'));;
-      //     //
-      //     //   flush(function() {
-      //     //     // setTimeout to workaround with IE11.
-      //     //     window.setTimeout(function() {
-      //     //       var _dialog = Polymer.dom(el).querySelector('#toTime');
-      //     //
-      //     //       assert.equal(el._readyToAddToDate, !1);
-      //     //       assert.notEqual(_dialog, null);
-      //     //       assert.equal(_dialog instanceof HTMLElement, !0);
-      //     //       done();
-      //     //     }, 1);
-      //     //   });
-      //     // });
-      //
-      //     test('more options is shown after clicking on more options button', function() {
-      //       var _capacity = Polymer.dom(el).querySelector('.capacity-container');
-      //       var _types = Polymer.dom(el).querySelector('.types-container');
-      //       assert.isNull(_capacity, 'capacity container has yet to be rendered!');
-      //       assert.isNull(_types, 'types container has yet to be rendered!');
-      //
-      //       el._isMoreOptionsOpened = !1;
-      //       flush(function() {
-      //         _capacity = Polymer.dom(el).querySelector('.capacity-container');
-      //         _types = Polymer.dom(el).querySelector('.types-container');
-      //
-      //         assert.isTrue(_capacity instanceof HTMLElement, 'capacity container is now rendered!');
-      //         assert.isTrue(_types instanceof HTMLElement, 'types container is now rendered!');
-      //       });
-      //     });
+      //     MockInteractions.tap(_btn);
       //   });
       // });
-
     </script>
 
   </body>
