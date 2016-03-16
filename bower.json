@@ -27,7 +27,6 @@
     "paper-listbox": "polymerelements/paper-listbox#^1.0.0",
     "paper-item": "PolymerElements/paper-item#^1.1.3",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.15",
-    "compound-timepicker": "motss/compound-timepicker#^0.3.4",
     "iron-ajax": "PolymerElements/iron-ajax#^1.1.1",
     "paper-tabs": "polymerelements/paper-tabs#^1.3.7",
     "paper-icon-button": "polymerelements/paper-icon-button#^1.0.7",
@@ -39,9 +38,10 @@
     "paper-radio-group": "PolymerElements/paper-radio-group#^1.0.8",
     "paper-radio-button": "PolymerElements/paper-radio-button#^1.0.12",
     "firebase-element": "GoogleWebComponents/firebase-element#^1.0.12",
-    "jv-datepicker": "motss/jv-datepicker#^2.3.4",
     "iron-media-query": "PolymerElements/iron-media-query#^1.0.8",
-    "iron-image": "polymerelements/iron-image#^1.2.2"
+    "iron-image": "polymerelements/iron-image#^1.2.2",
+    "jv-datepicker": "motss/jv-datepicker#^2.3.4",
+    "compound-timepicker": "motss/compound-timepicker#^0.3.4"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

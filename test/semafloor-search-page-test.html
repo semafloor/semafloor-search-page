@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <!-- Step 1: import the element to test -->
+    <link rel="import" href="../semafloor-search-page.html">
+  </head>
+  <body>
+
+    <!-- You can use the document as a place to set up your fixtures. -->
+    <test-fixture id="search">
+      <template strip-whitespace>
+        <semafloor-search-page></semafloor-search-page>
+      </template>
+    </test-fixture>
+
+    <script>
+      var el;
+
+      suite('<semafloor-search-page>', function() {
+        setup(function() {
+          el = fixture('search');
+        });
+
+        test('uid should be undefined on first init', function() {
+          assert.equal(el.uid, undefined);
+        });
+      });
+
+      suite('Load elements dynamically', function() {
+        setup(function() {
+          el = fixture('search');
+        });
+
+        test('#fromDate dialog is null on first init', function() {
+          var _dialog = Polymer.dom(el.root).querySelector('#fromDate');
+
+          assert.equal(el._isFromDateOpened, undefined);
+          assert.isNull(_dialog);
+        });
+
+        test('#toDate dialog is null on first init', function() {
+          var _dialog = Polymer.dom(el.root).querySelector('#toDate');
+
+          assert.equal(el._isToDateOpened, undefined);
+          assert.isNull(_dialog);
+        });
+
+        test('#fromTime dialog is null on first init', function() {
+          var _dialog = Polymer.dom(el.root).querySelector('#fromTime');
+
+          assert.equal(el._isFromTimeOpened, undefined);
+          assert.isNull(_dialog);
+        });
+
+        test('#toTime dialog is null on first init', function() {
+          var _dialog = Polymer.dom(el.root).querySelector('#toTime');
+
+          assert.equal(el._isToTimeOpened, undefined);
+          assert.isNull(_dialog);
+        });
+
+        test('#addSiteDialog is null on first init', function() {
+          var _dialog = Polymer.dom(el.root).querySelector('#addSiteDialog');
+
+          assert.equal(el._isSiteOpened, undefined);
+          assert.isNull(_dialog);
+        });
+
+        test('#addFloorDialog is null on first init', function() {
+          var _dialog = Polymer.dom(el.root).querySelector('#addFloorDialog');
+
+          assert.equal(el._isFloorOpened, undefined);
+          assert.isNull(_dialog);
+        });
+
+        test('more options button on first init', function() {
+          assert.equal(el._isMoreOptionsOpened, !0);
+        });
+
+        test('responseDialog is null on first init', function() {
+          var _dialog = Polymer.dom(el.root).querySelector('responseDialog');
+
+          assert.isNull(_dialog);
+        });
+      });
+
+      suite('Generate element dynamically after being triggered', function() {
+        test('open responseDialog after clicking submit button', function(done) {
+          el._readyToSendParams = !0;
+          Polymer.dom(el.root).querySelector('.send-button').fire('transitionend');
+
+          flush(function() {
+            // setTimeout to workaround with IE11.
+            window.setTimeout(function() {
+              var _dialog = Polymer.dom(el.root).querySelector('#responseDialog');
+
+              assert.equal(el._readyToSendParams, !1);
+
+              assert.equal(el._isLoading, !1);
+              assert.equal(el._isReserved, !1);
+              assert.equal(el._roomReserved, undefined);
+              assert.equal(el._roomReservedSuccessfully, undefined);
+
+              assert.equal(el._isResponseOpened, !0);
+              assert.isTrue(_dialog instanceof HTMLElement);
+              done();
+            }, 1);
+          });
+        });
+
+        test('open #fromDate dialog after clicking on #fromDate button', function(done) {
+          el._readyToAddFromDate = !0;
+          Polymer.dom(el.root).querySelector('.from-date-row paper-button').fire('transitionend');
+
+          flush(function() {
+            // setTimeout to workaround with IE11.
+            window.setTimeout(function() {
+              var _dialog = Polymer.dom(el.root).querySelector('#fromDate');
+
+              assert.equal(el._readyToAddFromDate, !1);
+              assert.isTrue(_dialog instanceof HTMLElement);
+              done();
+            }, 1);
+          });
+        });
+
+        test('open #toDate dialog after clicking on #toDate button', function(done) {
+          el._readyToAddToDate = !0;
+          Polymer.dom(el.root).querySelector('.to-date-row paper-button').fire('transitionend');
+
+          flush(function() {
+            // setTimeout to workaround with IE11.
+            window.setTimeout(function() {
+              var _dialog = Polymer.dom(el.root).querySelector('#toDate');
+
+              assert.equal(el._readyToAddToDate, !1);
+              assert.isTrue(_dialog instanceof HTMLElement);
+              done();
+            }, 1);
+          });
+        });
+
+        // TODO: Something wrong here. Backlog until inspection on the cause.
+        // test('open #fromTime dialog after clicking on #fromTime button', function(done) {
+        //   el._readyToAddFromTime = !0;
+        //   Polymer.dom(el.root).querySelector('.from-time-button').fire('transitionend');
+        //
+        //   flush(function() {
+        //     //   // setTimeout to workaround with IE11.
+        //     Polymer.Base.async(function() {
+        //       var _dialog = Polymer.dom(el.root).querySelector('#fromTime');
+        //
+        //       assert.equal(el._readyToAddFromTime, !1);
+        //       // assert.equal(typeof _dialog, 'object');
+        //       // assert.equal(_dialog instanceof HTMLElement, !0);
+        //       done();
+        //     });
+        //   });
+        // });
+
+        // test('open #toTime dialog after clicking on #toTime button', function(done) {
+        //   el._readyToAddToTime = !0;
+        //   Polymer.dom(el.root).querySelector('.to-time-button').fire('transitionend');
+        //
+        //   flush(function() {
+        //     // setTimeout to workaround with IE11.
+        //     window.setTimeout(function() {
+        //       var _dialog = Polymer.dom(el.root).querySelector('#toTime');
+        //
+        //       assert.equal(el._readyToAddToDate, !1);
+        //       assert.notEqual(_dialog, null);
+        //       assert.equal(_dialog instanceof HTMLElement, !0);
+        //       done();
+        //     }, 1);
+        //   });
+        // });
+
+        test('more options is shown after clicking on more options button', function() {
+          var _capacity = Polymer.dom(el.root).querySelector('.capacity-container');
+          var _types = Polymer.dom(el.root).querySelector('.types-container');
+          assert.isNull(_capacity, 'capacity container has yet to be rendered!');
+          assert.isNull(_types, 'types container has yet to be rendered!');
+
+          el._isMoreOptionsOpened = !1;
+          flush(function() {
+            _capacity = Polymer.dom(el.root).querySelector('.capacity-container');
+            _types = Polymer.dom(el.root).querySelector('.types-container');
+
+            assert.isTrue(_capacity instanceof HTMLElement, 'capacity container is now rendered!');
+            assert.isTrue(_types instanceof HTMLElement, 'types container is now rendered!');
+          });
+        });
+      });
+    </script>
+
+  </body>
+</html>

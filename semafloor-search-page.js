@@ -691,7 +691,7 @@
   },
 
   _isEmptyResultEmpty: function(_emptyRoomResult) {
-    return _.isEmpty(_emptyRoomResult) || _emptyRoomResult.totalEmptyRooms === 0;
+    return _.isEmpty(_emptyRoomResult);
   },
 
   _closeResponseDialog: function(ev) {
@@ -720,7 +720,7 @@
   },
 
   _computeSites: function(_emptyRoomResult) {
-    var _siteKeys = _.keys(_emptyRoomResult);
+    var _siteKeys = Object.keys(_emptyRoomResult);
     var _keysName = ['', 'alpha', 'beta', 'gamma'];
     _siteKeys = _siteKeys.filter(function(_key) {
       return _key === 'alpha' || _key === 'beta' || _key === 'gamma';
@@ -736,7 +736,7 @@
   _computeFloors: function(_siteKeys, _emptyRoomResult) {
     var _floorKeys = [];
     for (var i = 0; i < _siteKeys.length; i++) {
-      _floorKeys.push(_.keys(_emptyRoomResult[_siteKeys[i]]));
+      _floorKeys.push(Object.keys(_emptyRoomResult[_siteKeys[i]]));
     }
     this.set('_resultFloors', _floorKeys);
   },
@@ -755,8 +755,8 @@
 
     var _floorsNumber = [
     '', '1', '2', '3', '3A', '5', '6', '7', '8', '9', '10', '11', '12'];
-    var _siteKeys = _.keys(_emptyRoomResult);
-    var _newFloors = _.keys(_emptyRoomResult[_siteKeys[_selectedSiteTab]]);
+    var _siteKeys = Object.keys(_emptyRoomResult);
+    var _newFloors = Object.keys(_emptyRoomResult[_siteKeys[_selectedSiteTab]]);
     var _newFloors = _newFloors.map(function(n) {
       return _floorsNumber[_floorsCode.indexOf(n)];
     });
@@ -781,8 +781,8 @@
       return;
     }
 
-    var _newSite = _.keys(_emptyRoomResult)[_selectedSiteTab];
-    var _newFloor = _.keys(_emptyRoomResult[_newSite])[_selectedFloorTab];
+    var _newSite = Object.keys(_emptyRoomResult)[_selectedSiteTab];
+    var _newFloor = Object.keys(_emptyRoomResult[_newSite])[_selectedFloorTab];
     _newFloor = _emptyRoomResult[_newSite][_newFloor];
     // workaround: to fix #selectionBar of paper-tabs to show properly;
     // notifyResize() on site tabs and floor tabs;
@@ -811,8 +811,8 @@
 
   // _computeRoomBasedOnIdx: function(_idx) {
   //   var _err = this._emptyRoomResult;
-  //   var _selectedSite = _.keys(_err)[this._selectedSiteTab];
-  //   var _selectedFloor = _.keys(_err[_selectedSite])[this._selectedFloorTab];
+  //   var _selectedSite = Object.keys(_err)[this._selectedSiteTab];
+  //   var _selectedFloor = Object.keys(_err[_selectedSite])[this._selectedFloorTab];
   //   var _selectedRoom = _err[_selectedSite][_selectedFloor][_idx];
   //
   //   // save room info;
