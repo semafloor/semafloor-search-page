@@ -52,7 +52,8 @@
     "semafloor-profile-page": "semafloor/semafloor-profile-page#^0.2.4",
     "semafloor-current-page": "semafloor/semafloor-current-page#^0.5.8",
     "semafloor-room-page": "semafloor/semafloor-room-page#^0.6.8",
-    "semafloor-reserve-page": "semafloor/semafloor-reserve-page#^0.4.1"
+    "semafloor-reserve-page": "semafloor/semafloor-reserve-page#^0.4.1",
+    "iron-test-helpers": "polymerelements/iron-test-helpers#^1.1.5"
   },
   "resolutions": {
     "lodash": "^4.6.1"
