@@ -1,5 +1,4 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="semafloor-search-page-theme.html">
 
 <link rel="import" href="../jv-datepicker/jv-datepicker-dialog.html">
 <link rel="import" href="../compound-timepicker/compound-timepicker-dialog.html">
@@ -1409,7 +1408,7 @@ Example:
     }, 1);
   },
   _hasResponseRendered: function(ev) {
-    if (ev.type.if) {
+    if (ev.target.if) {
       this.async(function() {
         this.$$('#responseDialog').open();
       }, 1);
