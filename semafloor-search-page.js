@@ -627,7 +627,7 @@
             }
             _reserveRoomToast.classList.add('warning');
             this.set('_reserveRoomMsg', _errorMsg);
-            console.error('Incorrect Date/ Time!');
+            console.warn('Incorrect Date/ Time!');
             if (_reserveRoomToast.opened) {
               _reserveRoomToast.close();
             }
@@ -1164,7 +1164,7 @@
     //   // _that.set('_roomReserved', !0);
     // })
     .catch(function(error) {
-      console.error(error);
+      console.warn(error);
     });
 
     // TODO: Close responseDialog after reserving and show toast for successful operation.
@@ -1305,7 +1305,7 @@
     // Promise.all(_datesArrayWithPromise).then(function(_snapshot) {
     //   console.log('Saved to ' + [_fromDate, _toDate].join(' - ') + ' at ' + [_fromTime, _toTime].join(' - '));
     // }).catch(function(error) {
-    //   console.error(error);
+    //   console.warn(error);
     // });
   },
   _pushUserReservationDetails: function(_datesArray, _searchUrl, _that, _fromDate, _toDate, _fromTime, _toTime) {
@@ -1338,7 +1338,7 @@
       // Can proceed to close all dialogs and show toast.
       _that.set('_roomReserved', !0);
     }).catch(function(error) {
-      console.error(error);
+      console.warn(error);
     });
   },
   // Allow user to confirm the reservation details with some default values before updating
@@ -1362,7 +1362,7 @@
     }).then(function() {
       _pushUserReservationDetails(_datesArrayCopy, _searchUrl, _that, _fromDate, _toDate, _fromTime, _toTime);
     }).catch(function(error) {
-      console.error(error);
+      console.warn(error);
     });
 
     // Set _isReserved to switch back to spinner.
