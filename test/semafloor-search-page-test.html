@@ -39,7 +39,7 @@
             Polymer.Base.async(function() {
               assert.isTrue(el._readyToSendParams);
               _btn.dispatchEvent(new CustomEvent('transitionend'));
-            }, 1);
+            }, 100);
           });
 
           _btn.addEventListener('transitionend', function() {
@@ -54,7 +54,7 @@
 
                 assert.isTrue(_dialog instanceof HTMLElement);
                 done();
-              }, 1);
+              }, 100);
             });
           });
 
