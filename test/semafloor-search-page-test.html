@@ -96,60 +96,66 @@
         });
 
         test('open responseDialog after clicking submit button', function(done) {
-          el._readyToSendParams = !0;
-          Polymer.dom(el.root).querySelector('.send-button').fire('transitionend');
+          if (el) {
+            el._readyToSendParams = !0;
+            Polymer.dom(el.root).querySelector('.send-button').fire('transitionend');
 
-          flush(function() {
-            // setTimeout to workaround with IE11.
-            window.setTimeout(function() {
-              var _dialog = Polymer.dom(el.root).querySelector('#responseDialog');
+            flush(function() {
+              // setTimeout to workaround with IE11.
+              window.setTimeout(function() {
+                var _dialog = Polymer.dom(el.root).querySelector('#responseDialog');
 
-              if (_dialog) {
-                assert.isFalse(el._readyToSendParams);
+                if (_dialog) {
+                  assert.isFalse(el._readyToSendParams);
 
-                assert.isFalse(el._isLoading);
-                assert.isFalse(el._isReserved);
-                assert.isUndefined(el._roomReserved);
-                assert.isUndefined(el._roomReservedSuccessfully);
+                  assert.isFalse(el._isLoading);
+                  assert.isFalse(el._isReserved);
+                  assert.isUndefined(el._roomReserved);
+                  assert.isUndefined(el._roomReservedSuccessfully);
 
-                assert.isTrue(el._isResponseOpened);
-                assert.isTrue(_dialog instanceof HTMLElement);
-              }
-              done();
-            }, 1);
-          });
+                  assert.isTrue(el._isResponseOpened);
+                  assert.isTrue(_dialog instanceof HTMLElement);
+                }
+                done();
+              }, 1);
+            });
+          }
         });
 
         test('open #fromDate dialog after clicking on #fromDate button', function(done) {
-          el._readyToAddFromDate = !0;
-          Polymer.dom(el.root).querySelector('.from-date-row paper-button').fire('transitionend');
+          if (el) {
+            el._readyToAddFromDate = !0;
+            Polymer.dom(el.root).querySelector('.from-date-row paper-button').fire('transitionend');
 
-          flush(function() {
-            // setTimeout to workaround with IE11.
-            window.setTimeout(function() {
-              var _dialog = Polymer.dom(el.root).querySelector('#fromDate');
+            flush(function() {
+              // setTimeout to workaround with IE11.
+              window.setTimeout(function() {
+                var _dialog = Polymer.dom(el.root).querySelector('#fromDate');
 
-              assert.isFalse(el._readyToAddFromDate);
-              assert.isTrue(_dialog instanceof HTMLElement);
-              done();
-            }, 1);
-          });
+                assert.isFalse(el._readyToAddFromDate);
+                assert.isTrue(_dialog instanceof HTMLElement);
+                done();
+              }, 1);
+            });
+          }
         });
 
         test('open #toDate dialog after clicking on #toDate button', function(done) {
-          el._readyToAddToDate = !0;
-          Polymer.dom(el.root).querySelector('.to-date-row paper-button').fire('transitionend');
+          if (el) {
+            el._readyToAddToDate = !0;
+            Polymer.dom(el.root).querySelector('.to-date-row paper-button').fire('transitionend');
 
-          flush(function() {
-            // setTimeout to workaround with IE11.
-            window.setTimeout(function() {
-              var _dialog = Polymer.dom(el.root).querySelector('#toDate');
+            flush(function() {
+              // setTimeout to workaround with IE11.
+              window.setTimeout(function() {
+                var _dialog = Polymer.dom(el.root).querySelector('#toDate');
 
-              assert.isFalse(el._readyToAddToDate);
-              assert.isTrue(_dialog instanceof HTMLElement);
-              done();
-            }, 1);
-          });
+                assert.isFalse(el._readyToAddToDate);
+                assert.isTrue(_dialog instanceof HTMLElement);
+                done();
+              }, 1);
+            });
+          }
         });
 
         // TODO: Something wrong here. Backlog until inspection on the cause.
@@ -193,14 +199,16 @@
           assert.isNull(_capacity, 'capacity container has yet to be rendered!');
           assert.isNull(_types, 'types container has yet to be rendered!');
 
-          el._isMoreOptionsOpened = !1;
-          flush(function() {
-            _capacity = Polymer.dom(el.root).querySelector('.capacity-container');
-            _types = Polymer.dom(el.root).querySelector('.types-container');
+          if (el) {
+            el._isMoreOptionsOpened = !1;
+            flush(function() {
+              _capacity = Polymer.dom(el.root).querySelector('.capacity-container');
+              _types = Polymer.dom(el.root).querySelector('.types-container');
 
-            assert.isTrue(_capacity instanceof HTMLElement, 'capacity container is now rendered!');
-            assert.isTrue(_types instanceof HTMLElement, 'types container is now rendered!');
-          });
+              assert.isTrue(_capacity instanceof HTMLElement, 'capacity container is now rendered!');
+              assert.isTrue(_types instanceof HTMLElement, 'types container is now rendered!');
+            });
+          }
         });
       });
     </script>
