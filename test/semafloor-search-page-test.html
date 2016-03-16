@@ -91,6 +91,10 @@
       });
 
       suite('Generate element dynamically after being triggered', function() {
+        setup(function() {
+          el = fixture('search');
+        });
+
         test('open responseDialog after clicking submit button', function(done) {
           el._readyToSendParams = !0;
           Polymer.dom(el.root).querySelector('.send-button').fire('transitionend');
