@@ -1,8 +1,8 @@
 bower_components
 node_modules
-dist
 backup
 src
 .tmp
 .yo-rc.json
 .gulpfile.babel.js
+package.json

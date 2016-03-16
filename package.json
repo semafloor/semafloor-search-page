@@ -36,7 +36,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-size": "^2.0.0",
     "gulp-uglify": "^1.5.1",
-    "loadsh": "^4.0.0",
+    "lodash": "^4.0.0",
     "run-sequence": "^1.1.5"
   }
 }
