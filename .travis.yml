@@ -2,7 +2,6 @@ language: node_js
 node_js: stable
 addons:
   firefox: latest
-  sauce_connect: true
   apt:
     sources:
     - google-chrome
@@ -16,9 +15,6 @@ before_script:
 - polylint
 script:
 - xvfb-run wct
-- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct -s 'default'; fi
 env:
   global:
   - CXX=g++-4.8
-  - secure: WU3aFNVgkcP4KKXihh/2VM0ydzywyyi4rwuxVckkaCEVeSXJVKHtVbZXUBnNZrQVz8vb1EdQDJ0+LZGO0kjVHhiDG4+uKtlFG2VIpoTbhBUvJRyHdV75x4DIJ7s4IwFUolP10IeWiQsKcemnNB8cvz59gnWOgDWR3wr4fZHFD9hXX1KzqsPrI9Jr6TlrJWsaY95z/Kn5AUrzHCMDZUxw8da2wXp1KZRxH3MS7uwy02DTmCJcDePQIRHeJ6H/dA1fqu7kBF9danE7qO6tmkgd6Olf8CgQ5/XMCKwZEZUkVeofALf4Oy4nNjrfWXJ4mBsoOGdBhd7eUHn5jhbIpVfoDqpChB55xJc++QRTAzTRh01bFWyH6barZ9xD3gpUEaDvmnt3PXtGn+64IpFRmYFohT5iJoZ3yXm05wLSfNx74CEbcUuHOYQGgd3p2qFZ4IBXarK2blK+7wGk7FEUjz6DVzTwukqv+hnY14vcS8cNunJaUhW5q+We0rNeIhWnLYkf98eeA48PjftX/G6gEB2B8jbejH1dSk48HAr5Zv5+NEE4yMHhlEi+1cEaZLtPNFXS6ZQZvglpSFSqX+q3bqCyYFQhNRX/Vs2tSRDC81O0XPEnEH55TeDdc+/rzCGBNzAHTJO452JVfgZ+Bnn/ZpRcSstsf0jIYsk0OBtIj5swMhc=
-  - secure: XwiIH5aDump6+BmZXDrP4iYGGoYjw+Dm9AYh7OYRWVFDlm2fcsivnaZwU8hTLnrZHg0KDnWdBeJYTdD7QGkiBWTxsYJgsAMGe8K1NU7oO+my61Rn3nxjF/po+ZZUC3ePVy/qGfgfsz9/bV/+ap1O1HlK6jeGyA53BH+HAb4nzHuaCDwXRxinxtBclTdVWTP7VATmJdN1icnT4fad5CWzr419POPzmNI6CJ6qzqjtCiy35nYS28zF0/+URU24uxOXSFp+8buGVnP742SQSOd7SRvHA7ltJSBoln5Xy+pUWYFsIVhTEAjWjYQubt7sodqR7YtFejRStfcy8eofnpWx5+dV3XixCtSQB7MN/X2feSm0QHpBLrzgI6AmFHeqfJjkT01InYdP4GjWz4ejYPEX6W4No1Rkm/skf4W6xc7udI6/b1Rpi4EbyLLAXnw4I479qYIjotDv6GbnMk8UWh39pKjMRTOeoSrckwdfNYYWUaeAzH9cyTXsyxNW6Grjk5MlfbMo4emu9XmUcfLN90LQ1I6vLzUFoTGo3ovk7dyUDfZuXDaNwVOmkepxFCn45PF0T0psGtDPZw/VMQcVdspdcZUPzFNjV6eBvhd9CtGzO7ChC6PGPz1l9zIpH9YTMf030Lzb6Y78WQV6iog6fZBCjzt4C1vY45FNydkAIKBvnq0=

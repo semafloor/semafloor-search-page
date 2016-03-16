@@ -5,3 +5,4 @@ src
 .tmp
 .yo-rc.json
 .gulpfile.babel.js
+wct.conf.json
