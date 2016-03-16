@@ -28,7 +28,7 @@
         });
 
         test('uid should be undefined on first init', function() {
-          assert.equal(el.uid, undefined);
+          assert.isUndefined(el.uid);
         });
       });
 
@@ -40,47 +40,47 @@
         test('#fromDate dialog is null on first init', function() {
           var _dialog = Polymer.dom(el.root).querySelector('#fromDate');
 
-          assert.equal(el._isFromDateOpened, undefined);
+          assert.isUndefined(el._isFromDateOpened);
           assert.isNull(_dialog);
         });
 
         test('#toDate dialog is null on first init', function() {
           var _dialog = Polymer.dom(el.root).querySelector('#toDate');
 
-          assert.equal(el._isToDateOpened, undefined);
+          assert.isUndefined(el._isToDateOpened);
           assert.isNull(_dialog);
         });
 
         test('#fromTime dialog is null on first init', function() {
           var _dialog = Polymer.dom(el.root).querySelector('#fromTime');
 
-          assert.equal(el._isFromTimeOpened, undefined);
+          assert.isUndefined(el._isFromTimeOpened);
           assert.isNull(_dialog);
         });
 
         test('#toTime dialog is null on first init', function() {
           var _dialog = Polymer.dom(el.root).querySelector('#toTime');
 
-          assert.equal(el._isToTimeOpened, undefined);
+          assert.isUndefined(el._isToTimeOpened);
           assert.isNull(_dialog);
         });
 
         test('#addSiteDialog is null on first init', function() {
           var _dialog = Polymer.dom(el.root).querySelector('#addSiteDialog');
 
-          assert.equal(el._isSiteOpened, undefined);
+          assert.isUndefined(el._isSiteOpened);
           assert.isNull(_dialog);
         });
 
         test('#addFloorDialog is null on first init', function() {
           var _dialog = Polymer.dom(el.root).querySelector('#addFloorDialog');
 
-          assert.equal(el._isFloorOpened, undefined);
+          assert.isUndefined(el._isFloorOpened);
           assert.isNull(_dialog);
         });
 
         test('more options button on first init', function() {
-          assert.equal(el._isMoreOptionsOpened, !0);
+          assert.isTrue(el._isMoreOptionsOpened);
         });
 
         test('responseDialog is null on first init', function() {
@@ -100,15 +100,17 @@
             window.setTimeout(function() {
               var _dialog = Polymer.dom(el.root).querySelector('#responseDialog');
 
-              assert.equal(el._readyToSendParams, !1);
+              if (_dialog) {
+                assert.isFalse(el._readyToSendParams);
 
-              assert.equal(el._isLoading, !1);
-              assert.equal(el._isReserved, !1);
-              assert.equal(el._roomReserved, undefined);
-              assert.equal(el._roomReservedSuccessfully, undefined);
+                assert.isFalse(el._isLoading);
+                assert.isFalse(el._isReserved);
+                assert.isUndefined(el._roomReserved);
+                assert.isUndefined(el._roomReservedSuccessfully);
 
-              assert.equal(el._isResponseOpened, !0);
-              assert.isTrue(_dialog instanceof HTMLElement);
+                assert.isTrue(el._isResponseOpened);
+                assert.isTrue(_dialog instanceof HTMLElement);
+              }
               done();
             }, 1);
           });
@@ -123,7 +125,7 @@
             window.setTimeout(function() {
               var _dialog = Polymer.dom(el.root).querySelector('#fromDate');
 
-              assert.equal(el._readyToAddFromDate, !1);
+              assert.isFalse(el._readyToAddFromDate);
               assert.isTrue(_dialog instanceof HTMLElement);
               done();
             }, 1);
@@ -139,7 +141,7 @@
             window.setTimeout(function() {
               var _dialog = Polymer.dom(el.root).querySelector('#toDate');
 
-              assert.equal(el._readyToAddToDate, !1);
+              assert.isFalse(el._readyToAddToDate);
               assert.isTrue(_dialog instanceof HTMLElement);
               done();
             }, 1);
