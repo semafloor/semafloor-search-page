@@ -193,8 +193,7 @@ Example:
         width: 100%;
         height: 100%;
       }
-      paper-dialog#responseDialog::content > *:first-child,
-      paper-dialog#responseDialog::content > *:last-child {
+      paper-dialog#responseDialog > div.no-padding {
         margin-top: 0;
         margin-bottom: 0;
       }
@@ -418,7 +417,6 @@ Example:
           position: relative;
           right: auto;
         }
-
         paper-dialog#responseDialog > div.no-padding > div.response-container > iron-pages {
           min-height: 64px;
           margin: 0 auto 16px;
@@ -1441,9 +1439,10 @@ Example:
           // reset _selectedSiteTab, _selectedFloorTab when closing responseDialog;
           this.set('_selectedSiteTab', 0);
           this.set('_selectedFloorTab', 0);
-          // reset _loadSearchResult, _emptyRoomResult when closing responseDialog;
+          // reset _loadSearchResult, _emptyRoomResult, _floorOfSites when closing responseDialog;
           this.set('_isSpinnerLoading', !0);
           this.set('_emptyRoomResult', null);
+          this.set('_floorsOfSites', null);
 
           this.async(function() {
             this._manipulateDocumentScrolling();
@@ -2103,6 +2102,8 @@ Example:
     return _isSpinnerLoading ? '' : 'finish-loading';
   },
 
+  // TODO: Support for Shadow DOM.
+  // X - TODO: Clear _floorOfSites so that next search will not show previous floor levels.
   // X - TODO: set min-height when loading since at least 1 room must be shown on screen.
   // X - TODO: _manipulateDocumentScrolling FTW.
   // X - TODO: calculate width for all raised elements for desktop mode.

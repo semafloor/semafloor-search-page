@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>semafloor-search-page Demo</title>
-    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <!-- <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script> -->
     <script src="../../lodash/dist/lodash.min.js" charset="utf-8"></script>
 
     <link rel="import" href="semafloor-main.html">
@@ -86,6 +86,13 @@
     <semafloor-main></semafloor-main>
 
     <script>
+      var webComponentsSupported = ('registerElement' in document &&
+      'import' in document.createElement('link') &&
+      'content' in document.createElement('template'));
+
+      if (webComponentsSupported) {
+        window.Polymer = window.Polymer || { dom: 'shadow' };
+      }
       // var header = document.querySelector('app-header[condenses]');
       // var _app = document.querySelector('semafloor-search-page');
       // var _header = document.querySelector('app-header');

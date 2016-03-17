@@ -1,10 +1,10 @@
 {
   "name": "semafloor-search-page",
-  "version": "0.4.10",
+  "version": "0.4.11",
   "authors": [
     "semafloor <wes_ngrongsen@hotmail.com>"
   ],
-  "description": "Semafloor's Search & Reserve Page.",
+  "description": "A sub-element to search and to reserve empty rooms.",
   "keywords": [
     "polymer",
     "seed",
@@ -24,7 +24,7 @@
     "paper-button": "PolymerElements/paper-button#^1.0.8",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.15",
     "paper-dialog": "PolymerElements/paper-dialog#^1.0.3",
-    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#1.1.1",
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.1.1",
     "paper-input": "PolymerElements/paper-input#^1.1.1",
     "paper-item": "PolymerElements/paper-item#^1.1.3",
     "paper-listbox": "polymerelements/paper-listbox#^1.0.0",
