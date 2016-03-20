@@ -1415,7 +1415,7 @@ Example:
 
   _onResponse: function(ev) {
     // check if return result is empty OR contains no room (totoalEmptyRooms : 0);
-    var _isEmpty = this._isEmptyResultEmpty(this._emptyRoomResult);
+    var _isEmpty = this._isEmptyResultEmpty(this._emptyRoomResult, this._sites, this._floors);
     this.set('_skipComputeSelected', _isEmpty);
     this.set('_hideSiteToolbar', _isEmpty);
 
@@ -1423,7 +1423,16 @@ Example:
     this.set('_loadSearchResult', _isEmpty ? 1 : 0);
   },
 
-  _isEmptyResultEmpty: function(_emptyRoomResult) {
+  _isEmptyResultEmpty: function(_emptyRoomResult, _sites, _floors) {
+    // The backend will return empty room result but with _sites and/ or _floors
+    // remained in the json. Hence, traverse the json to ensure empty room.
+    if (_sites && _floors) {
+      return _.isEmpty(_emptyRoomResult[_sites][_floors]);
+    }else if (_sites){
+      // For alpha/ KLB - Tower 5, it could have _floors undefined/ empty.
+      return _.isEmpty(_emptyRoomResult[_sites]);
+    }
+    // By default, none is selected.
     return _.isEmpty(_emptyRoomResult);
   },
 
