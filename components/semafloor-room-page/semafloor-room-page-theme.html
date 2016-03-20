@@ -1,0 +1,266 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="semafloor-room-page-theme">
+  <template strip-whitespace>
+    <style>
+      :host {
+        user-select: none;
+        box-sizing: border-box;
+
+        display: block;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+      }
+      :host[view=horizontal] div.card-container {
+        @apply(--layout-vertical);
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      .room-page-container {
+        position: relative;
+      }
+
+      /* page transition between spinner and real pages */
+      iron-pages {
+        opacity: 0;
+        transition: opacity ease-in .4s;
+      }
+      iron-pages.finish-loading {
+        opacity: 1;
+      }
+
+      .loading {
+        position: absolute;
+        top: calc(15px + 8px + 8px);
+        margin: -15px 0 0 -15px;
+        width: 32px;
+        height: 32px;
+        left: 50%;
+        border-radius: 50%;
+        border: 2px solid #ddd;
+        border-left-color: #009688;
+        animation: animation-rotate 950ms cubic-bezier(.64, 2, .56, .6) infinite;
+
+        opacity: 1;
+        transition: opacity ease-in .2s;
+      }
+      .loading.finish-loading {
+        opacity: 0;
+      }
+      @-webkit-keyframes animation-rotate {
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+      @keyframes animation-rotate {
+        100% {
+          -webkit-transform: rotate(360deg);
+                  transform: rotate(360deg);
+        }
+      }
+
+      /* cards */
+      paper-card.each-card {
+        margin: 8px;
+        max-width: 360px;
+        /* workaround: This is needed else div.header inside paper-card will stretch (unexpectedly?) */
+        --paper-card-header: {
+          height: 0 !important;
+          max-height: 0 !important;
+          display: none !important;
+        };
+        @apply(--layout-horizontal);
+      }
+      div.each-content {
+        text-transform: capitalize;
+        @apply(--layout-flex-2);
+      }
+      div.each-content iron-icon {
+        background-color: #FFEB3B;
+        border-radius: 50%;
+        height: 32px;
+        width: 32px;
+        margin-right: 8px;
+      }
+      div.each-content iron-icon.language {
+        background-color: #3F51B5;
+        color: #fff;
+      }
+      div.each-content iron-icon.trending-up {
+        background-color: #E91E63;
+        color: #fff;
+      }
+      div.card-actions {
+        @apply(--layout-horizontal);
+      }
+
+      iron-image.card-img {
+        background-color: #FFECB3;
+        width: 100%;
+        @apply(--layout-flex);
+      }
+      iron-image.card-img.language {
+        background-color: #C5CAE9;
+      }
+      iron-image.card-img.trending-up {
+        background-color: #F8BBD0;
+      }
+
+      /* width: 100% will cause jank. */
+      paper-dialog {
+        margin: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: none;
+      }
+      paper-dialog paper-card.each-card.is-room {
+        @apply(--layout-vertical-reverse);
+      }
+      paper-dialog paper-card.each-card.is-room > iron-image {
+        height: calc(360px / 16 * 9);
+        @apply(--layout-flex-auto);
+      }
+      paper-dialog > div.info-card-container paper-icon-button {
+        border-radius: 50%; /* weird edges of ripple during transition */
+        margin-left: auto;
+        margin-right: 0;
+        -webkit-transition: -webkit-transform .4s ease-out;
+        transition: -webkit-transform .4s ease-out;
+        transition: transform .4s ease-out;
+        transition: transform .4s ease-out, -webkit-transform .4s ease-out;
+      }
+      /* When animation is disabled completely, no transition for arrow down icon button. */
+      :host[no-animation] > paper-dialog > div.info-card-container paper-icon-button {
+        -webkit-transition: none;
+        transition: none;
+      }
+      div.info-card-toolbar {
+        margin-top: 0;
+        padding: 0 16px;
+        height: 64px;
+        background-color: #FFEB3B;
+        text-transform: capitalize;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+      div.info-card-toolbar.language {
+        background-color: #3F51B5;
+        color: #fff;
+      }
+      div.info-card-toolbar.trending-up {
+        background-color: #E91E63;
+        color: #fff;
+      }
+      div.info-card-toolbar > paper-icon-button {
+        margin-right: 8px;
+      }
+      div.info-card-container {
+        height: 100%;
+        max-height: calc(100% - 64px - 8px);
+        margin-top: 8px;
+        margin-bottom: 0;
+        padding: 0;
+        @apply(--layout-scroll);
+      }
+      div.info-card-container iron-icon {
+        background-color: #ffecb3;
+      }
+      div.info-card-container iron-icon.language {
+        background-color: #c5cae9;
+      }
+      div.info-card-container iron-icon.trending-up {
+        background-color: #f8bbd0;
+      }
+      paper-dialog iron-collapse {
+        border-top: 1px solid #ddd;
+        padding: 16px;
+      }
+      div.each-card-info {
+        min-height: 44px;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        margin-bottom: 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        @apply(--layout-vertical);
+      }
+      div.each-card-info:first-of-type {
+        margin-top: 8px;
+      }
+      div.each-card-info > span {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #737373;
+      }
+      div.each-card-info > paper-checkbox {
+        margin-bottom: 8px;
+        --paper-checkbox-checked-color: #ffeb3b;
+        --paper-checkbox-checked-ink-color: #ffeb3b;
+        --paper-checkbox-unchecked-color: #ffeb3b;
+        --paper-checkbox-unchecked-ink-color: #ffeb3b;
+        --paper-checkbox-checkmark-color: #000;
+        --paper-checkbox-label-color: #737373;
+      }
+      paper-dialog paper-card.language paper-checkbox {
+        --paper-checkbox-checked-color: #3f51b5;
+        --paper-checkbox-checked-ink-color: #3f51b5;
+        --paper-checkbox-unchecked-color: #3f51b5;
+        --paper-checkbox-unchecked-ink-color: #3f51b5;
+        --paper-checkbox-checkmark-color: #fff;
+      }
+      paper-dialog paper-card.trending-up paper-checkbox {
+        --paper-checkbox-checked-color: #e91e63;
+        --paper-checkbox-checked-ink-color: #e91e63;
+        --paper-checkbox-unchecked-color: #e91e63;
+        --paper-checkbox-unchecked-ink-color: #e91e63;
+        --paper-checkbox-checkmark-color: #fff;
+      }
+      div.each-card-info > paper-checkbox:first-of-type {
+        margin-top: 3px;
+      }
+
+      /* some @media */
+      @media all and (min-width: 376px) {
+        :host[view=horizontal] div.card-container,
+        :host[view=horizontal] div.info-card-container {
+          @apply(--layout-horizontal);
+          /*@apply(--layout-start);
+          @apply(--layout-center-justified);*/
+          @apply(--layout-center-center);
+          @apply(--layout-wrap);
+        }
+
+        :host[view=horizontal] paper-card.each-card {
+          margin: 8px;
+        }
+
+        paper-card.each-card {
+          margin: 8px auto;
+          min-width: 360px;
+          width: calc(100% / 2 - 16px);
+          max-width: 480px;
+          @apply(--layout-vertical-reverse);
+        }
+        /* Due IE11 has flex-basis: 0px which renders only images shown on cards. */
+        div.each-content {
+          @apply(--layout-flex-none);
+        }
+        iron-image.card-img {
+          height: calc(360px / 16 * 9);
+          @apply(--layout-flex-auto);
+        }
+
+        paper-dialog paper-card.each-card.is-room {
+          margin: 8px auto;
+        }
+      }
+    </style>
+
+  </template>
+</dom-module>

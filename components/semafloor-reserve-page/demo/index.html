@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>semafloor-reserve-page Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="../../lodash/dist/lodash.min.js"></script>
+    <link rel="import" href="semafloor-main.html">
+
+    <!-- <link rel="import" href="../semafloor-reserve-page.html"> -->
+    <!-- <link rel="import" href="../../semafloor-icons/semafloor-icons.html"> -->
+    <!-- <link rel="import" href="../../iron-icons/iron-icons.html"> -->
+
+    <!-- <link rel="import" href="../../app-layout/app-layout.html">
+    <link rel="import" href="../../app-layout/app-scroll-effects/app-scroll-effects.html">
+
+    <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../../paper-tabs/paper-tabs.html">
+    <link rel="import" href="../../paper-badge/paper-badge.html"> -->
+
+    <style is="custom-style">
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: 'Roboto', 'Noto', 'Helvetica', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      semafloor-main {
+        --semafloor-current-page-height: calc(100vh - 113px);
+      }
+
+      /*app-header {
+        color: #009688;
+      }
+      paper-icon-button {
+        margin-right: 8px;
+      }
+
+      app-toolbar+app-toolbar {
+        background-color: #009688;
+      }
+      paper-tabs {
+        background-color: #009688;
+        color: #fff;
+        height: 64px;
+
+        --paper-tabs-selection-bar: {
+          height: 3px;
+        };
+      }
+      paper-tab {
+        text-transform: uppercase;
+      }
+      paper-tab.iron-selected {
+        color: #FFFF8D;
+      }
+      paper-badge {
+        left: initial !important;
+        --paper-badge-background: #FFFF8D;
+        --paper-badge-text-color: #004D40;
+      }
+      paper-badge[for=thisweekTab] {
+        --paper-badge-margin-bottom: 16px;
+      }*/
+
+      /* @media */
+      /*@media all and (min-width: 376px) {
+        paper-tabs {
+          width: calc(100% / 3);
+          min-width: 376px;
+        }
+
+        paper-tabs[bottom-item] {
+          position: initial;
+          bottom: initial;
+          left: initial;
+          right: initial;
+        }
+      }*/
+    </style>
+  </head>
+  <body>
+    <!-- 38 nodes clean on CH/ OP before optimization -->
+    <!-- 47 nodes clean on FF before optimization -->
+    <!-- 30 nodes app shell on CH/ OP & FF before optimization -->
+    <!-- 354 nodes reserve page on CH/ OP before optimization -->
+    <!-- 354 nodes reserve page on FF before optimization-->
+
+    <!-- 37 nodes clean on CH/ OP after optimization -->
+    <!-- 35 nodes clean on FF after optimization -->
+    <!-- 42 nodes app shell on CH/ OP after optimization -->
+    <!-- 52 nodes app shell on FF after optimization -->
+    <!-- 181 nodes reserve page on CH/ OP after optimization -->
+    <!-- 182 nodes reserve page on FF after optimization -->
+    <!-- <template is="dom-bind" strip-whitespace>
+      <app-drawer-layout force-narrow>
+        <app-drawer swipe-open></app-drawer>
+
+        <app-header-layout>
+          <app-header condenses reveals effects="waterfall">
+            <app-toolbar>
+              <paper-icon-button id="menu" icon="icons:menu" drawer-toggle></paper-icon-button>
+              Reservations Demo
+            </app-toolbar>
+            <app-toolbar>
+              <paper-tabs id="fakeTabs" selected="{{tab}}" attr-for-selected="name" on-transitionend="_onTransitionend" on-iron-select="_onIronSelect" bottom-item>
+                <paper-tab name="today">
+                  <span id="todayTab">today</span>
+                  <paper-badge for="todayTab" label="[[todayCount]]"></paper-badge>
+                </paper-tab>
+                <paper-tab name="thisweek">
+                  <span>this<br><span id="thisweekTab">week</span></span>
+                  <paper-badge for="thisweekTab" label="[[thisweekCount]]"></paper-badge>
+                </paper-tab>
+                <paper-tab name="upcoming">
+                  <span id="upcomingTab">upcoming</span>
+                  <paper-badge for="upcomingTab" label="[[upcomingCount]]"></paper-badge>
+                </paper-tab>
+              </paper-tabs>
+            </app-toolbar>
+          </app-header>
+
+          <semafloor-reserve-page id="reserve" selected-tab="{{tab}}" today-count="{{todayCount}}" thisweek-count="{{thisweekCount}}" upcoming-count="{{upcomingCount}}"></semafloor-reserve-page>
+        </app-header-layout>
+      </app-drawer-layout>
+    </template> -->
+    <semafloor-main></semafloor-main>
+
+    <script>
+      // var demo = document.querySelector('template[is=dom-bind]');
+      // var page = 'reserve';
+      //
+      // window.addEventListener('reserve-page-attached', function() {
+      //   window.setTimeout(function() {
+      //     var _app = document.querySelector('semafloor-reserve-page');
+      //     var _tel = _app.getElementsByTagName('*').length;
+      //     _app.uid = 'google:103450531185198654718';
+      //     console.log('Total element nodes with Lazy-Loading: ', _tel);
+      //   }, 1000);
+      // });
+      //
+      // demo.tab = 'thisweek';
+      //
+      // demo._onTransitionend = function(ev) {
+      //   if (ev.target.tagName !== 'PAPER-RIPPLE') {
+      //     return;
+      //   }
+      //
+      //   // console.log('on-transitionend');
+      //   this.$.reserve.onTransitionend(ev);
+      // };
+      // demo._onIronSelect = function() {
+      //   // console.log('on-iron-select');
+      //   console.log(demo.tab);
+      //   this.$.reserve.onIronSelect();
+      // };
+
+      var _main = document.querySelector('semafloor-main');
+
+      _main.addEventListener('main-page-attached', function() {
+        var _tel = _main.getElementsByTagName('*').length;
+        console.log('Total element nodes w/ Lazy-Loading: ', _tel);
+      });
+
+      // Simple logic to identify scrolling direction.
+      // var _prexY = 0;
+      // var _nextY = 0;
+      // var _direction = '';
+      // window.addEventListener('scroll', function(ev) {
+      //   console.time('scrolling');
+      //   _prevY = _nextY;
+      //   _nextY = ev.target.scrollingElement.scrollTop;
+      //   _direction = _nextY - _prevY < 0 ? 'up' : 'down';
+      //   console.timeEnd('scrolling');
+      //   console.log('Scrolling ' + _direction + 'wards...');
+      // });
+
+    </script>
+
+  </body>
+</html>

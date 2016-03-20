@@ -1,0 +1,512 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
+
+<link rel="import" href="../firebase-element/firebase-collection.html">
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <semafloor-profile-page></semafloor-profile-page>
+
+@group Seed Elements
+@element semafloor-profile-page
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="semafloor-profile-page">
+  <template strip-whitespace>
+    <style>
+      :host {
+        -webkit-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+        display: block;
+        margin-top: 8px;
+        min-height: 64px;
+      }
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      .profile-page-container {
+        position: relative;
+      }
+
+      /* loading spinner */
+      .loading {
+        position: absolute;
+        top: calc(15px + 8px + 8px);
+        left: 50%;
+        margin: -15px 0 0 -15px;
+        height: 30px;
+        width: 30px;
+        border: 2px solid #ddd;
+        border-left-color: #009688;
+        border-radius: 50%;
+        -webkit-animation: animation-rotate 950ms cubic-bezier(.64, 2, .56, .6) infinite;
+                animation: animation-rotate 950ms cubic-bezier(.64, 2, .56, .6) infinite;
+
+        opacity: 1;
+        -webkit-transition: opacity ease-in .2s;
+        transition: opacity ease-in .2s;
+      }
+      /* loading spinner keyframes animation */
+      @-webkit-keyframes animation rotate {
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+      @-webkit-keyframes animation-rotate {
+        100% {
+          -webkit-transform: rotate(360deg);
+                  transform: rotate(360deg);
+        }
+      }
+      @keyframes animation-rotate {
+        100% {
+          -webkit-transform: rotate(360deg);
+                  transform: rotate(360deg);
+        }
+      }
+      .loading.finish-loading {
+        opacity: 0;
+      }
+
+      .profile-list-container {
+        max-height: 64px;
+        opacity: 0;
+        -webkit-transition: opacity ease-in .4s;
+        transition: opacity ease-in .4s;
+      }
+      .profile-list-container.finish-loading {
+        max-height: none;
+        opacity: 1;
+      }
+
+      .profile-list {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+        padding: 16px 0 16px 24px;
+        min-height: 64px;
+        margin: 0;
+
+      }
+      .profile-list.email,
+      .profile-list.tzone {
+        cursor: pointer;
+      }
+      .profile-list > span {
+        color: #737373;
+        display: block;
+        font-size: 14px;
+        margin-top: 4px;
+      }
+      .profile-list:last-of-type {
+        margin-bottom: 64px;
+      }
+
+      paper-dialog {
+        box-shadow: none;
+      }
+      paper-dialog .new-email {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 100px;
+      }
+      paper-dialog paper-input.profile-change-email {
+        --paper-input-container-focus-color: #1DDBD8;
+        margin-bottom: 16px;
+      }
+      .buttons > paper-button {
+        color: #1ddbd8;
+      }
+
+      paper-radio-group,
+      paper-radio-button {
+        display: block;
+        --paper-radio-button-checked-ink-color: #1DDBD8;
+        --paper-radio-button-checked-color: #1DDBD8;
+      }
+
+      paper-toast {
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      /* @media for large screen */
+      @media all and (min-width: 600px) {
+        :host {
+          min-width: 376px;
+          width: calc(100% / 2 - 16px);
+          max-width: 480px;
+          margin: 16px auto 1px;
+          /*@apply(--shadow-elevation-4dp);*/
+          box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+                      0 1px 10px 0 rgba(0, 0, 0, 0.12),
+                      0 2px 4px -1px rgba(0, 0, 0, 0.4);
+        }
+
+        paper-dialog {
+          width: calc(100% / 2 - 16px);
+          max-width: 320px;
+        }
+
+        paper-toast {
+          margin: 12px;
+          max-width: 360px;
+        }
+      }
+    </style>
+
+    <firebase-collection id="firebaseProfile" location="[[_profileURL]]" on-firebase-value="_onFirebaseValue"></firebase-collection>
+
+    <div class="profile-page-container">
+      <template is="dom-if" if="[[_isLoading]]" restamp="true" strip-whitespace>
+        <div class$="loading [[_computeLoadingCls(_isLoading)]]"></div>
+      </template>
+
+      <div id="profileListContainer" class$="profile-list-container [[_computeLoadingCls(_isLoading)]]">
+        <div class="profile-list" ripple="uname" on-down="_onDown" on-up="_onUp">
+          User Name
+          <span>{{profile.username}}</span>
+          <paper-ripple id="uname"></paper-ripple>
+        </div>
+        <div class="profile-list" ripple="uid" on-down="_onDown" on-up="_onUp">
+          User ID
+          <span>{{profile.uid}}</span>
+          <paper-ripple id="uid"></paper-ripple>
+        </div>
+        <div class="profile-list" ripple="group" on-down="_onDown" on-up="_onUp">
+          Group
+          <span>{{profile.group}}</span>
+          <paper-ripple id="group"></paper-ripple>
+        </div>
+        <div class="profile-list email" data-profile="email" ripple="email"
+          on-transitionend="_changeDetail"
+          on-down="_onDown"
+          on-up="_onUp">
+          Email
+          <span>{{profile.email}}</span>
+          <paper-ripple id="email"></paper-ripple>
+        </div>
+        <div class="profile-list" ripple="role" on-down="_onDown" on-up="_onUp">
+          Role
+          <span>{{profile.role}}</span>
+          <paper-ripple id="role"></paper-ripple>
+        </div>
+        <div class="profile-list" ripple="room" on-down="_onDown" on-up="_onUp">
+          Room membership
+          <span>{{profile.room}}</span>
+          <paper-ripple id="room"></paper-ripple>
+        </div>
+        <div class="profile-list" ripple="floor" on-down="_onDown" on-up="_onUp">
+          Floor Membership
+          <span>{{profile.floor}}</span>
+          <paper-ripple id="floor"></paper-ripple>
+        </div>
+        <div class="profile-list tzone" data-profile="tzone" ripple="time"
+        on-down="_onDown"
+        on-up="_onUp"
+        on-transitionend="_changeDetail">
+        Time Zone
+        <span>{{profile.tzone}}</span>
+        <paper-ripple id="time"></paper-ripple>
+      </div>
+      <div class="profile-list" ripple="timeout" on-down="_onDown" on-up="_onUp">
+        Timeout
+        <span>{{profile.tout}}</span>
+        <paper-ripple id="timeout"></paper-ripple>
+      </div>
+    </div>
+
+    </div>
+
+    <template is="dom-if" if="[[_isChangeDialogOpened]]" restamp="true" strip-whitespace on-dom-change="_hasDialogRendered">
+      <paper-dialog id="changeDialog"
+        with-backdrop
+        auto-fit-on-attach
+        no-auto-focus
+        on-iron-overlay-closed="_manipulateDocumentScrolling">
+        <h2>[[_changeTitle]]</h2>
+        <paper-dialog-scrollable>
+          <div hidden$="[[!_isEmail(_changeDialog)]]">
+            Enter new email
+            <span class="new-email">[[_changeEmail]]</span>
+            <paper-input id="changeEmail" class="profile-change-email"
+              label="Change email"
+              type="text"
+              auto-validate
+              value="{{_changeEmail::input}}"
+              invalid="{{_invalidEmail}}"
+              error-message="Invalid Email Address!"
+              placeholder="[[_placeholderEmail]]"
+              on-value-changed="_resizeDialogOnTyping"
+              pattern="\w\S+@\w\S+\.\S+"></paper-input>
+          </div>
+
+          <div hidden$="[[_isEmail(_changeDialog)]]">
+            <paper-radio-group selected="{{_timezone::paper-radio-group-changed}}">
+              <paper-radio-button name="eight" label="GMT +8">GMT +8</paper-radio-button>
+              <paper-radio-button name="nine" label="GMT +9">GMT +9</paper-radio-button>
+            </paper-radio-group>
+          </div>
+        </paper-dialog-scrollable>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button dialog-confirm on-tap="_confirmChange">Change</paper-button>
+        </div>
+      </paper-dialog>
+    </template>
+
+    <paper-toast id="profileToast" text="[[_message]]"></paper-toast>
+  </template>
+
+</dom-module>
+
+<script>
+  var _rippleNames = [
+    'uname', 'uid', 'group', 'email', 'role', 'room', 'floor', 'time', 'timeout'];
+
+  Polymer({
+    is: 'semafloor-profile-page',
+
+    properties: {
+      profile: Object,
+      uid: String,
+
+      _invalidEmail: Boolean,
+      _changeEmail: String,
+      _timezone: {
+        type: String,
+        value: 'eight'
+      },
+      _scrolled: Boolean,
+      _rippleToBeCancelled: Number,
+      _changeDialog: String,
+      _changeTitle: String,
+      _message: String,
+
+      _profileURL: {
+        type: String,
+        value: 'https://semafloor-webapp.firebaseio.com'
+      },
+
+      _isChangeDialogOpened: Boolean,
+      _placeholderEmail: String,
+      _isLoading: {
+        type: Boolean,
+        value: !0
+      },
+
+    },
+
+    listeners: {
+      'profileListContainer.touchmove': '_cancelRippleWhileScrolling'
+    },
+
+    observers: [
+      '_updateProfile(uid)'
+    ],
+
+    // Element Lifecycle
+    ready: function() {
+    },
+
+    attached: function() {
+      this.fire('profile-page-attached');
+    },
+
+    _cancelRippleWhileScrolling: function(ev) {
+      if (!this._scrolled) {
+        this.set('_scrolled', !0);
+      }else {
+        var _ripples = Polymer.dom(this.root).querySelectorAll('paper-ripple');
+        _ripples[this._rippleToBeCancelled].upAction();
+      }
+    },
+    _onDown: function(ev) {
+      var _target = ev.target;
+
+      while (_target && _target.tagName !== 'DIV') {
+        _target = _target.parentElement;
+      }
+
+      if (_target && _target.hasAttribute('ripple')) {
+        var _ripple = _target.getAttribute('ripple');
+        this.set('_scrolled', !1);
+        this.set('_rippleToBeCancelled', _rippleNames.indexOf(_ripple));
+      }
+    },
+    _onUp: function() {
+      if (this._scrolled) {
+        return;
+      }
+    },
+    _changeDetail: function(ev) {
+      this.debounce('_changeDetail', function() {
+        // do nothing when no tap or scrolled.
+        if (this._scrolled) {
+          return;
+        }
+
+        var _target = Polymer.dom(ev).rootTarget;
+        while (_target && _target.tagName !== 'DIV') {
+          _target = _target.parentElement;
+        }
+
+        if (_target && _target.hasAttribute('data-profile')) {
+          var _detail = _target.getAttribute('data-profile');
+
+          this.set('_changeTitle', _detail === 'email' ?
+          'Change email' : 'Change time zone');
+          this.set('_changeDialog', _detail);
+
+          // Lazily load and open dialog.
+          this._lazifyDialog();
+        }
+      }, 1);
+    },
+
+    _isEmail: function(_changeDialog) {
+      return _changeDialog === 'email';
+    },
+
+    _confirmChange: function(ev) {
+      // If tap on item and move away from the item, it hence is being scrolled.
+      if (this._scrolled) {
+        return;
+      }
+
+      var _target = ev.target;
+      if (_target && _target.tagName === 'PAPER-BUTTON') {
+        var _text = 'Something wrong! Please try again.';
+        // hide toast for the next display.
+        if (this.$.profileToast.opened) {
+          this.$.profileToast.hide();
+        }
+        // update change accordingly.
+        if (this._changeDialog === 'email') {
+          // workaround: to get value of input from the input.
+          var _changeEmail = this._changeEmail;
+          if (_changeEmail && !this._invalidEmail) {
+            _text = 'Email has been changed successfully!';
+            // X - TODO: change to modify value in Firebase.
+            // this.set('profile.email', _changeEmail);
+            this._commitFirebase('email', _changeEmail, _text);
+          }
+        }else {
+          if (this._timezone) {
+            _text = 'Time zone has been changed successfully!';
+            // X - TODO: change to modify value in Firebase.
+            this._commitFirebase('tzone', this._timezone === 'eight' ? 'GMT +8' : 'GMT +9', _text);
+          }
+        }
+      }
+    },
+
+    _updateProfile: function(_uid) {
+      // when user logged in, uid will change thus Firebase references to different location.
+      this.set('_profileURL', 'https://semafloor-webapp.firebaseio.com/users/google/' + _uid);
+    },
+
+    _onFirebaseValue: function(ev) {
+      var _val = ev.detail.val();
+
+      if (typeof _val == null) {
+        return;
+      }
+
+      // Set to correct email value.
+      this.set('_placeholderEmail', _val.profile.email);
+      // Set to correct time zone value.
+      this.set('_timezone', _val.profile.tzone === 'GMT +8' ? 'eight' : 'nine');
+      // when Firebase retrieves new data, update profile.
+      this.set('profile', _val.profile);
+
+      // Reveal element.
+      this.set('_isLoading', !1);
+      this._manipulateDocumentScrolling();
+    },
+    // commit user changes to Firebase.
+    _commitFirebase: function(_category, _commitValue, _successText) {
+      var _that = this;
+      var _ref = new Firebase(this.$.firebaseProfile.location);
+      _ref.child('profile').once('value', function(snapshot) {
+        _ref.child('profile/' + _category).transaction(function(data) {
+          return _commitValue;
+        }, function(error, committed, snapshot) {
+          if (error) {
+            console.error(error);
+          }else if (!committed) {
+            console.warn('Changes not committed!');
+          }else {
+            // console.log('Changes committed to Firebase!');
+            // Update toast message.
+            _that.set('_message', _successText);
+            _that.async(function() {
+              _that.$.profileToast.show()
+            }, 350);
+          }
+        });
+      }, function(error) {
+        console.error(error);
+      });
+    },
+
+    _manipulateDocumentScrolling: function(_state) {
+      var _overflow = typeof _state == 'object' ? '' : _state || '';
+      document.body.style.overflow = _overflow;
+    },
+    // Lazily load and open dialog.
+    _lazifyDialog: function() {
+      this._manipulateDocumentScrolling('hidden');
+      if (!this._isChangeDialogOpened) {
+        this.set('_isChangeDialogOpened', !0);
+      }else {
+        this.$$('#changeDialog').open();
+      }
+    },
+
+    _computeLoadingCls: function(_isLoading) {
+      return _isLoading ? '' : 'finish-loading';
+    },
+
+    // When typing, the dialog will expand as the input increases.
+    // Resize dialog on each input change to center the dialog.
+    _resizeDialogOnTyping: function(ev) {
+      var _dialog = this.$$('#changeDialog');
+      if (_dialog) {
+        _dialog.notifyResize();
+      }
+    },
+
+    _hasDialogRendered: function(ev) {
+      if (ev.target.if) {
+        this.async(function() {
+          this.$$('#changeDialog').open();
+        }, 1);
+      }
+    },
+
+    // X - TODO: Polymer.dom(ev).rootTarget to retarget event to paper-ripple inside div. This is crucial in Shadow DOM!
+    // X - TODO: Disable and restore document scrolling when dialog opens and closes.
+    // X - TODO: touchmove.
+    // TODO: Enter to confirm input change.
+  });
+
+</script>

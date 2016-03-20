@@ -1,0 +1,590 @@
+{
+  "alpha" : {
+    "01level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    }, {
+      "id" : "current6",
+      "locked" : false,
+      "person" : "",
+      "room" : "sapphire",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current7",
+      "locked" : false,
+      "person" : "",
+      "room" : "topaz",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    } ],
+    "02level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    }, {
+      "id" : "current6",
+      "locked" : false,
+      "person" : "",
+      "room" : "sapphire",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    } ],
+    "03level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    } ],
+    "04level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    } ],
+    "05level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    } ],
+    "06level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    } ],
+    "07level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    }, {
+      "id" : "current6",
+      "locked" : false,
+      "person" : "",
+      "room" : "sapphire",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current7",
+      "locked" : false,
+      "person" : "",
+      "room" : "topaz",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    } ],
+    "08level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    } ],
+    "09level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    } ],
+    "10level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    } ],
+    "11level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    } ],
+    "12level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    }, {
+      "id" : "current6",
+      "locked" : false,
+      "person" : "",
+      "room" : "sapphire",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current7",
+      "locked" : false,
+      "person" : "",
+      "room" : "topaz",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    } ]
+  },
+  "beta" : {
+    "03level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    }, {
+      "id" : "current6",
+      "locked" : false,
+      "person" : "",
+      "room" : "sapphire",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    } ]
+  },
+  "gamma" : {
+    "01level" : [ {
+      "id" : "current1",
+      "locked" : false,
+      "person" : "nobody",
+      "room" : "amethyst2",
+      "status" : "Occupied",
+      "subject" : "meeting",
+      "time" : "08:45 ~ 11:45"
+    }, {
+      "id" : "current2",
+      "locked" : true,
+      "person" : "",
+      "room" : "diamond",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    }, {
+      "id" : "current3",
+      "locked" : false,
+      "person" : "cejcap",
+      "room" : "emerald",
+      "status" : "Occupied",
+      "subject" : "-",
+      "time" : "16:00 - 17:00"
+    }, {
+      "id" : "current4",
+      "locked" : false,
+      "person" : "",
+      "room" : "garnet",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : "until 17:15"
+    }, {
+      "id" : "current5",
+      "locked" : false,
+      "person" : "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status" : "Reserved",
+      "subject" : "OTC CoP Kick off",
+      "time" : "17:15 - 19:30"
+    }, {
+      "id" : "current6",
+      "locked" : false,
+      "person" : "",
+      "room" : "sapphire",
+      "status" : "Vacant",
+      "subject" : "",
+      "time" : ""
+    } ]
+  }
+}

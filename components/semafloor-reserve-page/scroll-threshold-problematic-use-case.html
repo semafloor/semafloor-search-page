@@ -1,0 +1,174 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- <link rel="import" href="../iron-pages/iron-pages.html"> -->
+<link rel="import" href="../iron-list/iron-list.html">
+<link rel="import" href="../iron-scroll-threshold/iron-scroll-threshold.html">
+
+<!-- <link rel="import" href="../paper-spinner/paper-spinner-lite.html"> -->
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <semafloor-reserve-page></semafloor-reserve-page>
+
+@group Seed Elements
+@element semafloor-reserve-page
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="scroll-threshold-problematic-use-case">
+  <template strip-whitespace>
+    <style>
+      :host {
+        user-select: none;
+        box-sizing: border-box;
+
+        display: block;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      .reserve-page-container {
+        position: relative;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+      }
+      .reserve-page-container.horizontal {
+        @apply(--layout-horizontal);
+      }
+
+      .reserve-list {
+        min-height: 500px;
+        height: 100%;
+        width: 300px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        --iron-list-items-container: {
+          max-width: 800px;
+          margin: auto;
+          margin-top: 60px;
+          margin-bottom: 10px;
+        };
+      }
+
+    </style>
+
+    <div class="reserve-page-container">
+      <iron-list id="reserveList" class="reserve-list" items="[[reservations]]">
+        <template strip-whitespace>
+          <div>
+            [[item]]
+          </div>
+        </template>
+      </iron-list>
+
+      <!-- <template is="dom-repeat" items="[[reservations]]" index-as="index" strip-whitespace>
+        <div>
+          [[item]]
+        </div>
+      </template> -->
+
+      <!-- <div class="today-column">
+
+      </div>
+
+      <div class="thisweek-column">
+
+      </div>
+
+      <div class="upcoming-column">
+
+      </div> -->
+
+    </div>
+
+    <iron-scroll-threshold id="scrollThreshold"
+      lower-threshold="100"
+      on-lower-threshold="_loadMoreData"
+      lower-triggered="{{_lowerTriggered}}"
+      scroll-target="[[scroller]]"></iron-scroll-threshold>
+  </template>
+
+  <script>
+    'use strict';
+
+    var _mockList = [];
+
+    for (var i = 0; i < 999; i++) {
+      _mockList[i] = i;
+    }
+    _mockList = _mockList.slice();
+
+    Polymer({
+      is: 'scroll-threshold-problematic-use-case',
+
+      properties: {
+        reservations: Array,
+        scroller: HTMLElement,
+
+        _mockList: Array,
+        _lowerTriggered: Boolean,
+      },
+
+      observers: [
+        '_onLowerTriggered(_lowerTriggered)'
+      ],
+
+      ready: function() {
+        this.set('reservations', _mockList.splice(0, 50));
+      },
+
+      attached: function() {
+        this.set('scroller', Polymer.dom(this.ownerDocument).querySelector('html'));
+        this.fire('reserve-page-attached');
+        console.log('reservePageAttached');
+      },
+
+      _loadMoreData: function() {
+        console.log('_loadMoreData');
+        var _nextLoad = _mockList.splice(0, 20);
+
+        console.log('_mockList: ', _mockList);
+        console.log('_nextLoad: ', _nextLoad);
+        console.log('reservations: ', this.reservations);
+        var _nextLoadLength = _nextLoad.length;
+        for (var i = 0; i < _nextLoadLength; i++) {
+          // this.push('reservations', _nextLoad[i]);
+          this.$.reserveList.push('items', _nextLoad[i]);
+        }
+        console.log('reservations: ', this.reservations);
+
+        this.$.scrollThreshold.clearTriggers();
+      },
+
+      _onLowerTriggered: function(_lowerTriggered) {
+        console.log('_onLowerTriggered: ', _lowerTriggered);
+      },
+
+      forceReassignListItems: function() {
+        var _temp = this.reservations;
+        this.set('reservations', []);
+        this.async(function() {
+          console.log('forceReassignListItems');
+          this.set('reservations', _temp);
+        }, 1);
+      },
+      resetScroller: function() {
+        console.log('resetScroller');
+        this.$.reserveList.scrollTarget = null;
+        this.$.scrollThreshold.scrollTarget = null;
+      },
+
+      // TODO: My use case //jsbin.com/zukicosube/edit?html,console,output.
+      // Hence determined that iron-scroll-threshold only can be used in just one page.
+      // Since once iron-scroll-threshold overtook the document scrolling,
+      // other pages need to use it have to signal iron-scroll-threshold to disable its
+      // scrollTarget from holding the document scroller.
+
+    })
+  </script>
+</dom-module>

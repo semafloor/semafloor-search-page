@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>semafloor-profile-page Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="../../lodash/dist/lodash.min.js"></script>
+
+    <link rel="import" href="../semafloor-profile-page.html">
+    <link rel="import" href="semafloor-main.html">
+    <link rel="import" href="../../app-layout/app-layout.html">
+    <link rel="import" href="../../app-layout/app-scroll-effects/app-scroll-effects.html">
+    <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../../semafloor-icons/semafloor-icons.html">
+
+    <style is="custom-style">
+      body {
+        -webkit-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+
+      semafloor-main {
+        --semafloor-current-page-height: calc(100vh - 113px);
+      }
+
+      /*app-header {
+        color: #009688;
+        --app-header-background-front-layer: {
+          background-color: #fff;
+        };
+        --app-header-background-rear-layer: {
+          background-color: #009688;
+        };
+      }
+
+      span.title {
+        font-size: 20px;
+        margin-left: 16px;
+      }
+
+      app-header.condensed,
+      app-header.condensed span.title {
+        color: #fff;
+      }*/
+
+    </style>
+  </head>
+  <body>
+
+    <!-- 176 nodes before optimization w/ app-shell-->
+    <!-- 107 nodes before optimization w/o app-shell-->
+
+    <!-- 39 nodes clean on CH/ OP -->
+    <!-- 29 nodes app shell on CH/ OP -->
+    <!-- 94 nodes after optimization w/o app-shell on OP/ CH-->
+
+    <!-- 47 nodes clean on FF -->
+    <!-- 29 nodes app shell on FF -->
+    <!-- 94 nodes after optimization w/o app-shell on FF-->
+    <!-- <app-drawer-layout force-narrow>
+      <app-drawer swipe-open></app-drawer>
+
+      <app-header-layout>
+        <app-header condenses fixed effects="material fade-background">
+          <app-toolbar>
+            <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
+            <span condensed-title hidden></span>
+            <span title hidden>My Profile</span>
+            <span class="title">My Profile</span>
+          </app-toolbar>
+        </app-header>
+
+        <semafloor-profile-page></semafloor-profile-page>
+      </app-header-layout>
+    </app-drawer-layout> -->
+    <semafloor-main></semafloor-main>
+
+    <script>
+      // var header = document.querySelector('app-header');
+      // console.time('profile-page-attached');
+      //
+      // header.addEventListener('app-header-transform', function(ev) {
+      //   header.toggleClass('condensed', ev.detail.progress > 0.5);
+      // });
+      //
+      // window.addEventListener('profile-page-attached', function() {
+      //   var _app = document.querySelector('semafloor-profile-page');
+      //   var _tel = _app.getElementsByTagName('*').length;
+      //   console.log('Total element nodes: ', _tel);
+      // });
+      var _main = document.querySelector('semafloor-main');
+
+      _main.addEventListener('main-page-attached', function() {
+        var _tel = _main.getElementsByTagName('*').length;
+        console.log('Total element nodes w/ Lazy-Loading:', _tel);
+      });
+    </script>
+
+  </body>
+</html>

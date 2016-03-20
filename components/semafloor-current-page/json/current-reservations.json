@@ -1,0 +1,967 @@
+{
+  "alpha" : {
+    "01level" : [ {
+      "id": "alpha01level000",
+      "locked": false,
+      "name" : "Freedom Tower",
+      "person": "",
+      "room": "freedom%20tower",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha01level001",
+      "locked": false,
+      "name" : "Taipei 101",
+      "person": "",
+      "room" : "taipei%20101",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha01level002",
+      "locked": true,
+      "name" : "The Shard",
+      "person": "",
+      "room" : "the%20shard",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha01level003",
+      "locked": false,
+      "name" : "Twin Towers",
+      "person": "",
+      "room" : "twin%20towers",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha01level004",
+      "locked": false,
+      "name" : "Willis Tower",
+      "person": "",
+      "room" : "willis%20tower",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "02level" : [ {
+      "id": "alpha02level000",
+      "locked": false,
+      "name" : "Acetyls",
+      "person": "",
+      "room" : "acetyls",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha02level001",
+      "locked": false,
+      "name" : "Aromatics",
+      "person": "",
+      "room" : "aromatics",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha02level002",
+      "locked": false,
+      "name" : "Bitumen",
+      "person": "",
+      "room" : "bitumen",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha02level003",
+      "locked": false,
+      "name" : "Hydrocarbon",
+      "person": "",
+      "room" : "hydrocarbon",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha02level004",
+      "locked": false,
+      "name" : "Lubricant",
+      "person": "",
+      "room" : "lubricant",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha02level005",
+      "locked": false,
+      "name" : "Olefin",
+      "person": "",
+      "room" : "olefin",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "03level" : [ {
+      "id": "alpha03level000",
+      "locked": false,
+      "name" : "Dow Jones",
+      "person": "",
+      "room" : "dow%20jones",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha03level001",
+      "locked": false,
+      "name" : "Euronext",
+      "person": "",
+      "room" : "euronext",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha03level002",
+      "locked": false,
+      "name" : "FTSE",
+      "person": "",
+      "room" : "ftse",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha03level003",
+      "locked": false,
+      "name" : "HangSeng",
+      "person": "",
+      "room" : "hang%20seng",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha03level004",
+      "locked": false,
+      "name" : "Nikkei",
+      "person": "",
+      "room" : "nikkei",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "04level" : [ {
+      "id": "alpha04level000",
+      "locked": false,
+      "name" : "Austen",
+      "person": "",
+      "room" : "austen",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha04level001",
+      "locked": false,
+      "name" : "Dickens",
+      "person": "",
+      "room" : "dickens",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha04level002",
+      "locked": false,
+      "name" : "Eliot",
+      "person": "",
+      "room" : "eliot",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha04level003",
+      "locked": false,
+      "name" : "Rowling",
+      "person": "",
+      "room" : "rowling",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha04level004",
+      "locked": false,
+      "name" : "Twain",
+      "person": "",
+      "room" : "twain",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "05level" : [ {
+      "id": "alpha05evel000",
+      "locked": false,
+      "name" : "Daffodil",
+      "person": "",
+      "room" : "daffodil",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha05evel001",
+      "locked": false,
+      "name" : "Golden Wattle",
+      "person": "",
+      "room" : "golden%20wattle",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha05evel002",
+      "locked": false,
+      "name" : "Hibiscus",
+      "person": "",
+      "room" : "hibiscus",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha05evel003",
+      "locked": false,
+      "name" : "Orchid",
+      "person": "",
+      "room" : "orchid",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha05evel004",
+      "locked": false,
+      "name" : "Protea",
+      "person": "",
+      "room" : "protea",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha05evel005",
+      "locked": false,
+      "name" : "Rafflesia",
+      "person": "",
+      "room" : "rafflesia",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha05evel006",
+      "locked": false,
+      "name" : "Rose",
+      "person": "",
+      "room" : "rose",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha05evel007",
+      "locked": false,
+      "name" : "Tulip",
+      "person": "",
+      "room" : "tulip",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "06level" : [ {
+      "id": "alpha06evel000",
+      "locked": false,
+      "name" : "Courage",
+      "person": "",
+      "room" : "courage",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha06evel001",
+      "locked": false,
+      "name" : "Excellence",
+      "person": "",
+      "room" : "excellence",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha06evel002",
+      "locked": false,
+      "name" : "One Team",
+      "person": "",
+      "room" : "one%20team",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha06evel003",
+      "locked": false,
+      "name" : "Respect",
+      "person": "",
+      "room" : "respect",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha06evel004",
+      "locked": false,
+      "name" : "Values",
+      "person": "",
+      "room" : "values",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "07level" : [ {
+      "id": "alpha07evel000",
+      "locked": false,
+      "name" : "Alpha",
+      "person": "",
+      "room" : "alpha",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha07evel001",
+      "locked": false,
+      "name" : "Beta",
+      "person": "",
+      "room" : "beta",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha07evel002",
+      "locked": false,
+      "name" : "Delta",
+      "person": "",
+      "room" : "delta",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha07evel003",
+      "locked": false,
+      "name" : "Gamma",
+      "person": "",
+      "room" : "gamma",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha07evel004",
+      "locked": false,
+      "name" : "Kappa",
+      "person": "",
+      "room" : "kappa",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha07evel005",
+      "locked": false,
+      "name" : "Omega",
+      "person": "",
+      "room" : "omega",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha07evel006",
+      "locked": false,
+      "name" : "Sigma",
+      "person": "",
+      "room" : "sigma",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha07evel007",
+      "locked": false,
+      "name" : "Zeta",
+      "person": "",
+      "room" : "zeta",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "08level" : [ {
+      "id": "alpha08evel000",
+      "locked": false,
+      "name" : "Angsana",
+      "person": "",
+      "room" : "angsana",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha08evel001",
+      "locked": false,
+      "name" : "Cendana",
+      "person": "",
+      "room" : "cendana",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha08evel002",
+      "locked": false,
+      "name" : "Chengal",
+      "person": "",
+      "room" : "chengal",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha08evel003",
+      "locked": false,
+      "name" : "Jati",
+      "person": "",
+      "room" : "jati",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha08evel004",
+      "locked": false,
+      "name" : "Meranti",
+      "person": "",
+      "room" : "meranti",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha08evel005",
+      "locked": false,
+      "name" : "Seraya",
+      "person": "",
+      "room" : "seraya",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha08evel006",
+      "locked": false,
+      "name" : "Teak",
+      "person": "",
+      "room" : "teak",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "09level" : [ {
+      "id": "alpha09evel000",
+      "locked": false,
+      "name" : "Batu Caves",
+      "person": "",
+      "room" : "batu%20caves",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel001",
+      "locked": false,
+      "name" : "Batu Ferringhi",
+      "person": "",
+      "room" : "batu%20ferringhi",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel002",
+      "locked": false,
+      "name" : "Cherating",
+      "person": "",
+      "room" : "cherating",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel003",
+      "locked": false,
+      "name" : "Gunung Ledang",
+      "person": "",
+      "room" : "gunung%20ledang",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel004",
+      "locked": false,
+      "name" : "Jonker Street",
+      "person": "",
+      "room" : "jonker%20street",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel005",
+      "locked": false,
+      "name" : "Kinabalu",
+      "person": "",
+      "room" : "kinabalu",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel006",
+      "locked": false,
+      "name" : "KLCC",
+      "person": "",
+      "room" : "klcc",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel007",
+      "locked": false,
+      "name" : "Lake Melati",
+      "person": "",
+      "room" : "lake%20melati",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel008",
+      "locked": false,
+      "name" : "Limestone",
+      "person": "",
+      "room" : "limestone",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel009",
+      "locked": false,
+      "name" : "Minangkabau",
+      "person": "",
+      "room" : "minangkabau",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel010",
+      "locked": false,
+      "name" : "Putrajaya",
+      "person": "",
+      "room" : "putrajaya",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel011",
+      "locked": false,
+      "name" : "Silat",
+      "person": "",
+      "room" : "silat",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel012",
+      "locked": false,
+      "name" : "Songkat",
+      "person": "",
+      "room" : "songkat",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha09evel013",
+      "locked": false,
+      "name" : "Wellness Room",
+      "person": "",
+      "room" : "wellness%20room",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "10level" : [ {
+      "id": "alpha10evel000",
+      "locked": false,
+      "name" : "Degas",
+      "person": "",
+      "room" : "degas",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha10evel001",
+      "locked": false,
+      "name" : "Michaelangelo",
+      "person": "",
+      "room" : "michaelangelo",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha10evel002",
+      "locked": false,
+      "name" : "Monet",
+      "person": "",
+      "room" : "monet",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha10evel003",
+      "locked": false,
+      "name" : "Picasso",
+      "person": "",
+      "room" : "picasso",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha10evel004",
+      "locked": false,
+      "name" : "Renoir",
+      "person": "",
+      "room" : "renoir",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha10evel005",
+      "locked": false,
+      "name" : "Sisley",
+      "person": "",
+      "room" : "sisley",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha10evel006",
+      "locked": false,
+      "name" : "Van Gogh",
+      "person": "",
+      "room" : "van%20gogh",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "11level" : [ {
+      "id": "alpha11level000",
+      "locked": false,
+      "name" : "Anise",
+      "person": "",
+      "room" : "anise",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha11level001",
+      "locked": false,
+      "name" : "Cardamom",
+      "person": "",
+      "room" : "cardamom",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha11level002",
+      "locked": false,
+      "name" : "Cinnamon",
+      "person": "",
+      "room" : "cinnamon",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha11level003",
+      "locked": false,
+      "name" : "Clove",
+      "person": "",
+      "room" : "clove",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha11level004",
+      "locked": false,
+      "name" : "Peppercorn",
+      "person": "",
+      "room" : "peppercorn",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha11level005",
+      "locked": false,
+      "name" : "Sesame",
+      "person": "",
+      "room" : "sesame",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha11level006",
+      "locked": false,
+      "name" : "Tamarind",
+      "person": "",
+      "room" : "tamarind",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha11level007",
+      "locked": false,
+      "name" : "Tumeric",
+      "person": "",
+      "room" : "tumeric",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ],
+    "12level" : [ {
+      "id": "alpha12level000",
+      "locked": false,
+      "name" : "Amethyst",
+      "person": "nobody",
+      "room" : "amethyst",
+      "status": "Occupied",
+      "subject": "meeting",
+      "time": "08:45 ~ 11:45"
+    }, {
+      "id": "alpha12level001",
+      "locked": true,
+      "name" : "Diamond",
+      "person": "",
+      "room" : "diamond",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha12level002",
+      "locked": false,
+      "name" : "Emerald",
+      "person": "cejcap",
+      "room" : "emerald",
+      "status": "Occupied",
+      "subject": "-",
+      "time": "16:00 - 17:00"
+    }, {
+      "id": "alpha12level003",
+      "locked": false,
+      "name" : "Garnet",
+      "person": "",
+      "room" : "garnet",
+      "status": "Vacant",
+      "subject": "",
+      "time": "until 17:15"
+    }, {
+      "id": "alpha12level004",
+      "locked": false,
+      "name" : "Pearl",
+      "person": "Radhakrishnan, Renjith Kumar",
+      "room" : "pearl",
+      "status": "Reserved",
+      "subject": "OTC CoP Kick off",
+      "time": "17:15 - 19:30"
+    }, {
+      "id": "alpha12level005",
+      "locked": false,
+      "name" : "Sapphire",
+      "person": "",
+      "room" : "sapphire",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha12level006",
+      "locked": false,
+      "name" : "Topaz",
+      "person": "",
+      "room" : "topaz",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "alpha12level007",
+      "locked": false,
+      "name" : "Zircon",
+      "person": "",
+      "room" : "zircon",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ]
+  },
+  "beta" : {
+    "03level" : [ {
+      "id": "beta03level000",
+      "locked": false,
+      "name" : "Benz",
+      "person": "",
+      "room" : "benz",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "beta03level001",
+      "locked": false,
+      "name" : "Edison",
+      "person": "",
+      "room" : "edison",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "beta03level002",
+      "locked": false,
+      "name" : "Einstein",
+      "person": "",
+      "room" : "einstein",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "beta03level003",
+      "locked": false,
+      "name" : "Fleming",
+      "person": "",
+      "room" : "fleming",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "beta03level004",
+      "locked": false,
+      "name" : "Franklin",
+      "person": "",
+      "room" : "franklin",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "beta03level005",
+      "locked": false,
+      "name" : "Graham",
+      "person": "",
+      "room" : "graham",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "beta03level006",
+      "locked": false,
+      "name" : "Newton",
+      "person": "",
+      "room" : "newton",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "beta03level007",
+      "locked": false,
+      "name" : "Whitney",
+      "person": "",
+      "room" : "whitney",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ]
+  },
+  "gamma" : {
+    "01level" : [ {
+      "id": "gamma01level000",
+      "locked": false,
+      "name" : "Collaborate",
+      "person": "",
+      "room" : "collaborate",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level001",
+      "locked": false,
+      "name" : "Create",
+      "person": "",
+      "room" : "create",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level002",
+      "locked": false,
+      "name" : "Fun",
+      "person": "",
+      "room" : "fun",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level003",
+      "locked": false,
+      "name" : "Grow",
+      "person": "",
+      "room" : "grow",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level004",
+      "locked": false,
+      "name" : "Idea",
+      "person": "",
+      "room" : "idea",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level005",
+      "locked": false,
+      "name" : "Innovate",
+      "person": "",
+      "room" : "innovate",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level006",
+      "locked": false,
+      "name" : "Inspire",
+      "person": "",
+      "room" : "inspire",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level007",
+      "locked": false,
+      "name" : "Lead",
+      "person": "",
+      "room" : "lead",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level008",
+      "locked": false,
+      "name" : "Meet",
+      "person": "",
+      "room" : "meet",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level009",
+      "locked": false,
+      "name" : "Team",
+      "person": "",
+      "room" : "team",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    }, {
+      "id": "gamma01level010",
+      "locked": false,
+      "name" : "Think",
+      "person": "",
+      "room" : "think",
+      "status": "Vacant",
+      "subject": "",
+      "time": ""
+    } ]
+  }
+}

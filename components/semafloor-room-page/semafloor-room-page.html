@@ -1,0 +1,132 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="semafloor-room-page-theme.html">
+
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-collapse/iron-collapse.html">
+
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
+
+<link rel="import" href="../firebase-element/firebase-collection.html">
+
+<link rel="import" href="../neon-animation/animations/cascaded-animation.html">
+<link rel="import" href="../neon-animation/animations/slide-from-bottom-animation.html">
+<link rel="import" href="../neon-animation/animations/slide-down-animation.html">
+<link rel="import" href="../neon-animation/neon-shared-element-animatable-behavior.html">
+<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <semafloor-room-page></semafloor-room-page>
+
+@group Seed Elements
+@element semafloor-room-page
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="semafloor-room-page">
+
+  <template strip-whitespace>
+    <style include="semafloor-room-page-theme"></style>
+
+    <firebase-collection id="infoList" location="[[url]]" on-firebase-value="_onFirebaseValue"></firebase-collection>
+
+    <div class="room-page-container">
+      <div class$="loading [[_computeLoadingCls(_isLoadingCard)]]"></div>
+
+      <iron-pages id="pages" class$="[[_computeLoadingCls(_isLoadingCard)]]" selected="[[_page]]" attr-for-selected="page">
+        <div class="card-container" page="card">
+          <template is="dom-repeat" items="[[_allSiteCards]]" index-as="index" strip-whitespace>
+            <paper-card class="each-card">
+              <div class="each-content">
+                <div class="card-content">
+                  <iron-icon class$="[[_computeSiteIcon(index)]]" icon="icons:[[_computeSiteIcon(index)]]"></iron-icon>
+                  [[item]]
+                </div>
+                <div class="card-actions">
+                  <paper-button on-tap="_rollThumbnail">roll</paper-button>
+                  <paper-button on-transitionend="_exploreSite">Explore</paper-button>
+                </div>
+              </div>
+              <iron-image class$="card-img [[_computeSiteIcon(index)]]" alt="[[item]]" src="[[_computeSiteImage(imagesList)]]" sizing="cover" fade preload></iron-image>
+            </paper-card>
+          </template>
+        </div>
+      </iron-pages>
+    </div>
+
+    <paper-dialog id="floorInfo"
+      entry-animation="slide-from-bottom-animation"
+      exit-animation="slide-down-animation"
+      on-iron-overlay-opened="_manipulateDocumentScrolling"
+      on-iron-overlay-closed="_manipulateDocumentScrolling">
+      <div class$="info-card-toolbar [[_computeSiteIcon(_exploringSiteIdx)]]">
+        <paper-icon-button icon="icons:[[_computeFloorInfoIcon(_floorInfoTitle)]]" on-tap="_floorInfoIconAction"></paper-icon-button>
+        [[_floorInfoTitle]]
+      </div>
+
+      <div id="infoCardContainer" class="info-card-container">
+        <template is="dom-repeat" items="[[_allFloorCards]]" index-as="index" strip-whitespace>
+          <paper-card class$="each-card [[_isRoomCls(_isRoom)]] [[_computeSiteIcon(_exploringSiteIdx)]]">
+            <template is="dom-if" if="[[_isRoom]]" restamp="true" strip-whitespace>
+              <iron-collapse id="infoCollapse" on-transitionend="_collapseOpened">
+                <div class="each-card-info">
+                  Site
+                  <span>[[item.site]]</span>
+                </div>
+                <div class="each-card-info">
+                  Floor
+                  <span>[[item.floor]]</span>
+                </div>
+                <div class="each-card-info">
+                  Access
+                  <span>[[_isRestricted(item.access)]]</span>
+                </div>
+                <div class="each-card-info">
+                  Capacity
+                  <span>[[item.capacity]]</span>
+                </div>
+                <div class="each-card-info">
+                  Remarks
+                  <span>[[item.remarks]]</span>
+                </div>
+                <div class="each-card-info">
+                  Types
+                  <template is="dom-repeat" items="[[_decodeTypes(item.types)]]" index-as="index" strip-whitespace>
+                    <paper-checkbox checked>[[item]]</paper-checkbox>
+                  </template>
+                </div>
+              </iron-collapse>
+            </template>
+
+            <div class="each-content">
+              <div class="card-content">
+                <iron-icon class$="[[_computeSiteIcon(_exploringSiteIdx)]]" icon=""></iron-icon>
+                <template is="dom-if" if="[[_isRoom]]" restamp="true" strip-whitespace>
+                  [[item.name]]
+                </template>
+                <template is="dom-if" if="[[!_isRoom]]" restamp="true" strip-whitespace>
+                  [[item]]
+                </template>
+              </div>
+              <div class="card-actions">
+                <paper-button on-tap="_exploreFloor" hidden$="[[_isRoom]]">Explore</paper-button>
+                <paper-button hidden$="[[!_isRoom]]">Reserve</paper-button>
+                <paper-icon-button id="arrowDownIconButton" icon="hardware:keyboard-arrow-down" hidden$="[[!_isRoom]]" on-tap="_exploreRoom"></paper-icon-button>
+              </div>
+            </div>
+            <iron-image class$="card-img [[_computeSiteIcon(_exploringSiteIdx)]]" alt="[[item]]" src="" sizing="cover" fade preload></iron-image>
+          </paper-card>
+        </template>
+      </div>
+    </paper-dialog>
+
+  </template>
+</dom-module>
+
+<script src="semafloor-room-page.js"></script>

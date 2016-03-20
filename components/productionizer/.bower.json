@@ -1,0 +1,38 @@
+{
+  "name": "productionizer",
+  "description": "To make elements small so that they can really fly.",
+  "main": "gulpfile.babel.js",
+  "authors": [
+    "semafloor (wes_ngrongsen@hotmail.com)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "productionizer",
+    "es2015",
+    "node",
+    "polymer",
+    "web"
+  ],
+  "homepage": "https://github.com/semafloor/productionizer",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "version": "0.2.5",
+  "_release": "0.2.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.5",
+    "commit": "fa6c94fcf9bdbfe0f5ff6735f80da914e5105fcb"
+  },
+  "_source": "git://github.com/semafloor/productionizer.git",
+  "_target": "^0.2.4",
+  "_originalSource": "semafloor/productionizer"
+}

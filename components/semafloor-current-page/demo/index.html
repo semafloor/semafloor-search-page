@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>semafloor-current-page Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../lodash/dist/lodash.min.js" charset="utf-8"></script>
+
+    <link rel="import" href="../semafloor-current-page.html">
+    <link rel="import" href="semafloor-main.html">
+    <link rel="import" href="../../semafloor-icons/semafloor-icons.html">
+
+    <link rel="import" href="../../app-layout/app-layout.html">
+    <link rel="import" href="../../app-layout/app-scroll-effects/app-scroll-effects.html">
+    <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+
+    <link rel="import" href="../../neon-animation/neon-animations.html">
+    <link rel="import" href="../../jv-datepicker/datepicker-slide-from-top-animation.html">
+    <link rel="import" href="../../jv-datepicker/datepicker-slide-from-bottom-animation.html">
+
+    <style is="custom-style">
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      semafloor-main {
+        --semafloor-current-page-height: calc(100vh - 113px);
+      }
+
+      /*app-header {
+        color: #009688;
+        --app-header-background-front-layer: {
+          background-color: #fff;
+        };
+        --app-header-background-rear-layer: {
+          background-color: #009688;
+        };
+      }
+      app-header.condensed,
+      app-header.condensed .title {
+        color: #fff;
+      }
+
+      .title {
+        font-size: 20px;
+        font-weight: 400;
+        margin-left: 8px;
+      }*/
+    </style>
+  </head>
+  <body>
+    <!-- <app-drawer-layout force-narrow>
+      <app-drawer swipe-open></app-drawer>
+
+      <app-header-layout>
+        <app-header condenses fixed effects="waterfall fade-background">
+          <app-toolbar>
+            <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
+            <span title hidden></span>
+            <span condensed-title hidden></span>
+            <span class="title">Current Reservations</span>
+          </app-toolbar>
+        </app-header> -->
+
+        <!-- 32 nodes clean on CH/ OP before optimization-->
+        <!-- 40 nodes clean on FF before optimization -->
+        <!-- 66 nodes app shell on CH/ OP before optimization -->
+        <!-- 74 nodes app shell on FF before optimization -->
+        <!-- 55 nodes element on CH/ OP before optimization -->
+        <!-- 47 nodes element on FF before optimization -->
+
+        <!-- 28 nodes clean on CH/ OP after optimization-->
+        <!-- 31 nodes clean on FF after optimization -->
+        <!-- 34 nodes app shell on CH/ OP after optimization -->
+        <!-- 34 nodes app shell on FF after optimization -->
+        <!-- 75 nodes element on CH/ OP after optimization -->
+        <!-- 75 nodes element on FF after optimization -->
+
+        <!-- <semafloor-current-page></semafloor-current-page>
+      </app-header-layout>
+    </app-drawer-layout> -->
+
+    <semafloor-main></semafloor-main>
+
+    <script>
+      // var _app = document.querySelector('semafloor-current-page');
+      // var _header = document.querySelector('app-header');
+      //
+      // _header.addEventListener('app-header-transform', function(ev) {
+      //   _header.toggleClass('condensed', ev.detail.progress > 0.5);
+      // });
+      //
+      // _app.addEventListener('current-page-attached', function() {
+      //   console.log('Total element nodes with Lazy-Loading: ', _app.getElementsByTagName('*').length);
+      // });
+      // HTMLImports.whenReady(function() {
+      //   window.setTimeout(function() {
+      //     console.log('Total element nodes: ', _app.getElementsByTagName('*').length);
+      //   });
+      // });
+      var _main = document.querySelector('semafloor-main');
+
+      _main.addEventListener('main-page-attached', function(ev) {
+        var _tel = _main.getElementsByTagName('*').length;
+        console.log('Total element nodes w/ Lazy-Loading:', _tel);
+      });
+
+    </script>
+
+  </body>
+</html>

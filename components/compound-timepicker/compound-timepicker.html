@@ -1,0 +1,286 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+<!--
+Compound is composed of two or more separate elements and `compound-timepicker` happens to be under this category.
+
+`compound-timepicker` is a timepicker. It is used to select a single time (hours: minutes) on both mobile and desktop web applications.
+The selected time is indicated by the filled circle at the end of each clock hand.
+
+Example:
+
+    <compound-timepicker></compound-timepicker>
+    <compound-timepicker hours="23"></compound-timepicker>
+    <compound-timepicker minutes="59"></compound-timepicker>
+    <compound-timepicker step="5"></compound-timepicker>
+    <compound-timepicker time-format="24"></compound-timepicker>
+
+On mobile, pickers are best suited for display in a confirmation dialog. The timepicker can be wrapped inside a `paper-dialog`. `compound-timepicker-dialog` is created alongside `compound-timepicker` to provide a easy-to-use dialog timepicker.
+
+Example:
+
+    <compound-timepicker-dialog></compound-timepicker-dialog>
+    <compound-timepicker-dialog hours="23"></compound-timepicker-dialog>
+    <compound-timepicker-dialog minutes="59"></compound-timepicker-dialog>
+    <compound-timepicker-dialog step="5"></compound-timepicker-dialog>
+    <compound-timepicker-dialog time-format="24"></compound-timepicker-dialog>
+
+### Generating your own boilerplate code of the compounds
+
+At the end of the demo, there is a section where user can play around with to generate your own boilerplate code with the attributes provided. Let's go and check out the demo!`
+
+### Styling
+
+Style the timepicker with CSS as you would a normal DOM element.
+
+The following custom properties and mixins are also available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--compound-timepicker` | Mixin applied to the timepicker | `{}`
+`--compound-timepicker-numbers` | Fill color of the clock numbers | `--paper-black`
+`--compound-timepicker-clock-bg` | Background color of the clock face | `--paper-grey-100`
+||
+`--compound-timepicker-rings` | Background color of the all rings | `#eee`
+`--compound-timepicker-minute-ring` | Background color of the minute ring | `#eee`
+`--compound-timepicker-hour-ring` | Background color of the hour ring | `#eee`
+`--compound-timepicker-center` | Background color of the center ring | `#e0e0e0`
+||
+`--compound-timepicker-hour` | Fill color of the hour selector | `#c8e6c9`
+`--compound-timepicker-hour-centroid` | Fill color of the centroid of hour selector | `#4caf50`
+`--compound-timepicker-strokewidth-hour-centroid` | Stroke width of the centroid of hour selector | `4`
+`--compound-timepicker-hour-hand` | Fill color of the hour hand | `#4caf50`
+`--compound-timepicker-strokewidth-hour-hand` | Stroke width of the hour hand | `2`
+||
+`--compound-timepicker-minute` | Fill color of the minute selector | `#b2dfdb`
+`--compound-timepicker-minute-centroid` | Fill color of the centroid of minute selector | `#009688`
+`--compound-timepicker-strokewidth-minute-centroid` | Stroke width of the centroid of minute selector | `4`
+`--compound-timepicker-minute-hand` | Fill color of the minute hand | `#009688`
+`--compound-timepicker-strokewidth-minute-hand` | Stroke width of the minute hand | `2`
+||
+`--compound-timepicker-stroke-centroid` | Stroke color of the centroid of clock face | `#009688`
+`--compound-timepicker-strokewidth-centroid` | Stroke width of the centroid of clock face | `2`
+`--compound-timepicker-centroid` | Fill color of the centroid of clock face | `#009688`
+||
+`--compound-timepicker-minute-selected` | Fill color of the minute selector on clock number | `#009688`
+`--compound-timepicker-text-selected` | Fill color of the clock number when selected | `--paper-white
+||
+--compound-timepicker-buttons | Button color in dialog | #009688
+
+@compound compound-timepicker
+@demo demo/index.html
+-->
+<dom-module id="compound-timepicker">
+  <template strip-whitespace>
+    <style>
+      :root {
+        --minute-hand-strokewidth: 1;
+        --hour-hand-strokewidth: 1;
+        --minute-centroid-strokweidth: 4;
+        --hour-centroid-strokewidth: 4;
+        --centroid-strokewidth: 1;
+      }
+
+      :host {
+        user-select: none;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: transparent;
+
+        display: block;
+      }
+
+      *, *:before, *:after {
+        box-sizing: inherit;
+      }
+
+      div.timepicker {
+				width: 248px;
+        max-width: 248px;
+        max-height: calc(248px + 84px + 32px + 57px);
+        @apply(--layout-vertical);
+      }
+
+      /* clock time related */
+      .day-night {
+        position: relative;
+        width: 100%;
+        max-width: 248px;
+        max-height: calc(84px + 32px);
+        padding: 24px;
+        background: url(img/day-compressed.svg) no-repeat;
+        font-size: 56px;
+        text-align: right;
+        cursor: pointer;
+      }
+      .night-day {
+        color: #1E88E5;
+        background: url(img/night-compressed.svg) no-repeat;
+      }
+      .clock-time {
+        padding-right: 24px;
+        font-weight: 500;
+      }
+      .clock-time span:nth-of-type(1) {
+        margin-right: -14px;
+      }
+      .clock-time span:nth-of-type(3) {
+        margin-left: -14px;
+      }
+
+      /* clock related */
+      .clock {
+        height: 100%;
+        background: var(--compound-timepicker-clock-bg, #f5f5f5);
+        @apply(--layout-vertical);
+      }
+      .fullclock {
+        height: 248px;
+        width: 248px;
+        margin-left: auto;
+        margin-right: auto;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      .number {
+        fill: var(--compound-timepicker-numbers, #000);
+        pointer-events: none;
+        dominant-baseline: central;
+        text-anchor: middle;
+      }
+
+      /* rings-related */
+      .rings {
+        fill: var(--compound-timepicker-rings, #eee);
+      }
+      .minute-ring {
+        fill: var(--compound-timepicker-minute-ring, #eee);
+        cursor: pointer;
+      }
+      .hour-ring {
+        fill: var(--compound-timepicker-hour-ring, #eee);
+        cursor: pointer;
+      }
+      .center {
+        fill: var(--compound-timepicker-center, #e0e0e0);
+        pointer-events: none;
+      }
+
+      /* hour-related */
+      .hour {
+        fill: var(--compound-timepicker-hour, #c8e6c9);
+        cursor: pointer;
+      }
+      .hour-centroid {
+        fill: var(--compound-timepicker-hour-centroid, #4caf50);
+        stroke-width: var(--compound-timepicker-strokewidth-hour-centroid, --hour-centroid-strokewidth);
+        cursor: pointer;
+        pointer-events: none;
+      }
+      .hour-hand {
+        stroke: var(--compound-timepicker-stroke-hour-hand, #4caf50);
+        stroke-width: var(--compound-timepicker-strokewidth-hour-hand, --hour-hand-strokewidth);
+        pointer-events: none;
+      }
+
+      /* minute-related */
+      .minute {
+        fill: var(--compound-timepicker-minute, #b2dfdb);
+        cursor: pointer;
+      }
+      .minute-centroid {
+        fill: var(--compound-timepicker-minute-centroid, #009688);
+        stroke-width: var(--compound-timepicker-strokewidth-minute-centroid, --minute-centroid-strokewidth);
+        pointer-events: none;
+      }
+      .minute-hand {
+        stroke: var(--compound-timepicker-stroke-minute-hand, #009688);
+        stroke-width: var(--compound-timepicker-strokewidth-minute-hand, --minute-hand-strokewidth);
+        pointer-events: none;
+      }
+
+      /* misc related */
+      .centroid {
+        fill: var(--compound-timepicker-centroid, #009688);
+        stroke: var(--compound-timepicker-stroke-centroid, #009688);
+        stroke-width: var(--compound-timepicker-strokewidth-centroid, --centroid-strokewidth);
+        pointer-events:none;
+      }
+      .minute.number-selected {
+        fill: var(--compound-timepicker-minute-selected, #009688);
+      }
+      .text-selected {
+        fill: var(--compound-timepicker-text-selected, #fff);
+      }
+
+      /* buttons inside content tag */
+      div.clock > ::content > .buttons {
+        color: var(--compound-timepicker-button-color, #009688);
+        position: relative;
+        padding: 8px 8px 8px 24px;
+        margin-left: auto;
+        margin-right: 0;
+      }
+
+      /* landscape mode */
+      @media all and (orientation: landscape) {
+        div.timepicker {
+					width: initial;
+          max-width: 512px;
+          max-height: 288px;
+          @apply(--layout-horizontal);
+        }
+
+        div.day-night {
+					width: 224px;
+					padding: 16px 24px 0 0;
+          max-width: 248px;
+          max-height: 512px;
+        }
+
+        div.fullclock {
+          height: 216px;
+          width: 272px;
+        }
+      }
+    </style>
+
+    <div class="timepicker">
+      <div id="ampm" class="day-night" on-tap="_toggleDayNight">
+        <span>{{_hours}}</span>:<span>{{_minutes}}</span>
+        <paper-ripple on-transitionend="_switchDay"></paper-ripple>
+      </div>
+
+      <div class="clock">
+        <div class="fullclock">
+          <svg width="200" height="200" on-down="_selectHand" on-up="_releaseHand" on-track="_dragHand">
+            <g class="rings">
+              <circle id="minuteRing" cx="100" cy="100" r="100" class="minute-ring"/>
+              <circle id="hourRing" cx="100" cy="100" r="66" class="hour-ring"/>
+              <circle id="center" cx="100" cy="100" r="32" class="center"/>
+            </g>
+
+            <g id="hourGroup" transform="rotate(0, 100, 100)" class="dragging">
+              <circle id="hour" cx="100" cy="51" r="15" class="hour"/>
+              <circle id="hourCentroid" cx="100" cy="51" r="4" class="hour-centroid"/>
+              <line id="hourHand" x1="100" y1="100" x2="100" y2="51" class="hour-hand"/>
+            </g>
+
+            <g id="minuteGroup" transform="rotate(0, 100, 100)" class="dragging">
+              <circle id="minute" cx="100" cy="17" r="15" class="minute"/>
+              <circle id="minuteCentroid" cx="100" cy="17" r="4" class="minute-centroid"/>
+              <line id="minuteHand" x1="100" y1="100" x2="100" y2="17" class="minute-hand"/>
+            </g>
+
+            <circle id="centroid" cx="100" cy="100" r="2" class="centroid"/>
+            <g id="numbers"></g>
+          </svg>
+        </div>
+
+        <content select=".buttons"></content>
+      </div>
+    </div>
+  </template>
+
+	<script src="compound-timepicker.js"></script>
+</dom-module>

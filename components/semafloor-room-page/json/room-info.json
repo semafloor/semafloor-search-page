@@ -1,0 +1,862 @@
+{
+  "alpha" : {
+    "01level" : [ {
+      "id": "alpha01level000",
+      "access": true,
+      "name" : "Freedom Tower",
+      "capacity": 0,
+      "room": "freedom%20tower",
+      "types": "000",
+      "remarks": "Breakout Area"
+    }, {
+      "id": "alpha01level001",
+      "access": true,
+      "name" : "Taipei 101",
+      "capacity": 6,
+      "room" : "taipei%20101",
+      "types": "c03",
+      "remarks": ""
+    }, {
+      "id": "alpha01level002",
+      "access": false,
+      "name" : "The Shard",
+      "capacity": 6,
+      "room" : "the%20shard",
+      "types": "081",
+      "remarks": "Record to Report Director"
+    }, {
+      "id": "alpha01level003",
+      "access": true,
+      "name" : "Twin Towers",
+      "capacity": 4,
+      "room" : "twin%20towers",
+      "types": "803",
+      "remarks": ""
+    }, {
+      "id": "alpha01level004",
+      "access": true,
+      "name" : "Willis Tower",
+      "capacity": 10,
+      "room" : "willis%20tower",
+      "types": "481",
+      "remarks": ""
+    } ],
+    "02level" : [ {
+      "id": "alpha02level000",
+      "access": true,
+      "name" : "Acetyls",
+      "capacity": 10,
+      "room" : "acetyls",
+      "types": "c81",
+      "remarks": ""
+    }, {
+      "id": "alpha02level001",
+      "access": true,
+      "name" : "Aromatics",
+      "capacity": 6,
+      "room" : "aromatics",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "alpha02level002",
+      "access": true,
+      "name" : "Bitumen",
+      "capacity": 6,
+      "room" : "bitumen",
+      "types": "c03",
+      "remarks": ""
+    }, {
+      "id": "alpha02level003",
+      "access": true,
+      "name" : "Hydrocarbon",
+      "capacity": 4,
+      "room" : "hydrocarbon",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha02level004",
+      "access": true,
+      "name" : "Lubricant",
+      "capacity": 4,
+      "room" : "lubricant",
+      "types": "000",
+      "remarks": ""
+    }, {
+      "id": "alpha02level005",
+      "access": true,
+      "name" : "Olefin",
+      "capacity": 0,
+      "room" : "olefin",
+      "types": "083",
+      "remarks": ""
+    } ],
+    "03level" : [ {
+      "id": "alpha03level000",
+      "access": true,
+      "name" : "Dow Jones",
+      "capacity": 4,
+      "room" : "dow%20jones",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha03level001",
+      "access": true,
+      "name" : "Euronext",
+      "capacity": 0,
+      "room" : "euronext",
+      "types": "083",
+      "remarks": ""
+    }, {
+      "id": "alpha03level002",
+      "access": true,
+      "name" : "FTSE",
+      "capacity": 6,
+      "room" : "ftse",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "alpha03level003",
+      "access": true,
+      "name" : "HangSeng",
+      "capacity": 10,
+      "room" : "hang%20seng",
+      "types": "c81",
+      "remarks": ""
+    }, {
+      "id": "alpha03level004",
+      "access": true,
+      "name" : "Nikkei",
+      "capacity": 6,
+      "room" : "nikkei",
+      "types": "c43",
+      "remarks": ""
+    } ],
+    "04level" : [ {
+      "id": "alpha04level000",
+      "access": true,
+      "name" : "Austen",
+      "capacity": 6,
+      "room" : "austen",
+      "types": "803",
+      "remarks": ""
+    }, {
+      "id": "alpha04level001",
+      "access": true,
+      "name" : "Dickens",
+      "capacity": 4,
+      "room" : "dickens",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha04level002",
+      "access": true,
+      "name" : "Eliot",
+      "capacity": 6,
+      "room" : "eliot",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "alpha04level003",
+      "access": true,
+      "name" : "Rowling",
+      "capacity": 0,
+      "room" : "rowling",
+      "types": "083",
+      "remarks": ""
+    }, {
+      "id": "alpha04level004",
+      "access": true,
+      "name" : "Twain",
+      "capacity": 10,
+      "room" : "twain",
+      "types": "881",
+      "remarks": ""
+    } ],
+    "05level" : [ {
+      "id": "alpha05evel000",
+      "access": true,
+      "name" : "Daffodil",
+      "capacity": 6,
+      "room" : "daffodil",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "alpha05evel001",
+      "access": true,
+      "name" : "Golden Wattle",
+      "capacity": 4,
+      "room" : "golden%20wattle",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha05evel002",
+      "access": true,
+      "name" : "Hibiscus",
+      "capacity": 4,
+      "room" : "hibiscus",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha05evel003",
+      "access": true,
+      "name" : "Orchid",
+      "capacity": 0,
+      "room" : "orchid",
+      "types": "083",
+      "remarks": ""
+    }, {
+      "id": "alpha05evel004",
+      "access": true,
+      "name" : "Protea",
+      "capacity": 6,
+      "room" : "protea",
+      "types": "c03",
+      "remarks": ""
+    }, {
+      "id": "alpha05evel005",
+      "access": true,
+      "name" : "Rafflesia",
+      "capacity": 10,
+      "room" : "rafflesia",
+      "types": "c81",
+      "remarks": ""
+    }, {
+      "id": "alpha05evel006",
+      "access": true,
+      "name" : "Rose",
+      "capacity": 4,
+      "room" : "rose",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha05evel007",
+      "access": true,
+      "name" : "Tulip",
+      "capacity": 4,
+      "room" : "tulip",
+      "types": "003",
+      "remarks": ""
+    } ],
+    "06level" : [ {
+      "id": "alpha06evel000",
+      "access": true,
+      "name" : "Courage",
+      "capacity": 4,
+      "room" : "courage",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha06evel001",
+      "access": true,
+      "name" : "Excellence",
+      "capacity": 10,
+      "room" : "excellence",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha06evel002",
+      "access": true,
+      "name" : "One Team",
+      "capacity": 6,
+      "room" : "one%20team",
+      "types": "803",
+      "remarks": ""
+    }, {
+      "id": "alpha06evel003",
+      "access": true,
+      "name" : "Respect",
+      "capacity": 6,
+      "room" : "respect",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "alpha06evel004",
+      "access": true,
+      "name" : "Values",
+      "capacity": 0,
+      "room" : "values",
+      "types": "083",
+      "remarks": ""
+    } ],
+    "07level" : [ {
+      "id": "alpha07evel000",
+      "access": true,
+      "name" : "Alpha",
+      "capacity": 6,
+      "room" : "alpha",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha07evel001",
+      "access": true,
+      "name" : "Beta",
+      "capacity": 4,
+      "room" : "beta",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha07evel002",
+      "access": true,
+      "name" : "Delta",
+      "capacity": 4,
+      "room" : "delta",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha07evel003",
+      "access": true,
+      "name" : "Gamma",
+      "capacity": 6,
+      "room" : "gamma",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha07evel004",
+      "access": true,
+      "name" : "Kappa",
+      "capacity": 10,
+      "room" : "kappa",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha07evel005",
+      "access": true,
+      "name" : "Omega",
+      "capacity": 0,
+      "room" : "omega",
+      "types": "083",
+      "remarks": ""
+    }, {
+      "id": "alpha07evel006",
+      "access": true,
+      "name" : "Sigma",
+      "capacity": 4,
+      "room" : "sigma",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha07evel007",
+      "access": true,
+      "name" : "Zeta",
+      "capacity": 4,
+      "room" : "zeta",
+      "types": "003",
+      "remarks": ""
+    } ],
+    "08level" : [ {
+      "id": "alpha08evel000",
+      "access": true,
+      "name" : "Angsana",
+      "capacity": 4,
+      "room" : "angsana",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha08evel001",
+      "access": true,
+      "name" : "Cendana",
+      "capacity": 10,
+      "room" : "cendana",
+      "types": "811",
+      "remarks": ""
+    }, {
+      "id": "alpha08evel002",
+      "access": true,
+      "name" : "Chengal",
+      "capacity": 4,
+      "room" : "chengal",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha08evel003",
+      "access": true,
+      "name" : "Jati",
+      "capacity": 6,
+      "room" : "jati",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha08evel004",
+      "access": true,
+      "name" : "Meranti",
+      "capacity": 4,
+      "room" : "meranti",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha08evel005",
+      "access": true,
+      "name" : "Seraya",
+      "capacity": 4,
+      "room" : "seraya",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha08evel006",
+      "access": true,
+      "name" : "Teak",
+      "capacity": 0,
+      "room" : "teak",
+      "types": "083",
+      "remarks": ""
+    } ],
+    "09level" : [ {
+      "id": "alpha09evel000",
+      "access": true,
+      "name" : "Batu Caves",
+      "capacity": 14,
+      "room" : "batu%20caves",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel001",
+      "access": true,
+      "name" : "Batu Ferringhi",
+      "capacity": 12,
+      "room" : "batu%20ferringhi",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel002",
+      "access": true,
+      "name" : "Cherating",
+      "capacity": 8,
+      "room" : "cherating",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel003",
+      "access": true,
+      "name" : "Gunung Ledang",
+      "capacity": 8,
+      "room" : "gunung%20ledang",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel004",
+      "access": true,
+      "name" : "Jonker Street",
+      "capacity": 4,
+      "room" : "jonker%20street",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel005",
+      "access": true,
+      "name" : "Kinabalu",
+      "capacity": 6,
+      "room" : "kinabalu",
+      "types": "004",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel006",
+      "access": true,
+      "name" : "KLCC",
+      "capacity": 4,
+      "room" : "klcc",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel007",
+      "access": true,
+      "name" : "Lake Melati",
+      "capacity": 8,
+      "room" : "lake%20melati",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel008",
+      "access": true,
+      "name" : "Limestone",
+      "capacity": 14,
+      "room" : "limestone",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel009",
+      "access": true,
+      "name" : "Minangkabau",
+      "capacity": 18,
+      "room" : "minangkabau",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel010",
+      "access": true,
+      "name" : "Putrajaya",
+      "capacity": 4,
+      "room" : "putrajaya",
+      "types": "002",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel011",
+      "access": true,
+      "name" : "Silat",
+      "capacity": 0,
+      "room" : "silat",
+      "types": "083",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel012",
+      "access": true,
+      "name" : "Songkat",
+      "capacity": 8,
+      "room" : "songkat",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "alpha09evel013",
+      "access": true,
+      "name" : "Wellness Room",
+      "capacity": 0,
+      "room" : "wellness%20room",
+      "types": "000",
+      "remarks": ""
+    } ],
+    "10level" : [ {
+      "id": "alpha10evel000",
+      "access": true,
+      "name" : "Degas",
+      "capacity": 4,
+      "room" : "degas",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha10evel001",
+      "access": true,
+      "name" : "Michelangelo",
+      "capacity": 4,
+      "room" : "Michelangelo",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha10evel002",
+      "access": true,
+      "name" : "Monet",
+      "capacity": 6,
+      "room" : "monet",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha10evel003",
+      "access": true,
+      "name" : "Picasso",
+      "capacity": 6,
+      "room" : "picasso",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha10evel004",
+      "access": true,
+      "name" : "Renoir",
+      "capacity": 0,
+      "room" : "renoir",
+      "types": "083",
+      "remarks": ""
+    }, {
+      "id": "alpha10evel005",
+      "access": true,
+      "name" : "Sisley",
+      "capacity": 4,
+      "room" : "sisley",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha10evel006",
+      "access": true,
+      "name" : "Van Gogh",
+      "capacity": 10,
+      "room" : "van%20gogh",
+      "types": "881",
+      "remarks": ""
+    } ],
+    "11level" : [ {
+      "id": "alpha11level000",
+      "access": true,
+      "name" : "Anise",
+      "capacity": 6,
+      "room" : "anise",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha11level001",
+      "access": true,
+      "name" : "Cardamom",
+      "capacity": 0,
+      "room" : "cardamom",
+      "types": "083",
+      "remarks": ""
+    }, {
+      "id": "alpha11level002",
+      "access": true,
+      "name" : "Cinnamon",
+      "capacity": 10,
+      "room" : "cinnamon",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha11level003",
+      "access": true,
+      "name" : "Clove",
+      "capacity": 6,
+      "room" : "clove",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha11level004",
+      "access": true,
+      "name" : "Peppercorn",
+      "capacity": 4,
+      "room" : "peppercorn",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha11level005",
+      "access": true,
+      "name" : "Sesame",
+      "capacity": 4,
+      "room" : "sesame",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha11level006",
+      "access": true,
+      "name" : "Tamarind",
+      "capacity": 4,
+      "room" : "tamarind",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha11level007",
+      "access": true,
+      "name" : "Tumeric",
+      "capacity": 4,
+      "room" : "tumeric",
+      "types": "003",
+      "remarks": ""
+    } ],
+    "12level" : [ {
+      "id": "alpha12level000",
+      "access": true,
+      "name" : "Amethyst",
+      "capacity": 6,
+      "room" : "amethyst",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha12level001",
+      "access": false,
+      "name" : "Diamond",
+      "capacity": 4,
+      "room" : "diamond",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha12level002",
+      "access": true,
+      "name" : "Emerald",
+      "capacity": 6,
+      "room" : "emerald",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "alpha12level003",
+      "access": true,
+      "name" : "Garnet",
+      "capacity": 10,
+      "room" : "garnet",
+      "types": "809",
+      "remarks": ""
+    }, {
+      "id": "alpha12level004",
+      "access": true,
+      "name" : "Pearl",
+      "capacity": 0,
+      "room" : "pearl",
+      "types": "083",
+      "remarks": ""
+    }, {
+      "id": "alpha12level005",
+      "access": true,
+      "name" : "Sapphire",
+      "capacity": 4,
+      "room" : "sapphire",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha12level006",
+      "access": true,
+      "name" : "Topaz",
+      "capacity": 4,
+      "room" : "topaz",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "alpha12level007",
+      "access": true,
+      "name" : "Zircon",
+      "capacity": 4,
+      "room" : "zircon",
+      "types": "003",
+      "remarks": ""
+    } ]
+  },
+  "beta" : {
+    "03level" : [ {
+      "id": "beta03level000",
+      "access": true,
+      "name" : "Benz",
+      "capacity": 4,
+      "room" : "benz",
+      "types": "080",
+      "remarks": ""
+    }, {
+      "id": "beta03level001",
+      "access": true,
+      "name" : "Edison",
+      "capacity": 8,
+      "room" : "edison",
+      "types": "880",
+      "remarks": ""
+    }, {
+      "id": "beta03level002",
+      "access": true,
+      "name" : "Einstein",
+      "capacity": 0,
+      "room" : "einstein",
+      "types": "002",
+      "remarks": ""
+    }, {
+      "id": "beta03level003",
+      "access": true,
+      "name" : "Fleming",
+      "capacity": 4,
+      "room" : "fleming",
+      "types": "802",
+      "remarks": ""
+    }, {
+      "id": "beta03level004",
+      "access": true,
+      "name" : "Franklin",
+      "capacity": 6,
+      "room" : "franklin",
+      "types": "802",
+      "remarks": ""
+    }, {
+      "id": "beta03level005",
+      "access": true,
+      "name" : "Graham",
+      "capacity": 6,
+      "room" : "graham",
+      "types": "880",
+      "remarks": ""
+    }, {
+      "id": "beta03level006",
+      "access": true,
+      "name" : "Newton",
+      "capacity": 0,
+      "room" : "newton",
+      "types": "002",
+      "remarks": ""
+    }, {
+      "id": "beta03level007",
+      "access": true,
+      "name" : "Whitney",
+      "capacity": 10,
+      "room" : "whitney",
+      "types": "880",
+      "remarks": ""
+    } ]
+  },
+  "gamma" : {
+    "01level" : [ {
+      "id": "gamma01level000",
+      "access": true,
+      "name" : "Collaborate",
+      "capacity": 8,
+      "room" : "collaborate",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "gamma01level001",
+      "access": true,
+      "name" : "Create",
+      "capacity": 10,
+      "room" : "create",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "gamma01level002",
+      "access": true,
+      "name" : "Fun",
+      "capacity": 0,
+      "room" : "fun",
+      "types": "083",
+      "remarks": ""
+    }, {
+      "id": "gamma01level003",
+      "access": true,
+      "name" : "Grow",
+      "capacity": 10,
+      "room" : "grow",
+      "types": "903",
+      "remarks": ""
+    }, {
+      "id": "gamma01level004",
+      "access": true,
+      "name" : "Idea",
+      "capacity": 8,
+      "room" : "idea",
+      "types": "081",
+      "remarks": ""
+    }, {
+      "id": "gamma01level005",
+      "access": true,
+      "name" : "Innovate",
+      "capacity": 10,
+      "room" : "innovate",
+      "types": "881",
+      "remarks": ""
+    }, {
+      "id": "gamma01level006",
+      "access": true,
+      "name" : "Inspire",
+      "capacity": 12,
+      "room" : "inspire",
+      "types": "103",
+      "remarks": ""
+    }, {
+      "id": "gamma01level007",
+      "access": true,
+      "name" : "Lead",
+      "capacity": 10,
+      "room" : "lead",
+      "types": "983",
+      "remarks": ""
+    }, {
+      "id": "gamma01level008",
+      "access": true,
+      "name" : "Meet",
+      "capacity": 4,
+      "room" : "meet",
+      "types": "003",
+      "remarks": ""
+    }, {
+      "id": "gamma01level009",
+      "access": true,
+      "name" : "Team",
+      "capacity": 6,
+      "room" : "team",
+      "types": "103",
+      "remarks": ""
+    }, {
+      "id": "gamma01level010",
+      "access": true,
+      "name" : "Think",
+      "capacity": 4,
+      "room" : "think",
+      "types": "003",
+      "remarks": ""
+    } ]
+  }
+}

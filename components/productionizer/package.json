@@ -1,0 +1,50 @@
+{
+  "name": "productionizer",
+  "version": "0.2.5",
+  "description": "An element providing a starting point for your own reusable Polymer elements.",
+  "main": "semafloor-current-page.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/semafloor/semafloor-current-page.git"
+  },
+  "author": "semafloor (wes_ngrongsen@hotmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/semafloor/semafloor-current-page/issues"
+  },
+  "homepage": "https://github.com/semafloor/semafloor-current-page#readme",
+  "devDependencies": {
+    "babel-core": "^6.3.17",
+    "babel-preset-es2015": "^6.3.13",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-babel": "^6.1.1",
+    "gulp-cssnano": "^2.1.0",
+    "gulp-html-extract": "^0.1.0",
+    "gulp-htmlmin": "^1.3.0",
+    "gulp-imagemin": "^2.4.0",
+    "gulp-minify-html": "^1.0.5",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-size": "^2.0.0",
+    "gulp-uglify": "^1.5.1",
+    "lodash": "^3.10.1",
+    "run-sequence": "^1.1.5"
+  },
+  "dependencies": {},
+  "keywords": [
+    "productionizer",
+    "semafloor",
+    "es2015",
+    "node",
+    "polymer",
+    "web"
+  ]
+}
