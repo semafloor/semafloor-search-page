@@ -28,13 +28,13 @@
 <link rel="import" href="../neon-animation/animations/transform-animation.html">
 
 <!--
-An element providing a solution to no problem in particular.
+A sub-element to search and to reserve empty rooms.
 
 Example:
 
     <semafloor-search-page></semafloor-search-page>
 
-@group Seed Elements
+@group Semafloor
 @element semafloor-search-page
 @demo demo/index.html
 @hero hero.svg
@@ -107,6 +107,10 @@ Example:
         --paper-toggle-button-checked-button-color: #1ddb8b;
         --paper-toggle-button-checked-bar-color: #1ddb8b;
         --paper-toggle-button-checked-ink-color: #1ddb8b;
+
+        --paper-toggle-button-unchecked-button-color: #616161;
+        --paper-toggle-button-unchecked-bar-color: #616161;
+        --paper-toggle-button-unchecked-ink-color: #616161;
       }
       paper-toggle-button.all-day-toggle,
       paper-button.from-time-button,
@@ -137,13 +141,16 @@ Example:
       paper-button.send-button {
         max-width: 96px;
         margin: 24px auto;
-        color: #1ddb8b;
-        background-color: #fcfcfc;
+        color: #616161;
+        font-weight: 500;
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
       }
       paper-button.send-button > iron-icon {
         margin-left: 8px;
+      }
+      paper-button.send-button[pressed] {
+        color: #1ddb8b;
       }
 
       /* addSiteDialog, addFloorDialog */
@@ -754,6 +761,11 @@ Example:
   is: 'semafloor-search-page',
 
   properties: {
+    /**
+     * Set once the user is logged in to retrieve user's Firebase data and
+     * is usually set from parent element.
+     * Eg. Room reserved at this page will be stored to user's Firebase.
+     */
     uid: String,
 
     _searchUrl: {
@@ -847,7 +859,6 @@ Example:
     _types: String,
     _emptyRoomResult: Object,
     _resultSites: Array,
-    // _resultFloors: Array,
     _selectedSiteTab: {
       type: Number,
       value: 0
@@ -985,14 +996,12 @@ Example:
   // Element Behavior
 
   /**
-  * The `semafloor-search-page-lasers` event is fired whenever `fireLasers` is called.
+  * The `search-page-attached` event is fired whenever `attached` is called.
   *
-  * @event semafloor-search-page-lasers
-  * @detail {{sound: String}}
+  * @event search-page-attached
   */
 
   _onFirebaseValue: function(ev) {
-    console.log(ev.detail.val());
     this.set('_userObject', ev.detail.val());
   },
 
@@ -1381,7 +1390,7 @@ Example:
                     'floor=' + encodeURIComponent(this._floors) + '&' +
                     'types=' + encodeURIComponent(this._types || 0);
 
-          console.log(_params);
+          // console.log(_params);
           this.$.searchEmptyRoom.body = _params;
           this.$.searchEmptyRoom.generateRequest();
           // Reset _isLoading here is much safer before opening the responseDialog.
@@ -1623,8 +1632,6 @@ Example:
   /* jshint ignore:start */
   /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
   _reserveRoom: function(ev) {
-    console.log(this._selectedRoomInfo);
-    console.log(this._fromDate, this._toDate, this._fromTime, this._toTime, this._allDayToggle);
     this._forceCloseOptions();
 
     // Set _isLoading to block further user interaction while loading Firebase.
@@ -1783,7 +1790,6 @@ Example:
 
     var _datesArrayWithPromise = _datesArray.map(function(_date) {
       var _eachRef = new Firebase([_ref, _date.y, _date.m, _date.w, _date.d, _site].join('/'));
-      console.log(_eachRef);
       return _eachRef.child('time').once('value').then(function(_snapshot) {
         return _eachRef.child('time').transaction(function(_data) {
           if (_data === null) {
@@ -1803,8 +1809,8 @@ Example:
     // Return results of all Promises of all dates.
     Promise.all(_datesArrayWithPromise).then(function(snapshot) {
       var _allCommitted = snapshot.every(function(n) {
-        console.log('Added is committed: ', n.committed);
-        console.log('committed value: ', n.snapshot.val());
+        // console.log('Added is committed: ', n.committed);
+        // console.log('committed value: ', n.snapshot.val());
         return n.committed === !0;
       });
       // If one of them is not committed, retry is needed.
@@ -1817,7 +1823,7 @@ Example:
             _retryDates.push(snapref);
           }
         });
-        console.log(_retryDates);
+        // console.log(_retryDates);
       }
 
       return _allCommitted;
@@ -1829,7 +1835,7 @@ Example:
       var _committedQuery = _that.$.searchEmptyRoom.body;
       var _allDayToggle = _that._allDayToggle;
       var _fromTime = _allDayToggle ? '08:00' : _that._fromTime;
-      var _toTime = _allDayToggle ? '23:30' : _that.toTime;
+      var _toTime = _allDayToggle ? '23:30' : _that._toTime;
       var _displayName = _that._userObject.displayName;
       var _commitRef = new Firebase(_ref);
       // If all requests have committed, set _roomReserved to trigger Observer to close dialog.
@@ -1875,7 +1881,6 @@ Example:
       _that.async(function() {
         _that.$$('#roomDialog').notifyResize();
       }, 1);
-      console.log(_datesArray);
       // return _allCommitted;
     }).catch(function(error) {
       console.warn(error);
@@ -1885,7 +1890,6 @@ Example:
   /* jscs:enable requireCamelCaseOrUpperCaseIdentifiers */
 
   _showRoomInfo: function(ev) {
-    console.log(ev, this._selectedRoomInfo);
     this._forceCloseOptions();
 
     if (!this._isRoomOpened) {
@@ -1935,7 +1939,6 @@ Example:
   },
 
   _updateSearchUrl: function(_uid) {
-    console.log(_uid);
     var _newUrl = '//semafloor-webapp.firebaseio.com/users/google/' + this.uid;
     this.set('_searchUrl', _newUrl);
   },
@@ -2042,7 +2045,7 @@ Example:
     });
 
     Promise.all(_datesArrayWithPromise).then(function(_snapshot) {
-      console.log('Saved to ' + _searchUrl + ': ' + [_fromDate, _toDate].join(' - ') + ' at ' + [_fromTime, _toTime].join(' - '));
+      // console.log('Saved to ' + _searchUrl + ': ' + [_fromDate, _toDate].join(' - ') + ' at ' + [_fromTime, _toTime].join(' - '));
     }).then(function() {
       // At here, global reservations list and user reservations list are updated.
       // Can proceed to close all dialogs and show toast.
@@ -2068,7 +2071,7 @@ Example:
     var _pushUserReservationDetails = this._pushUserReservationDetails;
 
     Promise.all(_pushReservationDetailsWithPromise).then(function() {
-      console.log('Saved to ' + [_fromDate, _toDate].join(' - ') + ' at ' + [_fromTime, _toTime].join(' - '));
+      // console.log('Saved to ' + [_fromDate, _toDate].join(' - ') + ' at ' + [_fromTime, _toTime].join(' - '));
     }).then(function() {
       _pushUserReservationDetails(_datesArrayCopy, _searchUrl, _that, _fromDate, _toDate, _fromTime, _toTime);
     }).catch(function(error) {
@@ -2111,7 +2114,7 @@ Example:
     return _isSpinnerLoading ? '' : 'finish-loading';
   },
 
-  // TODO: Support for Shadow DOM.
+  // X - TODO: Support for Shadow DOM.
   // X - TODO: Clear _floorOfSites so that next search will not show previous floor levels.
   // X - TODO: set min-height when loading since at least 1 room must be shown on screen.
   // X - TODO: _manipulateDocumentScrolling FTW.
