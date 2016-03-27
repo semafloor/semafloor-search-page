@@ -54,7 +54,7 @@ Example:
         display: block;
       }
 
-      *, *:before, *:after {
+      * {
         box-sizing: inherit;
       }
 
@@ -81,7 +81,7 @@ Example:
 
       .search-item {
         min-height: 64px;
-        padding: 16px 16px 16px 24px;
+        padding: 12px 16px;
         border-bottom: 1px solid #ddd;
         @apply(--layout-horizontal);
         @apply(--layout-flex-auto);
@@ -179,8 +179,7 @@ Example:
         -webkit-tap-highlight-color: rgba(0,0,0,0);
       }
 
-      p > paper-input,
-      paper-dropdown-menu {
+      p > paper-input {
         --paper-input-container-focus-color: #1ddb8b;
       }
       .buttons > paper-button {
@@ -192,7 +191,7 @@ Example:
         display: none;
       }
 
-      /*response dialog mixins*/
+      /* response dialog mixins */
       paper-dialog#responseDialog {
         margin: 0;
         left: 0;
@@ -206,6 +205,7 @@ Example:
       }
       paper-dialog#responseDialog paper-icon-button {
         font-size: 0;
+        --paper-icon-button-ink-color: #fff;
       }
       paper-dialog#responseDialog .response-toolbar {
         height: 48px;
@@ -226,7 +226,7 @@ Example:
         right: 0;
       }
 
-      /*response dialog extra mixins*/
+      /* response dialog extra mixins */
       paper-dialog#responseDialog .response-title {
         margin-left: 8px;
       }
@@ -244,12 +244,6 @@ Example:
         @apply(--layout-fit);
       }
 
-      /* page transition between real pages and spinner */
-      .response-container > paper-spinner-lite,
-      iron-pages {
-        will-change: opacity;
-      }
-
       iron-pages {
         opacity: 0;
         -webkit-transition: opacity ease-in .4s;
@@ -259,6 +253,7 @@ Example:
         opacity: 1;
       }
 
+      /* responseDialog's spinner */
       .response-container > paper-spinner-lite {
         opacity: 1;
         -webkit-transition: opacity ease-in .2s;
@@ -386,8 +381,8 @@ Example:
         @apply(--layout-fixed-bottom);
       }
       paper-listbox {
-        margin: 0;
-        padding: 0;
+        margin: 0 !important;
+        padding: 0 !important;
       }
       paper-icon-item {
         color: #6A7180;
@@ -404,6 +399,11 @@ Example:
         color: #fff;
       }
 
+      /* hidden attribute */
+      [hidden] {
+        display: none !important;
+      }
+
       /* desktop mode */
       /*@media all and (min-width: 376px) {*/
       @media all and (min-width: 600px) {
@@ -414,10 +414,10 @@ Example:
           min-width: 376px;
           width: calc(100% / 2 - 16px);
           max-width: 480px;
-          /* @apply(--shadow-elevation-4dp); */
-          box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+          @apply(--shadow-elevation-4dp);
+          /*box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
                       0 1px 10px 0 rgba(0, 0, 0, 0.12),
-                      0 2px 4px -1px rgba(0, 0, 0, 0.4);
+                      0 2px 4px -1px rgba(0, 0, 0, 0.4);*/
         }
 
         paper-dialog#responseDialog > div.no-padding > div.response-toolbar > paper-tabs{
@@ -430,10 +430,10 @@ Example:
           min-width: 360px;
           width: calc(100% / 2 - 16px);
           max-width: 480px;
-          /* @apply(--shadow-elevation-4dp); */
-          box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+          @apply(--shadow-elevation-4dp);
+          /*box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
                       0 1px 10px 0 rgba(0, 0, 0, 0.12),
-                      0 2px 4px -1px rgba(0, 0, 0, 0.4);
+                      0 2px 4px -1px rgba(0, 0, 0, 0.4);*/
         }
         paper-dialog#responseDialog iron-pages > paper-spinner-lite {
           margin: 0 auto;
@@ -444,6 +444,121 @@ Example:
           left: auto;
           right: auto;
         }
+      }
+
+      /* dark theme */
+      :host(.dark-theme) {
+        background-color: #303030;
+        height: 100%;
+      }
+
+      :host(.dark-theme) .search-item {
+        color: #bcbcbc;
+        border-bottom: 1px solid #3c3c3c;
+      }
+      :host(.dark-theme) .search-item > iron-icon {
+        color: #80cbc4;
+      }
+      :host(.dark-theme) .all-day-row > paper-toggle-button {
+        --paper-toggle-button-unchecked-bar-color: #bcbcbc;
+        --paper-toggle-button-unchecked-button-color: #bcbcbc;
+        --paper-toggle-button-unchecked-ink-color: #bcbcbc;
+
+        --paper-toggle-button-checked-bar-color: #80cbc4;
+        --paper-toggle-button-checked-button-color: #80cbc4;
+        --paper-toggle-button-checked-ink-color: #80cbc4;
+      }
+      :host(.dark-theme) div.more-options-container > paper-button {
+        color: #fff;
+        border-bottom: 1px solid #3c3c3c;
+      }
+      :host(.dark-theme) paper-checkbox {
+        --paper-checkbox-label-color: #9e9e9e;
+        --paper-checkbox-checkmark-color: #303030;
+
+        --paper-checkbox-checked-color: #80cbc4;
+        --paper-checkbox-checked-ink-color: #80cbc4;
+
+        --paper-checkbox-unchecked-color: #bcbcbc;
+        --paper-checkbox-unchecked-ink-color: #bcbcbc;
+      }
+
+      :host(.dark-theme) paper-button.send-button {
+        color: #757575;
+      }
+      :host(.dark-theme) paper-button.send-button[pressed] {
+        color: #80cbc4;
+      }
+
+      :host(.dark-theme) paper-dialog {
+        background-color: #424242;
+        color: #bcbcbc;
+      }
+      :host(.dark-theme) paper-dialog#addSiteDialog paper-radio-button,
+      :host(.dark-theme) paper-dialog#addFloorDialog paper-radio-button {
+        --paper-radio-button-label-color: #bcbcbc;
+
+        --paper-radio-button-checked-color: #80cbc4;
+        --paper-radio-button-checked-ink-color: #80cbc4;
+        --paper-radio-button-unchecked-color: #bcbcbc;
+        --paper-radio-button-unchecked-ink-color: #bcbcbc;
+      }
+      :host(.dark-theme) paper-input {
+        --paper-input-container-focus-color: #80cbc4;
+        --paper-input-container-color: #9e9e9e;
+        --paper-input-container-label: {
+          color: #80cbc4;
+        };
+        --paper-input-container-disabled: {
+          color: #646464;
+        };
+        --paper-input-container-underline-disabled: {
+          color: #646464;
+        };
+        --paper-input-container-input-color: #fff;
+        --paper-input-container-invalid-color: #e64a19;
+      }
+      :host(.dark-theme) .buttons > paper-button {
+        color: #80cbc4;
+        --paper-button-ink-color: #bcbcbc;
+      }
+
+      :host(.dark-theme) paper-dialog#responseDialog .response-toolbar {
+        background-color: #212121;
+        color: #fafafa;
+      }
+      :host(.dark-theme) .floor-tabs {
+        background-color: #212121;
+        color: #bcbcbc;
+      }
+      :host(.dark-theme) .room-on-each-floor {
+        border-bottom: 1px solid #646464;
+      }
+
+      :host(.dark-theme) paper-dialog#roomDialog h2 {
+        color: #eee;
+      }
+      :host(.dark-theme) .room-info > iron-icon {
+        color: #757575;
+      }
+
+      :host(.dark-theme) paper-listbox {
+        background-color: #424242;
+      }
+      :host(.dark-theme) paper-icon-item {
+        color: #bcbcbc;
+        --paper-item-icon: {
+          color: #80cbc4;
+        };
+      }
+
+      :host(.dark-them) paper-toast {
+        background-color: #424242;
+        color: #80cbc4;
+      }
+      :host(.dark-theme) paper-toast.warning {
+        background-color: #d32f2f;
+        color: #f5f5f5;
       }
     </style>
 
@@ -529,7 +644,7 @@ Example:
         <h2>Add Person</h2>
         <p>
           numerum nec posse intrare
-          <paper-input label="capacity" type="number" min="0" max="99" value="{{_inputCap::input}}" placeholder="1"></paper-input>
+          <paper-input label="Capacity" type="number" min="0" max="99" value="{{_inputCap::input}}" placeholder="1"></paper-input>
         </p>
         <div class="buttons">
           <paper-button dialog-dismiss>Cancel</paper-button>
@@ -574,6 +689,7 @@ Example:
         with-backdrop
         disable-days="[0,6]"
         date="{{_fromDate}}"
+        theme="[[themeSelected]]"
         on-iron-overlay-closed="_manipulateDocumentScrolling"></jv-datepicker-dialog>
     </template>
     <template is="dom-if" if="[[_isToDateOpened]]" restamp="true" strip-whitespace on-dom-change="_hasToDateRendered">
@@ -582,6 +698,7 @@ Example:
         disable-days="[0,6]"
         date="{{_toDate}}"
         min-date="[[_fromDate]]"
+        theme="[[themeSelected]]"
         on-iron-overlay-closed="_manipulateDocumentScrolling"></jv-datepicker-dialog>
     </template>
     <template is="dom-if" if="[[_isFromTimeOpened]]" restamp="true" strip-whitespace on-dom-change="_hasFromTimeRendered">
@@ -589,6 +706,7 @@ Example:
         with-backdrop
         time="{{_fromTime}}"
         time-format="24"
+        theme="[[themeSelected]]"
         on-iron-overlay-closed="_manipulateDocumentScrolling"></compound-timepicker-dialog>
     </template>
     <template is="dom-if" if="[[_isToTimeOpened]]" restamp="true" strip-whitespace on-dom-change="_hasToTimeRendered">
@@ -596,6 +714,7 @@ Example:
         with-backdrop
         time="{{_toTime}}"
         time-format="24"
+        theme="[[themeSelected]]"
         on-iron-overlay-closed="_manipulateDocumentScrolling"></compound-timepicker-dialog>
     </template>
 
@@ -761,6 +880,11 @@ Example:
   is: 'semafloor-search-page',
 
   properties: {
+    /**
+     * This accepts new theme value. Light theme is the default theme.
+     * This can be changed from the `Settings` page.
+     */
+    themeSelected: String,
     /**
      * Set once the user is logged in to retrieve user's Firebase data and
      * is usually set from parent element.
@@ -963,6 +1087,7 @@ Example:
     '_updateSearchUrl(uid)',
     '_closeRoomDialogAfterLoading(_roomReserved)',
     '_proceedToReserveRoom(_isLoading)',
+    '_updateThemeColor(themeSelected)',
   ],
 
   // Element Lifecycle
@@ -1894,11 +2019,13 @@ Example:
 
     if (!this._isRoomOpened) {
       this.set('_isRoomOpened', !0);
+      // Tell dialog scrollable its parent dialog since they're inside a template.
+      this.set('_roomScrollable', this.$$('#roomDialog'));
     }
 
     this.async(function() {
       this.$$('#roomDialog').open();
-    }, 1);
+    }, 300);
   },
 
   _decodeTypes: function(_types) {
@@ -2112,6 +2239,12 @@ Example:
 
   _computeLoadingCls: function(_isSpinnerLoading) {
     return _isSpinnerLoading ? '' : 'finish-loading';
+  },
+
+  _updateThemeColor: function(_themeSelected) {
+    var _isDarkTheme = _themeSelected === 'dark theme';
+    this.toggleClass('dark-theme', _isDarkTheme, this);
+    this.updateStyles();
   },
 
   // X - TODO: Support for Shadow DOM.
