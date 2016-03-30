@@ -39,7 +39,7 @@
     "neon-animation": "polymerelements/neon-animation#^1.1.1",
     "firebase-element": "GoogleWebComponents/firebase-element#^1.0.12",
     "jv-datepicker": "motss/jv-datepicker#^2.3.4",
-    "compound-timepicker": "motss/compound-timepicker#^0.4.0"
+    "compound-timepicker": "motss/compound-timepicker#^0.5.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
