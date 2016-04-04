@@ -1872,10 +1872,10 @@ Example:
       _cday = _cd.getDay();
       if (_cday > 0 && _cday < 6) {
         _cdfy = _cd.getFullYear();
-        _cdm1 = _cd.getMonth();
+        _cdm1 = ('0' + (_cd.getMonth() + 1)).slice(-2);
         _cdm = _monthNameToCode(_cd);
         _cdd = ('0' + _cd.getDate()).slice(-2);
-        _cd = [_cdfy, _cdm1 + 1, _cdd].join('-');
+        _cd = [_cdfy, _cdm1, _cdd].join('-');
         _cdw = getWeek(_cd);
         _cdw = 'week' + ('0' + _cdw).slice(-2);
         _datesArray.push({
@@ -2192,7 +2192,7 @@ Example:
     var _fromTime = _allDayToggle ? '08:00' : this._fromTime;
     var _toTime = _allDayToggle ? '23:30' : this._toTime;
     var _that = this;
-
+    console.log(_datesArrayCopy, _fromDate, _toDate);
 
     var _pushReservationDetailsWithPromise = this._pushReservationDetails(_datesArrayCopy, '//polymer-semaphore.firebaseio.com/mockMessages', _that, _fromTime, _toTime);
     var _pushUserReservationDetails = this._pushUserReservationDetails;
