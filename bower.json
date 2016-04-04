@@ -38,7 +38,7 @@
     "paper-radio-button": "PolymerElements/paper-radio-button#^1.0.12",
     "neon-animation": "polymerelements/neon-animation#^1.1.1",
     "firebase-element": "GoogleWebComponents/firebase-element#^1.0.12",
-    "jv-datepicker": "motss/jv-datepicker#^2.3.4",
+    "jv-datepicker": "motss/jv-datepicker#^2.4.3",
     "compound-timepicker": "motss/compound-timepicker#^0.5.1"
   },
   "devDependencies": {
