@@ -1,6 +1,6 @@
 {
   "name": "semafloor-search-page",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "authors": [
     "semafloor <wes_ngrongsen@hotmail.com>"
   ],
@@ -38,12 +38,11 @@
     "paper-radio-button": "PolymerElements/paper-radio-button#^1.0.12",
     "neon-animation": "polymerelements/neon-animation#^1.1.1",
     "firebase-element": "GoogleWebComponents/firebase-element#^1.0.12",
-    "jv-datepicker": "motss/jv-datepicker#^2.4.3",
-    "compound-timepicker": "motss/compound-timepicker#^0.5.1"
+    "compound-timepicker": "motss/compound-timepicker#^0.5.1",
+    "app-datepicker": "motss/app-datepicker#^2.7.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "iron-page-url": "PolymerElements/iron-page-url#^0.7.3",
     "productionizer": "semafloor/productionizer#^0.2.4",
     "semafloor-icons": "semafloor/semafloor-icons#^0.1.1",
     "lodash": "lodash/lodash#^4.6.1",
@@ -53,7 +52,8 @@
     "semafloor-current-page": "semafloor/semafloor-current-page#^0.5.8",
     "semafloor-room-page": "semafloor/semafloor-room-page#^0.6.8",
     "semafloor-reserve-page": "semafloor/semafloor-reserve-page#^0.4.1",
-    "iron-test-helpers": "polymerelements/iron-test-helpers#^1.1.5"
+    "iron-test-helpers": "polymerelements/iron-test-helpers#^1.1.5",
+    "iron-location": "polymerelements/iron-location#^0.8.4"
   },
   "resolutions": {
     "lodash": "^4.6.1"

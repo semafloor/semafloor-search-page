@@ -1,6 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 
-<link rel="import" href="../jv-datepicker/jv-datepicker-dialog.html">
+<link rel="import" href="../app-datepicker/app-datepicker-dialog.html">
 <link rel="import" href="../compound-timepicker/compound-timepicker-dialog.html">
 
 <link rel="import" href="../iron-ajax/iron-ajax.html">
@@ -685,21 +685,21 @@ Example:
     </template>
 
     <template is="dom-if" if="[[_isFromDateOpened]]" restamp="true" strip-whitespace on-dom-change="_hasFromDateRendered">
-      <jv-datepicker-dialog id="fromDate"
+      <app-datepicker-dialog id="fromDate"
         with-backdrop
         disable-days="[0,6]"
         date="{{_fromDate}}"
         theme="[[themeSelected]]"
-        on-iron-overlay-closed="_manipulateDocumentScrolling"></jv-datepicker-dialog>
+        on-iron-overlay-closed="_manipulateDocumentScrolling"></app-datepicker-dialog>
     </template>
     <template is="dom-if" if="[[_isToDateOpened]]" restamp="true" strip-whitespace on-dom-change="_hasToDateRendered">
-      <jv-datepicker-dialog id="toDate"
+      <app-datepicker-dialog id="toDate"
         with-backdrop
         disable-days="[0,6]"
         date="{{_toDate}}"
         min-date="[[_fromDate]]"
         theme="[[themeSelected]]"
-        on-iron-overlay-closed="_manipulateDocumentScrolling"></jv-datepicker-dialog>
+        on-iron-overlay-closed="_manipulateDocumentScrolling"></app-datepicker-dialog>
     </template>
     <template is="dom-if" if="[[_isFromTimeOpened]]" restamp="true" strip-whitespace on-dom-change="_hasFromTimeRendered">
       <compound-timepicker-dialog id="fromTime"
